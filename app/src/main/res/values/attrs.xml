@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="fontPath" format="string" />
+    <attr name="textFieldStyle" format="reference" />
+    <declare-styleable name="lbBaseGridView">
+        <attr name="focusOutFront" format="boolean" />
+        <attr name="focusOutEnd" format="boolean" />
+        <attr name="focusOutSideStart" format="boolean" />
+        <attr name="focusOutSideEnd" format="boolean" />
+        <attr name="horizontalMargin" format="dimension" />
+        <attr name="verticalMargin" format="dimension" />
+        <attr name="android:horizontalSpacing" />
+        <attr name="android:verticalSpacing" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="lbVerticalGridView">
+        <attr name="columnWidth" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="numberOfColumns" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="lbHorizontalGridView">
+        <attr name="rowHeight" format="dimension">
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="numberOfRows" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="RecyclerViewTV">
+        <attr name="selectedItemOffsetStartTV" format="dimension" />
+        <attr name="selectedItemOffsetEndTV" format="dimension" />
+        <attr name="selectedItemIsCenteredTV" format="boolean" />
+        <attr name="isMenuTV" format="boolean" />
+        <attr name="isMemoryFocusTV" format="boolean" />
+        <attr name="optimizeLayoutTV" format="boolean" />
+        <attr name="verticalSpacingWithMarginsTV" format="dimension" />
+        <attr name="horizontalSpacingWithMarginsTV" format="dimension" />
+    </declare-styleable>
+    <attr name="startColor" format="reference|color" />
+    <attr name="topDelta" format="float" />
+    <!-- Selected Paint Color (color). -->
+    <attr name="endColor" format="reference|color" />
+    <declare-styleable name="CardViewShadow">
+        <!-- Default Paint Color (color). -->
+        <attr name="startColor" />
+        <!-- Selected Paint Color (color). -->
+        <attr name="endColor" />
+        <attr name="topDelta" />
+    </declare-styleable>
+</resources>

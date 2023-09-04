@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@id/center_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/video_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_play_mobile_center"
+            android:gravity="center"
+            android:minWidth="50dp"
+            android:padding="5dp"
+            android:text="16:9"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/video_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_play_mobile_center"
+            android:gravity="center"
+            android:minWidth="50dp"
+            android:padding="5dp"
+            android:text="x1"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dkplayer_controller_height"
+        android:layout_gravity="bottom"
+        android:background="@drawable/dkplayer_shape_stardard_controller_bottom_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="@dimen/dkplayer_controller_height"
+            android:layout_height="@dimen/dkplayer_controller_height"
+            android:padding="@dimen/dkplayer_controller_icon_padding"
+            android:src="@drawable/dkplayer_selector_play_button" />
+
+        <TextView
+            android:id="@+id/curr_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dkplayer_controller_time_text_size"
+            tools:text="00:00" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:max="1000"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:progressDrawable="@drawable/dkplayer_layer_progress_bar"
+            android:thumb="@drawable/dkplayer_seekbar_thumb"
+            android:thumbOffset="0dp" />
+
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/dkplayer_controller_icon_padding"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dkplayer_controller_time_text_size"
+            tools:text="00:00" />
+
+        <TextView
+            android:id="@+id/play_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dkplayer_controller_icon_padding"
+            android:layout_marginRight="@dimen/dkplayer_controller_icon_padding"
+            android:background="@android:color/transparent"
+            android:text="上一集"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dkplayer_controller_time_text_size" />
+
+        <TextView
+            android:id="@+id/play_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dkplayer_controller_icon_padding"
+            android:layout_marginRight="@dimen/dkplayer_controller_icon_padding"
+            android:background="@android:color/transparent"
+            android:text="下一集"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dkplayer_controller_time_text_size" />
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/bottom_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:max="1000"
+        android:progressDrawable="@drawable/dkplayer_layer_progress_bar"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/tv_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/box_controller_top_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="12mm"
+        android:paddingTop="10mm"
+        android:paddingRight="12mm"
+        android:paddingBottom="10mm">
+
+        <TextView
+            android:id="@+id/tv_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="http://"
+            android:textColor="@android:color/white"
+            android:textSize="24mm" />
+
+        <TextView
+            android:id="@+id/tv_info_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="按上下键可以换集"
+            android:textColor="@android:color/white"
+            android:textSize="24mm" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/tv_pause_container"
+        android:layout_width="320mm"
+        android:layout_height="240mm"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="120mm"
+            android:layout_height="120mm"
+            android:layout_gravity="center"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/icon_play" />
+
+        <TextView
+            android:id="@+id/tv_pause_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20mm"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@android:color/white"
+            android:textSize="30mm"
+            tools:text="100" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tv_progress_container"
+        android:layout_width="320mm"
+        android:layout_height="240mm"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/tv_progress_icon"
+            android:layout_width="120mm"
+            android:layout_height="120mm"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            tools:src="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/tv_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20mm"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@android:color/white"
+            android:textSize="30mm"
+            tools:text="100" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tv_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="80mm"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_play_bottom"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_play_next"
+            android:layout_width="100mm"
+            android:layout_height="40mm"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10mm"
+            android:layout_marginRight="6mm"
+            android:background="@drawable/shape_user_focus"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:paddingLeft="5mm"
+            android:paddingRight="5mm"
+            android:singleLine="true"
+            android:text="下一集"
+            android:textColor="@android:color/white"
+            android:textSize="22mm" />
+
+        <TextView
+            android:id="@+id/tv_play_pre"
+            android:layout_width="100mm"
+            android:layout_height="40mm"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="6mm"
+            android:background="@drawable/shape_user_focus"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:paddingLeft="5mm"
+            android:paddingRight="5mm"
+            android:singleLine="true"
+            android:text="上一集"
+            android:textColor="@android:color/white"
+            android:textSize="22mm" />
+
+
+        <TextView
+            android:id="@+id/tv_video_speed"
+            android:layout_width="100mm"
+            android:layout_height="40mm"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="6mm"
+            android:background="@drawable/shape_user_focus"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:paddingLeft="5mm"
+            android:paddingRight="5mm"
+            android:singleLine="true"
+            android:text="x1"
+            android:textColor="@android:color/white"
+            android:textSize="22mm" />
+
+        <TextView
+            android:id="@+id/tv_video_size"
+            android:layout_width="100mm"
+            android:layout_height="40mm"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="6mm"
+            android:background="@drawable/shape_user_focus"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:paddingLeft="5mm"
+            android:paddingRight="5mm"
+            android:singleLine="true"
+            android:text="16:9"
+            android:textColor="@android:color/white"
+            android:textSize="22mm" />
+
+    </LinearLayout>
+</FrameLayout>

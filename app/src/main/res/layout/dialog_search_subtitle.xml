@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_960"
+        android:layout_height="@dimen/vs_480"
+        android:layout_gravity="center"
+        android:background="#6632364E"
+        android:orientation="vertical"
+        android:padding="@dimen/vs_30">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_search"
+                android:hint="请输入字幕名称"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/vs_20"
+                android:paddingTop="@dimen/vs_10"
+                android:paddingRight="@dimen/vs_2"
+                android:paddingBottom="@dimen/vs_10"
+                android:textColor="@color/color_FFFFFF"
+                android:textColorHint="@color/color_6CFFFFFF"
+                android:textSize="@dimen/ts_26" />
+
+            <TextView
+                android:id="@+id/inputSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/vs_5"
+                android:background="@drawable/button_dialog_main"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="@dimen/vs_10"
+                android:text="搜索"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_22" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_marginTop="@dimen/vs_10"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:orientation="vertical">
+
+                <com.owen.tvrecyclerview.widget.TvRecyclerView
+                    android:id="@+id/mGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
+                    app:tv_selectedItemIsCentered="true"
+                    app:tv_verticalSpacingWithMargins="@dimen/vs_5" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+        <ProgressBar
+            android:id="@+id/loadingBar"
+            android:layout_width="@dimen/vs_50"
+            android:layout_height="@dimen/vs_50"
+            android:layout_gravity="center"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateDrawable="@drawable/anim_loading"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</FrameLayout>

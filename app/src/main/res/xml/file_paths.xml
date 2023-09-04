@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path
+        name="vod_cache_path"
+        path="." />
+    <external-path
+        name="vod_external_path"
+        path="." />
+    <external-cache-path
+        name="vod_external_cache_path"
+        path="." />
+
+    <!-- /storage/emulated/0/Download/${applicationId}/.beta/apk-->
+    <external-path
+        name="beta_external_path"
+        path="Download/" />
+    <!--/storage/emulated/0/Android/data/${applicationId}/files/apk/-->
+    <external-path
+        name="beta_external_files_path"
+        path="Android/data/" />
+</paths>

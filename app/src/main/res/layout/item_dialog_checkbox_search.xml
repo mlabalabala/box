@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/vs_5"
+        android:paddingBottom="@dimen/vs_5"
+        android:paddingLeft="@dimen/vs_10"
+        android:paddingRight="@dimen/vs_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/oneSearchSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_dialog_main"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/ts_24"
+            android:text="1111"/>
+    </LinearLayout>
+</FrameLayout>

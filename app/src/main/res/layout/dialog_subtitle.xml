@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_640"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:orientation="vertical"
+        android:padding="@dimen/vs_30">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/selectInternal"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_dialog_main"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="@dimen/vs_10"
+                android:text="选择内置字幕"
+                android:visibility="gone"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+            <TextView
+                android:id="@+id/selectLocal"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:background="@drawable/button_dialog_main"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="@dimen/vs_10"
+                android:text="选择本地字幕"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+            <TextView
+                android:id="@+id/selectRemote"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:background="@drawable/button_dialog_main"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="@dimen/vs_10"
+                android:text="在线搜索字幕"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="@dimen/vs_60">
+                <TextView
+                    android:id="@+id/subtitleSizeMinus"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字号减小"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_20" />
+
+                <TextView
+                    android:id="@+id/subtitleSizeText"
+                    android:layout_width="@dimen/vs_120"
+                    android:layout_height="@dimen/vs_60"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/vs_40"
+                    android:layout_marginRight="@dimen/vs_40"
+                    android:text="16"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_CC000000"
+                    android:textSize="@dimen/ts_40" />
+
+                <TextView
+                    android:id="@+id/subtitleSizePlus"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字号增大"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_20" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="@dimen/vs_60">
+                <TextView
+                    android:id="@+id/subtitleStyleOne"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字幕样式一"
+                    android:textColor="@color/color_FFFFFF"
+                    android:shadowColor="@color/color_CC000000"
+                    android:shadowRadius="2"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:textSize="@dimen/ts_20" />
+
+                <TextView
+                    android:layout_width="@dimen/vs_120"
+                    android:layout_height="@dimen/vs_60"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/vs_40"
+                    android:layout_marginRight="@dimen/vs_40"
+                    android:text=""
+                    android:textSize="@dimen/ts_40" />
+
+                <TextView
+                    android:id="@+id/subtitleStyleTwo"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字幕样式二"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_FFB6C1"
+                    android:shadowColor="@color/color_FFFFFF"
+                    android:shadowRadius="2"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:textSize="@dimen/ts_20" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="@dimen/vs_40">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="字幕延时仅对外挂字幕有效"
+                    android:textColor="@color/color_6C3D3D3D"
+                    android:textSize="@dimen/ts_20" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_10"
+                android:layout_width="@dimen/vs_480"
+                android:layout_height="@dimen/vs_60">
+                <TextView
+                    android:id="@+id/subtitleTimeMinus"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字幕提前"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_20" />
+
+                <TextView
+                    android:id="@+id/subtitleTimeText"
+                    android:layout_width="@dimen/vs_120"
+                    android:layout_height="@dimen/vs_60"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/vs_40"
+                    android:layout_marginRight="@dimen/vs_40"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_CC000000"
+                    android:textSize="@dimen/ts_40" />
+
+                <TextView
+                    android:id="@+id/subtitleTimePlus"
+                    android:layout_width="@dimen/vs_140"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_dialog_main"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/vs_10"
+                    android:text="字幕推迟"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_20" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

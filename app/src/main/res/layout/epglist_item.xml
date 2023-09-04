@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:orientation="horizontal"
+android:gravity="bottom"
+android:id="@+id/cl_epg"
+android:background="@drawable/shape_live_focus"
+android:focusable="true"
+android:padding="@dimen/vs_5"
+android:focusableInTouchMode="false"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+<LinearLayout
+    android:id="@+id/touch"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1">
+
+    <TextView
+        android:textSize="@dimen/vs_15"
+        android:id="@+id/tv_epg_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"/>
+		
+    <com.github.tvbox.osc.bbox.ui.tv.widget.MarqueeTextView
+        android:textSize="@dimen/ts_16"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:gravity="center|left"
+        android:id="@+id/tv_epg_name"
+        android:textColor="@android:color/white"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+		
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_100"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vs_5"
+        android:paddingRight="@dimen/vs_5">
+
+        <TextView
+            android:id="@+id/shiyi"
+            android:layout_width="@dimen/vs_80"
+            android:layout_height="@dimen/ts_26"
+            android:background="@drawable/shape_setting_model_focus"
+            android:gravity="center"
+            android:text="回看"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/vs_15" />
+
+        <com.github.tvbox.osc.bbox.ui.tv.widget.AudioWaveView
+            android:id="@+id/wqddg_AudioWaveView"
+            android:layout_width="@dimen/vs_80"
+            android:layout_height="@dimen/ts_26"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="0px" />
+    </LinearLayout>
+
+</LinearLayout>
+

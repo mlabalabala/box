@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <!--    进度条圆点常规状态颜色-->
+<!--    <solid android:color="@color/color_02F8E1" />-->
+    <solid android:color="@color/color_1890FF" />
+    <size
+        android:width="@dimen/vs_30"
+        android:height="@dimen/vs_30" />
+</shape>

@@ -1,0 +1,52 @@
+body,
+html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: system-ui, -apple-system, Helvetica Neue, sans-serif;
+}
+
+.page,
+body {
+  background-color: var(--weui-BG-0);
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.store_container {
+  background: #e3e3e3;
+  border-radius: 10px; 
+  flex-direction: column;
+  width: 100%;
+  padding: 12px;
+  font-size: 12px;
+}
+
+.input_container {
+  padding: 12px 10px;
+  height: 38px;
+  border-width: 0;
+  background: white;
+  border-radius: 10px;
+}
+
+.custom_title {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    display: block;
+    margin-top: 26px;
+}
+
