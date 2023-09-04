@@ -54,8 +54,11 @@ public class App extends MultiDexApplication {
         // Hawk
         Hawk.init(this).build();
 
-        String defaultApiName = "默认-自备份线路";
-        String defaultApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/defaultt";
+        // 默认线路地址
+        String defaultApiName = "自备份线路";
+        String defaultApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/default";
+        // 默认仓库地址
+        String defaultStoreApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/ori_source.json";
         // String defaultApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
 
         HashMap<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
@@ -72,6 +75,7 @@ public class App extends MultiDexApplication {
         // putDefault(HawkConfig.API_NAME_HISTORY, defaultApiHistory);
         // putDefault(HawkConfig.API_MAP, defaultApiMap);
 
+        putDefault(HawkConfig.DEFAULT_STORE_API, defaultStoreApi);
         putDefault(HawkConfig.PLAY_TYPE, 1);
         putDefault(HawkConfig.HOME_REC, 1);
         putDefault(HawkConfig.IJK_CODEC, "硬解码");
