@@ -16,7 +16,7 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                outputFileName =  "SHJ_BBox.apk"
+                outputFileName =  "SHJ暴剋兕.apk"
             }
         }
     }
