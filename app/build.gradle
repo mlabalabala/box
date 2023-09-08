@@ -16,7 +16,7 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                outputFileName =  "SHJ暴剋兕.apk"
+                outputFileName =  "暴剋兕_SHJ_${releaseTime()}.apk"
             }
         }
     }
@@ -77,6 +77,10 @@ android {
         additionalParameters += '--set-max-idx-number=48000'
         additionalParameters += '--minimal-main-dex'
     }
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 dependencies {
