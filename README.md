@@ -24,5 +24,5 @@ TVBox 简易修改 多源版本
 
 
 
-#### 如果需要：5mka [测试链接](https://bunny6111.lanzouq.com/iJ90G17xne1a)
+#### [测试包链接(与生成版本基本一致)](https://bunny6111.lanzouq.com/iJ90G17xne1a) 码：5mka(如果需要)
 #### Actions中有生成脚本！！！
