@@ -161,7 +161,7 @@ public class ApiConfig {
             configUrl = apiUrl;
         }
         String configKey = TempKey;
-        OkGo.<String>get(configUrl)
+        OkGo.<String>get(configUrl).tag(activity)
                 .headers("User-Agent", userAgent)
                 .headers("Accept", requestAccept)
                 .execute(new AbsCallback<String>() {
@@ -224,7 +224,7 @@ public class ApiConfig {
     }
 
 
-    public void loadJar(boolean useCache, String spider, LoadConfigCallback callback) {
+    public void loadJar(boolean useCache, String spider, LoadConfigCallback callback, Activity activity) {
         String[] urls = spider.split(";md5;");
         String jarUrl = urls[0];
         String md5 = urls.length > 1 ? urls[1].trim() : "";
@@ -243,7 +243,7 @@ public class ApiConfig {
 
         boolean isJarInImg = jarUrl.startsWith("img+");
         jarUrl = jarUrl.replace("img+", "");
-        OkGo.<File>get(jarUrl)
+        OkGo.<File>get(jarUrl).tag(activity)
                 .headers("User-Agent", userAgent)
                 .headers("Accept", requestAccept)
                 .execute(new AbsCallback<File>() {

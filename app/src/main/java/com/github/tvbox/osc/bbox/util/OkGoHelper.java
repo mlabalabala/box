@@ -131,7 +131,7 @@ public class OkGoHelper {
             loggingInterceptor.setColorLevel(Level.OFF);
         }
 
-        //builder.retryOnConnectionFailure(false);
+        builder.retryOnConnectionFailure(false);
 
         builder.addInterceptor(loggingInterceptor);
 

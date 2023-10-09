@@ -297,7 +297,7 @@ public class HomeActivity extends BaseActivity {
                             }
                         });
                     }
-                });
+                }, this);
             }
             return;
         }
