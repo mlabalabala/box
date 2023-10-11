@@ -61,8 +61,8 @@ public class App extends MultiDexApplication {
         // String defaultStoreApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/ori_source.json";
         // String defaultStoreApi = "https://raw.gitmirror.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
         // String defaultStoreApi = "https://ghproxy.com/https://raw.githubusercontent.com//mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        // String defaultStoreApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
-        String defaultStoreApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
+        // String defaultStoreApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
+        String defaultStoreApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
 
         HashMap<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
         defaultApiMap.put(defaultApiName, defaultApi);
