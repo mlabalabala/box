@@ -56,12 +56,13 @@ public class App extends MultiDexApplication {
 
         // 默认线路地址
         String defaultApiName = "自备份线路";
-        String defaultApi = "https://raw.gitmirror.com/mlabalabala/TVResource/main/boxCfg/default";
+        String defaultApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
         // 默认仓库地址
         // String defaultStoreApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        String defaultStoreApi = "https://raw.gitmirror.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
+        // String defaultStoreApi = "https://raw.gitmirror.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
         // String defaultStoreApi = "https://ghproxy.com/https://raw.githubusercontent.com//mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        // String defaultApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
+        // String defaultStoreApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
+        String defaultStoreApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
 
         HashMap<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
         defaultApiMap.put(defaultApiName, defaultApi);
