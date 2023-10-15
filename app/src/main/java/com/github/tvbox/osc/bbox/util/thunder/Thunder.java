@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import android.util.Log;
+import com.github.tvbox.osc.bbox.util.FileUtils;
 import com.xunlei.downloadlib.XLDownloadManager;
 import com.xunlei.downloadlib.XLTaskHelper;
 import com.xunlei.downloadlib.android.XLUtil;
@@ -90,16 +91,20 @@ public class Thunder {
         void play(String url);
     }
 
+    private static ArrayList<String> playList = null;
+    private static ArrayList<String> ed2kList = null;
     public static void parse(Context context, List<String> urlList, ThunderCallback callback) {
         init(context);
         stop(true);
         threadPool = Executors.newSingleThreadExecutor();
-        ArrayList<String> playList = new ArrayList<>();
+        playList = new ArrayList<>();
         torrentFileInfoArrayList=new ArrayList<>();
+        ed2kList=new ArrayList<>();
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
                 for (String url : urlList) {
+                    if(isThunder(url) )url=XLDownloadManager.getInstance().parserThunderUrl(url);
                     if (isMagnet(url) || isThunder(url) || isTorrent(url)) {
                         String link = isThunder(url) ? XLDownloadManager.getInstance().parserThunderUrl(url) : url;
                         Uri p = Uri.parse(link);
@@ -109,6 +114,10 @@ public class Thunder {
                         String fileName = XLTaskHelper.instance().getFileName(link);
                         File cache = new File(cacheRoot + File.separator + fileName);
                         try {
+                            if (currentTask > 0) {
+                                XLTaskHelper.instance().stopTask(currentTask);
+                                currentTask = 0L;
+                            }
                             currentTask = isMagnet(url) ?
                                     XLTaskHelper.instance().addMagentTask(url, cacheRoot, fileName) :
                                     XLTaskHelper.instance().addThunderTask(url, cacheRoot, fileName);
@@ -161,39 +170,25 @@ public class Thunder {
                         }
                     }
                 }
+                for (String url : urlList) {
+                    if(isThunder(url))url=XLDownloadManager.getInstance().parserThunderUrl(url);
+                    if(isNetworkDownloadTask(url)){
+                        task_url=url;
+                        if(TextUtils.isEmpty(task_url)){
+                            continue;
+                        }
+                        name = XLTaskHelper.instance().getFileName(task_url);
+                        playList.add(name + "$tvbox-oth:" + ed2kList.size());
+                        ed2kList.add(task_url);
+                    }
+                }
+
                 if (playList.size() > 0) {
                     callback.list(TextUtils.join("#", playList));
                 } else {
                     callback.status(-1, "文件列表为空!");
                 }
             }});
-
-
-
-//        if(isEd2k(url) || isFtp(url)){
-//            task_url= url;
-//            System.out.println("startTask:");
-//            threadPool.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                        System.out.println("task_url: "+task_url);
-//                        if(TextUtils.isEmpty(task_url) || currentTask != 0L){
-//                            return;
-//                        }
-//                        if(isNetworkDownloadTask(task_url)){
-//                            name = XLTaskHelper.instance().getFileName(task_url);
-//                            localPath = (new File(cacheRoot+File.separator+"temp",getFileNameWithoutExt(name)))+"/";
-//                            currentTask = XLTaskHelper.instance().addThunderTask(task_url, localPath, null);
-//                            callback.list(name+"$"+task_url);
-//                            System.out.println("init name:"+name);
-//                        } else {
-//                            currentTask = 0L;
-//                        }
-//                        System.out.println("name: "+name);
-//                        Log.d("TAG", "startTask(" +task_url + "), taskId = " + currentTask);
-//                }
-//            });
-//        }
     }
 
 
@@ -244,7 +239,13 @@ public class Thunder {
             });
             return true;
         }
-        if (isEd2k(url) || isFtp(url)) {
+        if (url.startsWith("tvbox-oth:")) {
+            int idx = Integer.parseInt(url.substring(10));
+            task_url=ed2kList.get(idx);
+            name = XLTaskHelper.instance().getFileName(task_url);
+            localPath = (new File(cacheRoot+File.separator+"temp", FileUtils.getFileNameWithoutExt(name)))+"/";
+            currentTask = XLTaskHelper.instance().addThunderTask(task_url, localPath, null);
+
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -261,26 +262,45 @@ public class Thunder {
                             callback.play(playUrl);
                             return;
                         }
-//                        XLTaskInfo taskInfo = getTaskInfo();
-//                        switch (taskInfo.mTaskStatus) {
-//                            case 3: {
-//                                callback.status(-1, errorInfo(taskInfo.mErrorCode));
-//                                return;
-//                            }
-//                            case 1:{
-//                                if(taskInfo.mDownloadSize>0){
-//                                    String playUrl=getPlayUrl();
-//                                    callback.play(playUrl);
-//                                    return;
-//                                }
-//                            }
-//                            case 4: // 下载中
-//                            case 2: { // 下载完成
-//                                String playUrl=getPlayUrl();
-//                                callback.play(playUrl);
-//                                return;
-//                            }
-//                        }
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            return true;
+        }
+        if (isEd2k(url) || isFtp(url)) {
+            if (currentTask > 0) {
+                XLTaskHelper.instance().stopTask(currentTask);
+                currentTask = 0L;
+            }
+            if(threadPool==null){
+                threadPool = Executors.newSingleThreadExecutor();
+            }
+            task_url=url;
+            name = XLTaskHelper.instance().getFileName(task_url);
+            localPath = (new File(cacheRoot+File.separator+"temp",FileUtils.getFileNameWithoutExt(name)))+"/";
+            currentTask = XLTaskHelper.instance().addThunderTask(task_url, localPath, null);
+
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    int count = 20;
+                    while (true) {
+                        count--;
+                        if (count <= 0) {
+                            callback.status(-1, "解析下载超时");
+                            break;
+                        }
+                        String playUrl=getPlayUrl();
+                        if(!TextUtils.isEmpty(playUrl)){
+                            callback.play(playUrl);
+                            return;
+                        }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -293,6 +313,7 @@ public class Thunder {
         }
         return false;
     }
+
 
     private static String errorInfo(int code) {
         switch (code) {
@@ -416,37 +437,6 @@ public class Thunder {
         }
     }
 
-    public static void startTask(Context context, String url, ThunderCallback callback){
-        init(context);
-        stop(true);
-        task_url= url;
-        System.out.println("checkThunder: "+task_url);
-        System.out.println("startTask:");
-        threadPool = Executors.newSingleThreadExecutor();
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (isEd2k(task_url) || isFtp(task_url)) {
-                    System.out.println("task_url: "+task_url);
-                    if(TextUtils.isEmpty(task_url) || currentTask != 0L){
-                        return;
-                    }
-                    if(isNetworkDownloadTask(task_url)){
-                        name = XLTaskHelper.instance().getFileName(task_url);
-                        localPath = (new File(cacheRoot+File.separator+"temp",getFileNameWithoutExt(name)))+"/";
-                        currentTask = XLTaskHelper.instance().addThunderTask(task_url, localPath, null);
-                        callback.list(name+"$"+task_url);
-                        System.out.println("init name:"+name);
-                    } else {
-                        currentTask = 0L;
-                    }
-                    System.out.println("name: "+name);
-                    Log.d("TAG", "startTask(" +task_url + "), taskId = " + currentTask);
-                }
-            }
-        });
-    }
-
     public static void stopTask(){
         if(currentTask != 0L){
             XLTaskHelper.instance().deleteTask(currentTask, task_url.isEmpty()?cacheRoot:localPath);
@@ -466,18 +456,6 @@ public class Thunder {
         return null;
     }
 
-    public static String getFileNameWithoutExt(String filePath){
-        if(TextUtils.isEmpty(filePath)) return "";
-        String fileName = filePath;
-        int p = fileName.lastIndexOf(File.separatorChar);
-        if(p != -1){
-            fileName = fileName.substring(p + 1);
-        }
-        p = fileName.indexOf('.');
-        if(p != -1){
-            fileName = fileName.substring(0, p);
-        }
-        return fileName;
-    }
+
 
 }

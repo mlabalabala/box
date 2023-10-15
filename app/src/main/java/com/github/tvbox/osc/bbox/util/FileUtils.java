@@ -2,6 +2,7 @@ package com.github.tvbox.osc.bbox.util;
 
 import android.os.Environment;
 
+import android.text.TextUtils;
 import com.github.tvbox.osc.bbox.base.App;
 
 import java.io.BufferedInputStream;
@@ -193,5 +194,38 @@ public class FileUtils {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static String getFileName(String filePath){
+        if(TextUtils.isEmpty(filePath)) return "";
+        String fileName = filePath;
+        int p = fileName.lastIndexOf(File.separatorChar);
+        if(p != -1){
+            fileName = fileName.substring(p + 1);
+        }
+        return fileName;
+    }
+
+    public static String getFileNameWithoutExt(String filePath){
+        if(TextUtils.isEmpty(filePath)) return "";
+        String fileName = filePath;
+        int p = fileName.lastIndexOf(File.separatorChar);
+        if(p != -1){
+            fileName = fileName.substring(p + 1);
+        }
+        p = fileName.indexOf('.');
+        if(p != -1){
+            fileName = fileName.substring(0, p);
+        }
+        return fileName;
+    }
+
+    public static String getFileExt(String fileName){
+        if(TextUtils.isEmpty(fileName)) return "";
+        int p = fileName.lastIndexOf('.');
+        if(p != -1) {
+            return fileName.substring(p).toLowerCase();
+        }
+        return "";
     }
 }
