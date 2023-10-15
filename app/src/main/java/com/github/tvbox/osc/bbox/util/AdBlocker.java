@@ -21,6 +21,10 @@ public class AdBlocker {
         AD_HOSTS.add(host);
     }
 
+    public static boolean hasHost(String host) {
+        return AD_HOSTS.contains(host);
+    }
+
     public static boolean isAd(String url) {
         url = url.toLowerCase();
         for (String adHost : AD_HOSTS) {

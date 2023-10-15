@@ -40,6 +40,7 @@ public class IjkMediaPlayer extends IjkPlayer {
                 int category = Integer.parseInt(opt[0].trim());
                 String name = opt[1].trim();
                 try {
+                    assert value != null;
                     long valLong = Long.parseLong(value);
                     mMediaPlayer.setOption(category, name, valLong);
                 } catch (Exception e) {
@@ -47,6 +48,14 @@ public class IjkMediaPlayer extends IjkPlayer {
                 }
             }
         }
+
+        // 在每个数据包之后启用 I/O 上下文的刷新
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1);
+        // 当 CPU 处理不过来的时候的丢帧帧数，默认为 0，参数范围是 [-1, 120]
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5);
+        // 设置视频流格式
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "overlay-format", tv.danmaku.ijk.media.player.IjkMediaPlayer.SDL_FCC_RV32);
+
         //开启内置字幕
         mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "subtitle", 1);
 
@@ -84,7 +93,7 @@ public class IjkMediaPlayer extends IjkPlayer {
             e.printStackTrace();
         }
         setDataSourceHeader(headers);
-        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "ijkio,ffio,async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "ijkio,ffio,async,cache,crypto,file,dash,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
         super.setDataSource(path, null);
     }
 
@@ -99,14 +108,15 @@ public class IjkMediaPlayer extends IjkPlayer {
             if (headers.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    sb.append(entry.getKey());
-                    sb.append(":");
                     String value = entry.getValue();
-                    if (!TextUtils.isEmpty(value))
-                        sb.append(entry.getValue());
-                    sb.append("\r\n");
-                    mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", sb.toString());
+                    if (!TextUtils.isEmpty(value)) {
+                        sb.append(entry.getKey());
+                        sb.append(": ");
+                        sb.append(value);
+                        sb.append("\r\n");
+                    }
                 }
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", sb.toString());
             }
         }
     }

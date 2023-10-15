@@ -67,6 +67,7 @@ import com.github.tvbox.osc.bbox.util.MD5;
 import com.github.tvbox.osc.bbox.util.PlayerHelper;
 import com.github.tvbox.osc.bbox.util.VideoParseRuler;
 import com.github.tvbox.osc.bbox.util.XWalkUtils;
+import com.github.tvbox.osc.bbox.util.thunder.Jianpian;
 import com.github.tvbox.osc.bbox.util.thunder.Thunder;
 import com.github.tvbox.osc.bbox.viewmodel.SourceViewModel;
 import com.lzy.okgo.OkGo;
@@ -500,7 +501,7 @@ public class PlayFragment extends BaseLazyFragment {
     void playUrl(String url, HashMap<String, String> headers) {
         LOG.i("playUrl:" + url);
         if(autoRetryCount>0 && url.contains(".m3u8")){
-            url="http://home.jundie.top:666/unBom.php?m3u8="+url;
+            url="http://home.jundie.top:666/unBom.php?m3u8="+url;//尝试去bom头再次播放
         }
         String finalUrl = url;
         if (mActivity == null) return;
@@ -749,12 +750,15 @@ public class PlayFragment extends BaseLazyFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         if (mVideoView != null) {
             mVideoView.release();
             mVideoView = null;
         }
         stopLoadWebView(true);
         stopParse();
+        Thunder.stop(true);
+        Jianpian.finish();//停止p2p下载
     }
 
     private VodInfo mVodInfo;
@@ -800,7 +804,7 @@ public class PlayFragment extends BaseLazyFragment {
             autoRetryFromLoadFoundVideoUrls();
             return true;
         }
-        if (autoRetryCount < 2) {
+        if (autoRetryCount < 1) {
             autoRetryCount++;
             play(false);
             return true;
@@ -839,6 +843,17 @@ public class PlayFragment extends BaseLazyFragment {
         if (reset) {
             CacheManager.delete(MD5.string2MD5(progressKey), 0);
             CacheManager.delete(MD5.string2MD5(subtitleCacheKey), 0);
+        }
+
+        if(Jianpian.isJpUrl(vs.url)){//荐片地址特殊判断
+            String jp_url= vs.url;
+            mController.showParse(false);
+            if(vs.url.startsWith("tvbox-xg:")){
+                playUrl(Jianpian.JPUrlDec(jp_url.substring(9)), null);
+            }else {
+                playUrl(Jianpian.JPUrlDec(jp_url), null);
+            }
+            return;
         }
         if (Thunder.play(vs.url, new Thunder.ThunderCallback() {
             @Override

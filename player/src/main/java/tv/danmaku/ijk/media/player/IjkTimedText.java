@@ -29,9 +29,13 @@ public final class IjkTimedText {
         mTextChars = text;
     }
 
+    public IjkTimedText(int[] obj) {
+    }
+
     public Rect getBounds() {
         return mTextBounds;
     }
+
 
     public String getText() {
         return mTextChars;
