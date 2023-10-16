@@ -14,7 +14,7 @@ public class AbsJson implements Serializable {
     public int code;    // : 1
     public String limit;    // : "20"
     public ArrayList<AbsJsonVod> list; // : [{vod_id: 71930, type_id: 22, type_id_1: 20, group_id: 0, vod_name: "意式情歌",…},…]
-    public String msg;  // : "数据列表"
+    public String msg;  // : "提示信息"
     public int page;    // : "2"
     public int pagecount;   // : 209
     public int total;   // : 4166
@@ -169,6 +169,7 @@ public class AbsJson implements Serializable {
         }
         movie.videoList = videoList;
         xml.movie = movie;
+        xml.msg = msg;
         return xml;
     }
 }

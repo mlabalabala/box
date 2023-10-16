@@ -29,7 +29,7 @@ import okhttp3.internal.Version;
 import xyz.doikki.videoplayer.exo.ExoMediaSourceHelper;
 
 public class OkGoHelper {
-    public static final long DEFAULT_MILLISECONDS = 10000;      //默认的超时时间
+    public static final long DEFAULT_MILLISECONDS = 8000;      //默认的超时时间
 
     static void initExoOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -75,6 +75,12 @@ public class OkGoHelper {
             case 3: {
                 return "https://doh.360.cn/dns-query";
             }
+            case 4: {
+                return "https://dns.adguard.com/dns-query";
+            }
+            case 5: {
+                return "https://dns.quad9.net/dns-query";
+            }
         }
         return "";
     }
@@ -84,6 +90,8 @@ public class OkGoHelper {
         dnsHttpsList.add("腾讯");
         dnsHttpsList.add("阿里");
         dnsHttpsList.add("360");
+        dnsHttpsList.add("AdGuard");
+        dnsHttpsList.add("Quad9");
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkExoPlayer");
         if (Hawk.get(HawkConfig.DEBUG_OPEN, false)) {
@@ -99,7 +107,7 @@ public class OkGoHelper {
         } catch (Throwable th) {
             th.printStackTrace();
         }
-        builder.cache(new Cache(new File(App.getInstance().getCacheDir().getAbsolutePath(), "dohcache"), 10 * 1024 * 1024));
+        builder.cache(new Cache(new File(App.getInstance().getCacheDir().getAbsolutePath(), "dohcache"), 100 * 1024 * 1024));
         OkHttpClient dohClient = builder.build();
         String dohUrl = getDohUrl(Hawk.get(HawkConfig.DOH_URL, 0));
         dnsOverHttps = new DnsOverHttps.Builder().client(dohClient).url(dohUrl.isEmpty() ? null : HttpUrl.get(dohUrl)).build();
@@ -131,7 +139,7 @@ public class OkGoHelper {
             loggingInterceptor.setColorLevel(Level.OFF);
         }
 
-        builder.retryOnConnectionFailure(false);
+        //builder.retryOnConnectionFailure(false);
 
         builder.addInterceptor(loggingInterceptor);
 

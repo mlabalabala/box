@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.bbox.player.controller;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
@@ -69,12 +70,15 @@ public class VodController extends BaseController {
                         mTopRoot2.setVisibility(VISIBLE);
                         mPlayTitle.setVisibility(GONE);
                         mNextBtn.requestFocus();
+                        backBtn.setVisibility(ScreenUtils.isTv(context) ? INVISIBLE : VISIBLE);
+                        showLockView();
                         break;
                     }
                     case 1003: { // 隐藏底部菜单
                         mBottomRoot.setVisibility(GONE);
                         mTopRoot1.setVisibility(GONE);
                         mTopRoot2.setVisibility(GONE);
+                        backBtn.setVisibility(INVISIBLE);
                         break;
                     }
                     case 1004: { // 设置速度
@@ -101,6 +105,7 @@ public class VodController extends BaseController {
     LinearLayout mProgressRoot;
     TextView mProgressText;
     ImageView mProgressIcon;
+    ImageView mLockView;
     LinearLayout mBottomRoot;
     LinearLayout mTopRoot1;
     LinearLayout mTopRoot2;
@@ -128,7 +133,11 @@ public class VodController extends BaseController {
     TextView mZimuBtn;
     TextView mAudioTrackBtn;
     public TextView mLandscapePortraitBtn;
+    private View backBtn;//返回键
+    private boolean isClickBackBtn;
 
+    LockRunnable lockRunnable = new LockRunnable();
+    private boolean isLock = false;
     Handler myHandle;
     Runnable myRunnable;
     int myHandleSeconds = 10000;//闲置多少毫秒秒关闭底栏  默认6秒
@@ -152,9 +161,11 @@ public class VodController extends BaseController {
         }
     };
 
-
-
-
+    private void showLockView() {
+        mLockView.setVisibility(ScreenUtils.isTv(getContext()) ? INVISIBLE : VISIBLE);
+        mHandler.removeCallbacks(lockRunnable);
+        mHandler.postDelayed(lockRunnable, 3000);
+    }
 
     @Override
     protected void initView() {
@@ -192,6 +203,42 @@ public class VodController extends BaseController {
         mZimuBtn = findViewById(R.id.zimu_select);
         mAudioTrackBtn = findViewById(R.id.audio_track_select);
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
+        backBtn = findViewById(R.id.tv_back);
+        backBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getContext() instanceof Activity) {
+                    isClickBackBtn = true;
+                    ((Activity) getContext()).onBackPressed();
+                }
+            }
+        });
+        mLockView = findViewById(R.id.tv_lock);
+        mLockView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isLock = !isLock;
+                mLockView.setImageResource(isLock ? R.drawable.icon_lock : R.drawable.icon_unlock);
+                if (isLock) {
+                    Message obtain = Message.obtain();
+                    obtain.what = 1003;//隐藏底部菜单
+                    mHandler.sendMessage(obtain);
+                }
+                showLockView();
+            }
+        });
+        View rootView = findViewById(R.id.rootView);
+        rootView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isLock) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        showLockView();
+                    }
+                }
+                return isLock;
+            }
+        });
 
         initSubtitleInfo();
 
@@ -938,8 +985,22 @@ public class VodController extends BaseController {
         return true;
     }
 
+    private class LockRunnable implements Runnable {
+        @Override
+        public void run() {
+            mLockView.setVisibility(INVISIBLE);
+        }
+    }
+
     @Override
     public boolean onBackPressed() {
+        if (isClickBackBtn) {
+            isClickBackBtn = false;
+            if (isBottomVisible()) {
+                hideBottom();
+            }
+            return false;
+        }
         if (super.onBackPressed()) {
             return true;
         }

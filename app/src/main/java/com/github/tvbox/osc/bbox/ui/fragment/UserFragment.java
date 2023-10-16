@@ -59,10 +59,10 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
     private LinearLayout tvHistory;
     private LinearLayout tvCollect;
     private LinearLayout tvPush;
-    private HomeHotVodAdapter homeHotVodAdapter;
+    public static HomeHotVodAdapter homeHotVodAdapter;
     private List<Movie.Video> homeSourceRec;
-    TvRecyclerView tvHotList1;
-    TvRecyclerView tvHotList2;
+    public static TvRecyclerView tvHotList1;
+    public static TvRecyclerView tvHotList2;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -145,16 +145,18 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
                 if (ApiConfig.get().getSourceBeanList().isEmpty())
                     return;
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                if (vod.id != null && !vod.id.isEmpty()) {
+
+                // takagen99: CHeck if in Delete Mode
+                if ((vod.id != null && !vod.id.isEmpty()) && (Hawk.get(HawkConfig.HOME_REC, 0) == 2) && HawkConfig.hotVodDelete) {
+                    homeHotVodAdapter.remove(position);
+                    VodInfo vodInfo = RoomDataManger.getVodInfo(vod.sourceKey, vod.id);
+                    RoomDataManger.deleteVodRecord(vod.sourceKey, vodInfo);
+                    Toast.makeText(mContext, "已删除当前记录", Toast.LENGTH_SHORT).show();
+                } else if (vod.id != null && !vod.id.isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", vod.id);
                     bundle.putString("sourceKey", vod.sourceKey);
-                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        bundle.putString("title", vod.name);
-                        jumpActivity(FastSearchActivity.class, bundle);
-                    }else {
-                        jumpActivity(DetailActivity.class, bundle);
-                    }
+                    jumpActivity(DetailActivity.class, bundle);
                 } else {
                     Intent newIntent;
                     if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
@@ -169,14 +171,21 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
             }
         });
 
+        // takagen99 : Long press to trigger Delete Mode for VOD History on Home Page
         homeHotVodAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                if (ApiConfig.get().getSourceBeanList().isEmpty()) return true;
+                if (ApiConfig.get().getSourceBeanList().isEmpty()) return false;
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                Bundle bundle = new Bundle();
-                bundle.putString("title", vod.name);
-                jumpActivity(FastSearchActivity.class, bundle);
+                // Additional Check if : Home Rec 0=豆瓣, 1=推荐, 2=历史
+                if ((vod.id != null && !vod.id.isEmpty()) && (Hawk.get(HawkConfig.HOME_REC, 0) == 2)) {
+                    HawkConfig.hotVodDelete = !HawkConfig.hotVodDelete;
+                    homeHotVodAdapter.notifyDataSetChanged();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", vod.name);
+                    jumpActivity(FastSearchActivity.class, bundle);
+                }
                 return true;
             }
         });

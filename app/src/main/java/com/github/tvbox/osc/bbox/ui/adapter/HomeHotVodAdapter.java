@@ -2,6 +2,7 @@ package com.github.tvbox.osc.bbox.ui.adapter;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,14 @@ public class HomeHotVodAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder helper, Movie.Video item) {
+        // takagen99: Add Delete Mode
+        FrameLayout tvDel = helper.getView(R.id.delFrameLayout);
+        if (HawkConfig.hotVodDelete) {
+            tvDel.setVisibility(View.VISIBLE);
+        } else {
+            tvDel.setVisibility(View.GONE);
+        }
+
         TextView tvRate = helper.getView(R.id.tvRate);
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 2){
             tvRate.setText(ApiConfig.get().getSource(item.sourceKey).getName());

@@ -158,7 +158,7 @@ public class FastSearchActivity extends BaseActivity {
                 child.setFocusable(true);
                 child.setOnFocusChangeListener(focusChangeListener);
                 TextView t = (TextView) child;
-                if (t.getText() == "全部显示") {
+                if (t.getText() == "全部") {
                     t.requestFocus();
                 }
 //                if (child.isFocusable() && null == child.getOnFocusChangeListener()) {
@@ -258,7 +258,7 @@ public class FastSearchActivity extends BaseActivity {
     }
 
     private void filterResult(String spName) {
-        if (spName == "全部显示") {
+        if (spName == "全部") {
             mGridView.setVisibility(View.VISIBLE);
             mGridViewFilter.setVisibility(View.GONE);
             return;
@@ -403,7 +403,7 @@ public class FastSearchActivity extends BaseActivity {
         ArrayList<String> hots = new ArrayList<>();
 
         spListAdapter.setNewData(hots);
-        spListAdapter.addData("全部显示");
+        spListAdapter.addData("全部");
         for (SourceBean bean : searchRequestList) {
             if (!bean.isSearchable()) {
                 continue;

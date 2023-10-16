@@ -119,6 +119,7 @@ public class DetailActivity extends BaseActivity {
     private SeriesAdapter seriesAdapter;
     public String vodId;
     public String sourceKey;
+    public String firstsourceKey;
     boolean seriesSelect = false;
     private View seriesFlagFocus = null;
     private boolean isReverse;
@@ -171,7 +172,7 @@ public class DetailActivity extends BaseActivity {
         mGridView.setHasFixedSize(false);
         this.mGridViewLayoutMgr = new V7GridLayoutManager(this.mContext, 6);
         mGridView.setLayoutManager(this.mGridViewLayoutMgr);
-        // mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
+//        mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
         seriesAdapter = new SeriesAdapter();
         mGridView.setAdapter(seriesAdapter);
         mGridViewFlag = findViewById(R.id.mGridViewFlag);
@@ -217,8 +218,7 @@ public class DetailActivity extends BaseActivity {
                     vodInfo.playIndex=(vodInfo.seriesMap.get(vodInfo.playFlag).size()-1)-vodInfo.playIndex;
 //                    insertVod(sourceKey, vodInfo);
                     firstReverse = true;
-                    setSeriesGroupOptions();//干掉集数分组逻辑
-                    // mSeriesGroupView.setVisibility(View.GONE);
+                    setSeriesGroupOptions();
                     seriesAdapter.notifyDataSetChanged();
                 }
             }
@@ -453,7 +453,8 @@ public class DetailActivity extends BaseActivity {
             setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).url);
             Bundle bundle = new Bundle();
             //保存历史
-            insertVod(sourceKey, vodInfo);
+            insertVod(firstsourceKey, vodInfo);
+            //   insertVod(sourceKey, vodInfo);
             bundle.putString("sourceKey", sourceKey);
 //            bundle.putSerializable("VodInfo", vodInfo);
             App.getInstance().setVodInfo(vodInfo);
@@ -526,7 +527,6 @@ public class DetailActivity extends BaseActivity {
         seriesAdapter.setNewData(vodInfo.seriesMap.get(vodInfo.playFlag));
 
         setSeriesGroupOptions();
-        // mSeriesGroupView.setVisibility(View.GONE);
 
         mGridView.postDelayed(new Runnable() {
             @Override
@@ -594,17 +594,29 @@ public class DetailActivity extends BaseActivity {
             public void onChanged(AbsXml absXml) {
                 if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && absXml.movie.videoList.size() > 0) {
                     showSuccess();
+                    if(!TextUtils.isEmpty(absXml.msg) && !absXml.msg.equals("数据列表")){
+                        Toast.makeText(DetailActivity.this, absXml.msg, Toast.LENGTH_SHORT).show();
+                        showEmpty();
+                        return;
+                    }
                     mVideo = absXml.movie.videoList.get(0);
+                    mVideo.id = vodId;
+                    if (TextUtils.isEmpty(mVideo.name))mVideo.name = "TVBox";
                     vodInfo = new VodInfo();
                     vodInfo.setVideo(mVideo);
                     vodInfo.sourceKey = mVideo.sourceKey;
+                    sourceKey = mVideo.sourceKey;
 
                     tvName.setText(mVideo.name);
-                    setTextShow(tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
+                    setTextShow(tvSite, "来源：", ApiConfig.get().getSource(firstsourceKey).getName());
                     setTextShow(tvYear, "年份：", mVideo.year == 0 ? "" : String.valueOf(mVideo.year));
                     setTextShow(tvArea, "地区：", mVideo.area);
                     setTextShow(tvLang, "语言：", mVideo.lang);
-                    setTextShow(tvType, "类型：", mVideo.type);
+                    if (!firstsourceKey.equals(sourceKey)) {
+                        setTextShow(tvType, "类型：", "[" + ApiConfig.get().getSource(sourceKey).getName() + "] 解析");
+                    } else {
+                        setTextShow(tvType, "类型：", mVideo.type);
+                    }
                     setTextShow(tvActor, "演员：", mVideo.actor);
                     setTextShow(tvDirector, "导演：", mVideo.director);
                     setTextShow(tvDes, "内容简介：", removeHtmlTag(mVideo.des));
@@ -706,6 +718,7 @@ public class DetailActivity extends BaseActivity {
         if (vid != null) {
             vodId = vid;
             sourceKey = key;
+            firstsourceKey = key;
             showLoading();
             sourceViewModel.getDetail(sourceKey, vodId);
             boolean isVodCollect = RoomDataManger.isVodCollect(sourceKey, vodId);
@@ -732,11 +745,13 @@ public class DetailActivity extends BaseActivity {
                     mGridView.setSelection(index);
                     vodInfo.playIndex = index;
                     //保存历史
-                    insertVod(sourceKey, vodInfo);
+                    insertVod(firstsourceKey, vodInfo);
+                    //   insertVod(sourceKey, vodInfo);
                 } else if (event.obj instanceof JSONObject) {
                     vodInfo.playerCfg = ((JSONObject) event.obj).toString();
                     //保存历史
-                    insertVod(sourceKey, vodInfo);
+                    insertVod(firstsourceKey, vodInfo);
+                    //        insertVod(sourceKey, vodInfo);
                 }
 
             }
@@ -944,7 +959,7 @@ public class DetailActivity extends BaseActivity {
         llPlayerFragmentContainerBlock.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
         mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
         mGridViewFlag.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
-//        mSeriesGroupView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
+        mSeriesGroupView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
 
         //全屏下禁用详情页几个按键的焦点 防止上键跑过来
         tvPlay.setFocusable(!fullWindows);

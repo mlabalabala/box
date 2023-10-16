@@ -1,28 +1,3 @@
-/*
- *                       Copyright (C) of Avery
- *
- *                              _ooOoo_
- *                             o8888888o
- *                             88" . "88
- *                             (| -_- |)
- *                             O\  =  /O
- *                          ____/`- -'\____
- *                        .'  \\|     |//  `.
- *                       /  \\|||  :  |||//  \
- *                      /  _||||| -:- |||||-  \
- *                      |   | \\\  -  /// |   |
- *                      | \_|  ''\- -/''  |   |
- *                      \  .-\__  `-`  ___/-. /
- *                    ___`. .' /- -.- -\  `. . __
- *                 ."" '<  `.___\_<|>_/___.'  >'"".
- *                | | :  `- \`.;`\ _ /`;.`/ - ` : | |
- *                \  \ `-.   \_ __\ /__ _/   .-` /  /
- *           ======`-.____`-.___\_____/___.-`____.-'======
- *                              `=- -='
- *           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- *              Buddha bless, there will never be bug!!!
- */
-
 package com.github.tvbox.osc.bbox.subtitle;
 
 import android.net.Uri;
@@ -167,7 +142,7 @@ public class SubtitleLoader {
             referer = "https://secure.assrt.net/";
         }
         String ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36";
-        Response response = OkGo.<String>get(remoteSubtitlePath)
+        Response response = OkGo.<String>get(remoteSubtitlePath.split("#")[0])
                 .headers("Referer", referer)
                 .headers("User-Agent", ua)
                 .execute();
@@ -176,6 +151,7 @@ public class SubtitleLoader {
         detector.handleData(bytes, 0, bytes.length);
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
+        if (TextUtils.isEmpty(encoding)) encoding = "UTF-8";
         String content = new String(bytes, encoding);
         InputStream is = new ByteArrayInputStream(content.getBytes());
         String filename = "";
@@ -198,9 +174,13 @@ public class SubtitleLoader {
             Uri uri = Uri.parse(remoteSubtitlePath);
             filePath = uri.getPath();
         }
+        if (!filePath.contains(".") && remoteSubtitlePath.contains("#")) {
+            filePath = remoteSubtitlePath.split("#")[1];
+            filePath = URLDecoder.decode(filePath);
+        }
         SubtitleLoadSuccessResult subtitleLoadSuccessResult = new SubtitleLoadSuccessResult();
         subtitleLoadSuccessResult.timedTextObject = loadAndParse(is, filePath);
-        subtitleLoadSuccessResult.fileName = filename;
+        subtitleLoadSuccessResult.fileName = filePath;
         subtitleLoadSuccessResult.content = content;
         subtitleLoadSuccessResult.subtitlePath = remoteSubtitlePath;
         return subtitleLoadSuccessResult;

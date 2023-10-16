@@ -1,6 +1,8 @@
 package com.github.tvbox.osc.bbox.ui.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.picasso.RoundTransformation;
 import com.github.tvbox.osc.bbox.util.DefaultConfig;
+import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.github.tvbox.osc.bbox.util.MD5;
 import com.squareup.picasso.Picasso;
 
@@ -30,6 +33,14 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, VodInfo item) {
+        // takagen99: Add Delete Mode
+        FrameLayout tvDel = helper.getView(R.id.delFrameLayout);
+        if (HawkConfig.hotVodDelete) {
+            tvDel.setVisibility(View.VISIBLE);
+        } else {
+            tvDel.setVisibility(View.GONE);
+        }
+
         TextView tvYear = helper.getView(R.id.tvYear);
         /*if (item.year <= 0) {
             tvYear.setVisibility(View.GONE);

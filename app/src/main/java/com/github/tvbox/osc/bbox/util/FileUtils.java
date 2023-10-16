@@ -228,4 +228,11 @@ public class FileUtils {
         }
         return "";
     }
+
+    public static boolean hasExtension(String path) {
+        int lastDotIndex = path.lastIndexOf(".");
+        int lastSlashIndex = Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\"));
+        // 如果路径中有点号，并且点号在最后一个斜杠之后，认为有后缀
+        return lastDotIndex > lastSlashIndex && lastDotIndex < path.length() - 1;
+    }
 }

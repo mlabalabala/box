@@ -125,7 +125,7 @@ public class RemoteTVBox {
         Hawk.put(HawkConfig.REMOTE_TVBOX, viewHost);
     }
 
-    private static void post(String url, Map<String, String> params, okhttp3.Callback callback) {
+    public static void post(String url, Map<String, String> params, okhttp3.Callback callback) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.readTimeout(1000, TimeUnit.MILLISECONDS);
         builder.writeTimeout(1000, TimeUnit.MILLISECONDS);

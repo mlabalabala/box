@@ -170,7 +170,13 @@ public class SearchActivity extends BaseActivity {
         wordAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                search(wordAdapter.getItem(position));
+                if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", wordAdapter.getItem(position));
+                    jumpActivity(FastSearchActivity.class, bundle);
+                }else {
+                    search(wordAdapter.getItem(position));
+                }
             }
         });
         mGridView.setHasFixedSize(true);
@@ -213,7 +219,13 @@ public class SearchActivity extends BaseActivity {
                 hasKeyBoard = true;
                 String wd = etSearch.getText().toString().trim();
                 if (!TextUtils.isEmpty(wd)) {
-                    search(wd);
+                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", wd);
+                        jumpActivity(FastSearchActivity.class, bundle);
+                    }else {
+                        search(wd);
+                    }
                 } else {
                     Toast.makeText(mContext, "输入内容不能为空", Toast.LENGTH_SHORT).show();
                 }

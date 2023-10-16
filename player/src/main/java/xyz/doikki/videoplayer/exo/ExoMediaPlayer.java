@@ -28,6 +28,7 @@ import java.util.Map;
 
 import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.VideoViewManager;
+import xyz.doikki.videoplayer.util.PlayerUtils;
 
 
 public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
@@ -243,8 +244,7 @@ public class ExoMediaPlayer extends AbstractPlayer implements Player.Listener {
 
     @Override
     public long getTcpSpeed() {
-        // no support
-        return 0;
+        return PlayerUtils.getNetSpeed(mAppContext);
     }
 
     @Override

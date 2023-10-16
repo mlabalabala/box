@@ -51,5 +51,4 @@ public class HawkConfig {
     public static final String DEFAULT_STORE_API = "default_store_api";
 
     public static boolean hotVodDelete;
-
 }

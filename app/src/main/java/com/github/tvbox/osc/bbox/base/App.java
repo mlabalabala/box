@@ -25,6 +25,7 @@ import java.util.HashMap;
  */
 public class App extends MultiDexApplication {
     private static App instance;
+    private static String dashData;
 
     private static P2PClass p;
     public static String burl;
@@ -132,5 +133,12 @@ public class App extends MultiDexApplication {
 
     public Activity getCurrentActivity() {
         return AppManager.getInstance().currentActivity();
+    }
+
+    public void setDashData(String data) {
+        dashData = data;
+    }
+    public String getDashData() {
+        return dashData;
     }
 }
