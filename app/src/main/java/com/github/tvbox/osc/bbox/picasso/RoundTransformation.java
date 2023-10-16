@@ -87,7 +87,7 @@ public class RoundTransformation implements Transformation {
             matrix.postScale(scale, scale);
             mBitmapShader.setLocalMatrix(matrix);
         }
-        Bitmap bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.RGB_565);
         bitmap.setHasAlpha(true);
         Canvas mCanvas = new Canvas(bitmap);
         mPaint.setShader(mBitmapShader);

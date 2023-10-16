@@ -55,6 +55,7 @@ public class CollectAdapter extends BaseQuickAdapter<VodCollect, BaseViewHolder>
                             .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
                             .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
                     .placeholder(R.drawable.img_loading_placeholder)
+                    .noFade()
                     .error(R.drawable.img_loading_placeholder)
                     .into(ivThumb);
         } else {
