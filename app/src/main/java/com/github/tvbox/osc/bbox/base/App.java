@@ -2,16 +2,17 @@ package com.github.tvbox.osc.bbox.base;
 
 import android.app.Activity;
 import androidx.multidex.MultiDexApplication;
+import com.github.catvod.crawler.JsLoader;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.callback.EmptyCallback;
 import com.github.tvbox.osc.bbox.callback.LoadingCallback;
 import com.github.tvbox.osc.bbox.data.AppDataManager;
 import com.github.tvbox.osc.bbox.server.ControlManager;
 import com.github.tvbox.osc.bbox.util.*;
-import com.github.tvbox.osc.bbox.util.js.JSEngine;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
 import com.p2p.P2PClass;
+import com.whl.quickjs.android.QuickJSLoader;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
 
@@ -51,7 +52,7 @@ public class App extends MultiDexApplication {
                 .setSupportSP(false)
                 .setSupportSubunits(Subunits.MM);
         PlayerHelper.init();
-        JSEngine.getInstance().create();
+        QuickJSLoader.init();
         FileUtils.cleanPlayerCache();
     }
 
@@ -105,7 +106,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        JSEngine.getInstance().destroy();
+        JsLoader.load();
     }
 
 

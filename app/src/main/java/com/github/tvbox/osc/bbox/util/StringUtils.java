@@ -1,4 +1,4 @@
-package com.github.tvbox.quickjs;
+package com.github.tvbox.osc.bbox.util;
 
 
 import java.lang.reflect.Array;
@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class JSUtils {
+public class StringUtils {
 
     public static boolean isEmpty( CharSequence str) {
         return str == null || str.length() == 0;
@@ -148,6 +148,10 @@ public class JSUtils {
         return listToString(list, "&&");
     }
 
+    public static boolean isBlank(String text) {
+        return trim(text).length() == 0;
+    }
+
     public static String trimBlanks(String str) {
         if (str == null || str.length() == 0) {
             return str;
@@ -164,4 +168,52 @@ public class JSUtils {
         return ((st > 0) || (len < str.length())) ? str.substring(st, len) : str;
     }
 
+    public static String trim(String string) {
+        if (string == null || string.length() == 0 || " ".equals(string)) return "";
+        int start = 0, len = string.length();
+        int end = len - 1;
+        while ((start < end) && ((string.charAt(start) <= ' ') || (string.charAt(start) == '　'))) {
+            ++start;
+        }
+        while ((start < end) && ((string.charAt(end) <= ' ') || (string.charAt(end) == '　'))) {
+            --end;
+        }
+        if (end < len) ++end;
+        return ((start > 0) || (end < len)) ? string.substring(start, end) : string;
+    }
+
+    public static boolean isJsonType(String text) {
+        boolean result = false;
+        if (isNotEmpty(text)) {
+            text = trim(text);
+            if (text.startsWith("{") && text.endsWith("}")) {
+                result = true;
+            } else if (text.startsWith("[") && text.endsWith("]")) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isJsonObject(String text) {
+        boolean result = false;
+        if (isNotEmpty(text)) {
+            text = trim(text);
+            if (text.startsWith("{") && text.endsWith("}")) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isJsonArray(String text) {
+        boolean result = false;
+        if (isNotEmpty(text)) {
+            text = trim(text);
+            if (text.startsWith("[") && text.endsWith("]")) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }
