@@ -61,6 +61,11 @@ TVBox 简易修改 多源版本
 <br><br>蓝奏云限制分享apk文件，大家自行打包吧
 <br>放一个链接，有办法的同学可以自己下载
 <br>[码：6111](https://bunny6111.lanzouq.com/b04whwgwj)
+
+![image](https://github.com/8080713/boxx/assets/121084065/26d1076e-cb38-4329-b3bd-093f4493c92e)
+![image](https://github.com/8080713/boxx/assets/121084065/8e0f4c4f-d37d-45bc-a7d0-2c3c49d0a767)
+
+
 # Actions中有生成脚本！！！
 
 
