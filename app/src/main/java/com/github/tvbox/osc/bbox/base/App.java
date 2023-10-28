@@ -1,6 +1,8 @@
 package com.github.tvbox.osc.bbox.base;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
 import androidx.multidex.MultiDexApplication;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.callback.EmptyCallback;
@@ -11,6 +13,7 @@ import com.github.tvbox.osc.bbox.util.*;
 import com.github.tvbox.osc.bbox.util.js.JSEngine;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
+import com.p2p.P2PClass;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
 
@@ -24,6 +27,9 @@ import java.util.HashMap;
  */
 public class App extends MultiDexApplication {
     private static App instance;
+
+    private static P2PClass p;
+    public static String burl;
 
     @Override
     public void onCreate() {
@@ -103,6 +109,17 @@ public class App extends MultiDexApplication {
         JSEngine.getInstance().destroy();
     }
 
+    public static P2PClass getp2p() {
+        try {
+            if (p == null) {
+                p = new P2PClass(instance.getExternalCacheDir().getAbsolutePath());
+            }
+            return p;
+        } catch (Exception e) {
+            LOG.e(e.toString());
+            return null;
+        }
+    }
 
     private VodInfo vodInfo;
 

@@ -40,6 +40,7 @@ public class IjkMediaPlayer extends IjkPlayer {
                 int category = Integer.parseInt(opt[0].trim());
                 String name = opt[1].trim();
                 try {
+                    assert value != null;
                     long valLong = Long.parseLong(value);
                     mMediaPlayer.setOption(category, name, valLong);
                 } catch (Exception e) {
@@ -47,6 +48,14 @@ public class IjkMediaPlayer extends IjkPlayer {
                 }
             }
         }
+        // 在每个数据包之后启用 I/O 上下文的刷新
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1);
+        // 当 CPU 处理不过来的时候的丢帧帧数，默认为 0，参数范围是 [-1, 120]
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5);
+        // 设置视频流格式
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "overlay-format", tv.danmaku.ijk.media.player.IjkMediaPlayer.SDL_FCC_RV32);
+
+
         //开启内置字幕
         mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_PLAYER, "subtitle", 1);
 
@@ -57,10 +66,12 @@ public class IjkMediaPlayer extends IjkPlayer {
     @Override
     public void setDataSource(String path, Map<String, String> headers) {
         try {
-            if (path != null && !TextUtils.isEmpty(path) && path.startsWith("rtsp")) {
-                mMediaPlayer.setOption(1, "infbuf", 1);
-                mMediaPlayer.setOption(1, "rtsp_transport", "tcp");
-                mMediaPlayer.setOption(1, "rtsp_flags", "prefer_tcp");
+            if (path.contains("rtsp") || path.contains("udp") || path.contains("rtp")) {
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "infbuf", 1);
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "rtsp_transport", "tcp");
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "rtsp_flags", "prefer_tcp");
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 512 * 1000);
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 2 * 1000 * 1000);
             } else if (!TextUtils.isEmpty(path)
                     && !path.contains(".m3u8")
                     && (path.contains(".mp4") || path.contains(".mkv") || path.contains(".avi"))) {

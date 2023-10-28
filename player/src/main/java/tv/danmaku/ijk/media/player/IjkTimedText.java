@@ -23,7 +23,16 @@ public final class IjkTimedText {
 
     private Rect mTextBounds = null;
     private String mTextChars = null;
-
+    /**
+     * int planeWidth = bitmapData[0];
+     * int planeHeight = bitmapData[1];
+     * int bitmapX = bitmapData[2];
+     * int bitmapY = bitmapData[3];
+     * int bitmapWidth = bitmapData[4];
+     * int bitmapHeight = bitmapData[5];
+     * Bitmap bitmap = Bitmap.createBitmap(bitmapData, 6, bitmapWidth, bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+     */
+    private int[] mBitmapData = null;
     public IjkTimedText(Rect bounds, String text) {
         mTextBounds = bounds;
         mTextChars = text;
@@ -33,6 +42,12 @@ public final class IjkTimedText {
         return mTextBounds;
     }
 
+    public IjkTimedText(int[] obj) {
+    }
+
+    public int[] getBitmapData() {
+        return mBitmapData;
+    }
     public String getText() {
         return mTextChars;
     }

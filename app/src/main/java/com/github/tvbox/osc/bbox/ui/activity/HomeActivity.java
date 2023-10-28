@@ -6,7 +6,9 @@ import android.animation.AnimatorSet;
 import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -19,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
@@ -95,6 +99,35 @@ public class HomeActivity extends BaseActivity {
             mHandler.postDelayed(this, 1000);
         }
     };
+
+    @Override
+    protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        verifyStoragePermissions(this);// 动态申请存储权限
+    }
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE" };
+
+
+    //在onCreate()方法中调用该方法即可
+    public static void verifyStoragePermissions(Activity activity) {
+
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected int getLayoutResID() {
@@ -211,19 +244,28 @@ public class HomeActivity extends BaseActivity {
                 // dataInitOk = false;
                 // jarInitOk = true;
                 // showSiteSwitch();
-                FastClickCheckUtil.check(v);
-                jumpActivity(AppsActivity.class);
+                if(dataInitOk && jarInitOk){
+                    FastClickCheckUtil.check(v, 1000);
+                    jumpActivity(AppsActivity.class);
+                }else {
+                    FastClickCheckUtil.check(v, 1000);
+                    jumpActivity(SettingActivity.class);
+                }
             }
         });
         tvName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("useCache", true);
-                intent.putExtras(bundle);
-                HomeActivity.this.startActivity(intent);
+                if(dataInitOk && jarInitOk){
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("useCache", true);
+                    intent.putExtras(bundle);
+                    HomeActivity.this.startActivity(intent);
+                }else {
+                    jumpActivity(SettingActivity.class);
+                }
                 return true;
             }
         });

@@ -67,6 +67,7 @@ import com.github.tvbox.osc.bbox.util.MD5;
 import com.github.tvbox.osc.bbox.util.PlayerHelper;
 import com.github.tvbox.osc.bbox.util.VideoParseRuler;
 import com.github.tvbox.osc.bbox.util.XWalkUtils;
+import com.github.tvbox.osc.bbox.util.thunder.Jianpian;
 import com.github.tvbox.osc.bbox.util.thunder.Thunder;
 import com.github.tvbox.osc.bbox.viewmodel.SourceViewModel;
 import com.lzy.okgo.OkGo;
@@ -596,8 +597,18 @@ public class PlayActivity extends BaseActivity {
                         boolean parse = info.optString("parse", "1").equals("1");
                         boolean jx = info.optString("jx", "0").equals("1");
                         playSubtitle = info.optString("subt", /*"https://dash.akamaized.net/akamai/test/caption_test/ElephantsDream/ElephantsDream_en.vtt"*/"");
+                        if(playSubtitle.isEmpty() && info.has("subs")) {
+                            try {
+                                playSubtitle = info.getJSONArray("subs").optJSONObject(0).optString("url", "");
+                            } catch (Throwable th) {
+                            }
+                        }
                         subtitleCacheKey = info.optString("subtKey", null);
                         String playUrl = info.optString("playUrl", "");
+                        String msg = info.optString("msg", "");
+                        if(!msg.isEmpty()){
+                            Toast.makeText(PlayActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
                         String flag = info.optString("flag");
                         String url = info.getString("url");
                         HashMap<String, String> headers = null;
@@ -732,6 +743,8 @@ public class PlayActivity extends BaseActivity {
         }
         stopLoadWebView(true);
         stopParse();
+        Thunder.stop(false);//停止磁力下载
+        Jianpian.finish();//停止p2p下载
     }
 
     private VodInfo mVodInfo;
@@ -821,6 +834,16 @@ public class PlayActivity extends BaseActivity {
             CacheManager.delete(MD5.string2MD5(progressKey), 0);
             CacheManager.delete(MD5.string2MD5(subtitleCacheKey), 0);
         }
+        if(Jianpian.isJpUrl(vs.url)){//荐片地址特殊判断
+            String jp_url= vs.url;
+            mController.showParse(false);
+            if(vs.url.startsWith("tvbox-xg:")){
+                playUrl(Jianpian.JPUrlDec(jp_url.substring(9)), null);
+            }else {
+                playUrl(Jianpian.JPUrlDec(jp_url), null);
+            }
+            return;
+        }
         if (Thunder.play(vs.url, new Thunder.ThunderCallback() {
             @Override
             public void status(int code, String info) {
@@ -832,7 +855,7 @@ public class PlayActivity extends BaseActivity {
             }
 
             @Override
-            public void list(String playList) {
+            public void list(Map<Integer, String> urlMap) {
             }
 
             @Override
