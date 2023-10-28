@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -123,7 +124,7 @@ public class LivePlayActivity extends BaseActivity {
     private static LiveChannelItem  channel_Name = null;
     private static Hashtable hsEpg = new Hashtable();
     private CountDownTimer countDownTimer;
-    private CountDownTimer countDownTimerRightTop;
+    // private CountDownTimer countDownTimerRightTop;
     private View ll_right_top_loading;
     private View ll_right_top_huikan;
     private View divLoadEpg;
@@ -222,7 +223,7 @@ public class LivePlayActivity extends BaseActivity {
         tv_right_top_tipnetspeed = (TextView)findViewById(R.id.tv_right_top_tipnetspeed);
         tv_right_top_channel_name = (TextView)findViewById(R.id.tv_right_top_channel_name);
         tv_right_top_epg_name = (TextView)findViewById(R.id.tv_right_top_epg_name);
-        tv_right_top_type = (TextView)findViewById(R.id.tv_right_top_type);
+        // tv_right_top_type = (TextView)findViewById(R.id.tv_right_top_type);
         iv_circle_bg = (ImageView) findViewById(R.id.iv_circle_bg);
         iv_back_bg = (ImageView) findViewById(R.id.iv_back_bg);
         tv_shownum = (TextView) findViewById(R.id.tv_shownum);
@@ -421,7 +422,7 @@ public class LivePlayActivity extends BaseActivity {
         UrlHttpUtil.get(url, new CallBackUtil.CallBackString() {
             public void onFailure(int i, String str) {
                 showEpg(date, new ArrayList());
-                showBottomEpg();
+                // showBottomEpg();
             }
 
             public void onResponse(String paramString) {
@@ -448,7 +449,7 @@ public class LivePlayActivity extends BaseActivity {
                 String savedEpgKey = channelName + "_" + liveEpgDateAdapter.getItem(liveEpgDateAdapter.getSelectedIndex()).getDatePresented();
                 if (!hsEpg.contains(savedEpgKey))
                     hsEpg.put(savedEpgKey, arrayList);
-                showBottomEpg();
+                // showBottomEpg();
             }
         });
     }
@@ -500,7 +501,7 @@ public class LivePlayActivity extends BaseActivity {
             }
             if(!tip_epg1.getText().equals("暂无信息")){
                 ll_epg.setVisibility(View.VISIBLE);
-                countDownTimer = new CountDownTimer(8000, 1000) {//底部epg隐藏时间设定
+                countDownTimer = new CountDownTimer(5000, 1000) {//底部epg隐藏时间设定
                     public void onTick(long j) {
                     }
                     public void onFinish() {
@@ -518,23 +519,19 @@ public class LivePlayActivity extends BaseActivity {
             }
             tv_right_top_channel_name.setText(channel_Name.getChannelName());
             tv_right_top_epg_name.setText(channel_Name.getChannelName());
+
+            Handler handler = new Handler(Looper.getMainLooper());
             ll_right_top_loading.setVisibility(View.VISIBLE);
 
-            if (countDownTimerRightTop != null) {
-                countDownTimerRightTop.cancel();
-            }
-            countDownTimerRightTop = new CountDownTimer(5000, 1000) {
-
-                public void onTick(long j) {
-                }
-
-                public void onFinish() {
+            // 延迟5秒后执行隐藏操作
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     ll_right_top_loading.setVisibility(View.GONE);
+                    ll_right_top_huikan.setVisibility(View.GONE);
                 }
-            };
-
+            }, 5000);
         }
-        countDownTimerRightTop.start();
     }
 
     private void updateChannelIcon(String channelName, String logoUrl) {
@@ -1179,7 +1176,7 @@ public class LivePlayActivity extends BaseActivity {
                     case VideoView.STATE_ERROR:
                     case VideoView.STATE_PLAYBACK_COMPLETED:
                         mHandler.removeCallbacks(mConnectTimeoutChangeSourceRun);
-                        mHandler.postDelayed(mConnectTimeoutChangeSourceRun, 500);
+                        mHandler.postDelayed(mConnectTimeoutChangeSourceRun, 2000);
                         break;
                     case VideoView.STATE_PREPARING:
                     case VideoView.STATE_BUFFERING:

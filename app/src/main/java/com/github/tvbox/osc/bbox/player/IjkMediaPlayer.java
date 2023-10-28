@@ -84,7 +84,7 @@ public class IjkMediaPlayer extends IjkPlayer {
             e.printStackTrace();
         }
         setDataSourceHeader(headers);
-        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "ijkio,ffio,async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
+        mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "ijkio,ffio,async,cache,crypto,file,dash,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
         super.setDataSource(path, null);
     }
 
@@ -99,14 +99,15 @@ public class IjkMediaPlayer extends IjkPlayer {
             if (headers.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    sb.append(entry.getKey());
-                    sb.append(":");
                     String value = entry.getValue();
-                    if (!TextUtils.isEmpty(value))
-                        sb.append(entry.getValue());
-                    sb.append("\r\n");
-                    mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", sb.toString());
+                    if (!TextUtils.isEmpty(value)) {
+                        sb.append(entry.getKey());
+                        sb.append(": ");
+                        sb.append(value);
+                        sb.append("\r\n");
+                    }
                 }
+                mMediaPlayer.setOption(tv.danmaku.ijk.media.player.IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", sb.toString());
             }
         }
     }

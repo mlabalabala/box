@@ -19,6 +19,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Downloader;
 
 import java.io.IOException;
@@ -59,59 +61,31 @@ public final class MyOkhttpDownLoader implements Downloader {
     @Override
     public Response load(@NonNull Request request) throws IOException {
         String url = request.url().toString();
-
-        String refer = null;
-        String ua = null;
+        String header = null;
         String cookie = null;
+        String ua = null;
+        String referer = null;
 
-        //检查链接里面是否有自定义cookie
-        String[] cookieUrl = url.split("@Cookie=");
-        if (cookieUrl.length > 1) {
-            url = cookieUrl[0];
-            cookie = cookieUrl[1];
-        }
+        //检查链接里面是否有自定义header
+        if (url.contains("@Headers=")) header =url.split("@Headers=")[1].split("@")[0];
+        if (url.contains("@Cookie=")) cookie= url.split("@Cookie=")[1].split("@")[0];
+        if (url.contains("@User-Agent=")) ua =url.split("@User-Agent=")[1].split("@")[0];
+        if (url.contains("@Referer=")) referer= url.split("@Referer=")[1].split("@")[0];
 
-        //检查链接里面是否有自定义UA和referer
-        String[] s = url.split("@Referer=");
-        if (s.length > 1) {
-            if (s[0].contains("@User-Agent=")) {
-                refer = s[1];
-                url = s[0].split("@User-Agent=")[0];
-                ua = s[0].split("@User-Agent=")[1];
-            } else if (s[1].contains("@User-Agent=")) {
-                refer = s[1].split("@User-Agent=")[0];
-                url = s[0];
-                ua = s[1].split("@User-Agent=")[1];
-            } else {
-                refer = s[1];
-                url = s[0];
-            }
-        } else {
-            if (url.contains("@Referer=")) {
-                url = url.replace("@Referer=", "");
-                refer = "";
-            }
-            if (url.contains("@User-Agent=")) {
-                ua = url.split("@User-Agent=")[1];
-                url = url.split("@User-Agent=")[0];
-            }
-        }
+        url = url.split("@")[0];
         Request.Builder mRequestBuilder = new Request.Builder().url(url);
+        if(!TextUtils.isEmpty(header)) {
+            JsonObject jsonInfo = new Gson().fromJson(header, JsonObject.class);
+            for (String key : jsonInfo.keySet()) {
+                String val = jsonInfo.get(key).getAsString();
+                mRequestBuilder.addHeader(key, val);
+            }
+        }else {
+            if(!TextUtils.isEmpty(cookie))mRequestBuilder.addHeader("Cookie", cookie);
+            if(!TextUtils.isEmpty(ua))mRequestBuilder.addHeader("User-Agent", ua);
+            if(!TextUtils.isEmpty(referer))mRequestBuilder.addHeader("Referer", referer);
+        }
 
-        if (!TextUtils.isEmpty(cookie)) {
-            mRequestBuilder.addHeader("cookie", cookieUrl[1]);
-        }
-        if (!TextUtils.isEmpty(ua)) {
-            if (TextUtils.isEmpty(refer)) {
-                mRequestBuilder.addHeader("user-agent", ua);
-            } else {
-                mRequestBuilder.addHeader("user-agent", ua).addHeader("referer", refer);
-            }
-        } else {
-            if (!TextUtils.isEmpty(refer)) {
-                mRequestBuilder.addHeader("referer", refer);
-            }
-        }
         return client.newCall(mRequestBuilder.build()).execute();
     }
 

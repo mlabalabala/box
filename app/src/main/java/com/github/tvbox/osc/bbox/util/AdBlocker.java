@@ -31,6 +31,10 @@ public class AdBlocker {
         return false;
     }
 
+    public static boolean hasHost(String host) {
+        return AD_HOSTS.contains(host);
+    }
+
     public static WebResourceResponse createEmptyResource() {
         return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream("".getBytes()));
     }

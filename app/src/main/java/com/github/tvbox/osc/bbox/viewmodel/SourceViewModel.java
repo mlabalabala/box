@@ -197,7 +197,6 @@ public class SourceViewModel extends ViewModel {
                     @Override
                     public void onSuccess(Response<String> response) {
                         String sortJson  = response.body();
-                        LOG.i(sortJson);
                         if (sortJson != null) {
                             AbsSortXml sortXml = sortJson(sortResult, sortJson);
                             if (sortXml != null && Hawk.get(HawkConfig.HOME_REC, 0) == 1) {
@@ -732,7 +731,10 @@ public class SourceViewModel extends ViewModel {
         JsonArray kv = obj.getAsJsonArray("value");
         LinkedHashMap<String, String> values = new LinkedHashMap<>();
         for (JsonElement ele : kv) {
-            values.put(ele.getAsJsonObject().get("n").getAsString(), ele.getAsJsonObject().get("v").getAsString());
+            JsonObject ele_obj = ele.getAsJsonObject();
+            String values_key=ele_obj.has("n")?ele_obj.get("n").getAsString():"";
+            String values_value=ele_obj.has("v")?ele_obj.get("v").getAsString():"";
+            values.put(values_key, values_value);
         }
         MovieSort.SortFilter filter = new MovieSort.SortFilter();
         filter.key = key;
