@@ -3,15 +3,13 @@
     <item android:state_focused="false" android:state_pressed="true">
         <shape>
             <corners android:radius="@dimen/vs_5" />
-            <solid android:color="@color/my_color"/>
+            <solid android:color="@color/color_DARK"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape>
             <corners android:radius="@dimen/vs_5" />
-            <!--  选中按钮颜色   -->
-            <!--<solid android:color="@color/color_353744" />-->
-            <solid android:color="@color/color_1890FF" />
+            <solid android:color="@color/color_LIGHT" />
         </shape>
     </item>
     <item android:state_focused="false" android:state_pressed="false">

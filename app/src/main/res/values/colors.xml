@@ -33,6 +33,8 @@
     <color name="color_59353744">#59353744</color>
     <color name="color_80FF0057">#80FF0057</color>
 
-    <color name="my_color">#BB0cade2</color>
+    <color name="my_color">#CCEF4CB4</color>
+    <color name="color_DARK">#A6FF0057</color>
+    <color name="color_LIGHT">#CCEF4CB4</color>
 
 </resources>

@@ -30,7 +30,8 @@
                     android:clipToPadding="false"
                     android:focusable="true"
                     android:orientation="horizontal"
-                    android:padding="@dimen/vs_20">
+                    android:padding="@dimen/vs_20"
+                    android:nextFocusLeft="@id/tvSetting">
 
 
                 <ImageView

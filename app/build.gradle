@@ -16,13 +16,13 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                outputFileName =  "暴剋兕_SHJ_${releaseTime()}.apk"
+                outputFileName =  "玉幂草_SHJ_${releaseTime()}.apk"
             }
         }
     }
 
     defaultConfig {
-        applicationId 'com.github.tvbox.osc.bbox'
+        applicationId 'org.eu.bunnyabc.box'
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
