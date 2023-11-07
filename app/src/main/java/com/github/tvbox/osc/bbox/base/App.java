@@ -1,8 +1,7 @@
 package com.github.tvbox.osc.bbox.base;
 
 import android.app.Activity;
-import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
+import android.widget.Toast;
 import androidx.multidex.MultiDexApplication;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.callback.EmptyCallback;
@@ -14,11 +13,17 @@ import com.github.tvbox.osc.bbox.util.js.JSEngine;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
 import com.p2p.P2PClass;
+import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate.entity.UpdateError;
+import com.xuexiang.xupdate.listener.OnUpdateFailureListener;
+import com.xuexiang.xupdate.utils.UpdateUtils;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 /**
  * @author pj567
@@ -26,6 +31,8 @@ import java.util.HashMap;
  * @description:
  */
 public class App extends MultiDexApplication {
+    // ^(?!.*(HWComposer|TrafficController|lowmemorykiller)).*$
+
     private static App instance;
 
     private static P2PClass p;
@@ -54,6 +61,38 @@ public class App extends MultiDexApplication {
         PlayerHelper.init();
         JSEngine.getInstance().create();
         FileUtils.cleanPlayerCache();
+        initXUpdate();
+    }
+
+    private void initXUpdate() {
+        XUpdate.get()
+            .debug(true)
+            // 默认设置只在wifi下检查版本更新
+            .isWifiOnly(false)
+            // 默认设置使用get请求检查版本
+            .isGet(true)
+            // 默认设置非自动模式，可根据具体使用配置
+            .isAutoMode(false)
+            // 设置默认公共请求参数
+            .param("versionCode", UpdateUtils.getVersionCode(this))
+            .param("appKey", getPackageName())
+            // 设置版本更新出错的监听
+            .setOnUpdateFailureListener(new OnUpdateFailureListener() {
+                @Override
+                public void onFailure(UpdateError error) {
+                    error.printStackTrace();
+                    // 对不同错误进行处理
+                    if (error.getCode() != CHECK_NO_NEW_VERSION) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            })
+            // 设置是否支持静默安装，默认是true
+            .supportSilentInstall(false)
+            // 这个必须设置！实现网络请求功能。
+            // .setIUpdateHttpService(new OkGoUpdateHttpService())
+            // 这个必须初始化
+            .init(this);
     }
 
     private void initParams() {

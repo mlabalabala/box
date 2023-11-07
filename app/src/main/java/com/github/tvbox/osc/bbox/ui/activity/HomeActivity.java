@@ -19,7 +19,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -28,7 +27,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewpager.widget.ViewPager;
-
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
@@ -55,7 +53,7 @@ import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
-
+import me.jessyan.autosize.utils.AutoSizeUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -66,8 +64,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class HomeActivity extends BaseActivity {
     private LinearLayout topLayout;
@@ -103,25 +99,25 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        verifyStoragePermissions(this);// 动态申请存储权限
-    }
+        verifyPermissions(this);// 动态申请权限
+     }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE" };
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
 
 
-    //在onCreate()方法中调用该方法即可
-    public static void verifyStoragePermissions(Activity activity) {
+    // 在onCreate()方法中调用该方法即可
+    public void verifyPermissions(Activity activity) {
 
         try {
-            //检测是否有写的权限
-            int permission = ActivityCompat.checkSelfPermission(activity,
+            // 检测是否有写的权限
+            int rwPermission = ActivityCompat.checkSelfPermission(activity,
                     "android.permission.WRITE_EXTERNAL_STORAGE");
-            if (permission != PackageManager.PERMISSION_GRANTED) {
+            if (rwPermission != PackageManager.PERMISSION_GRANTED) {
                 // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,10 +240,10 @@ public class HomeActivity extends BaseActivity {
                 // dataInitOk = false;
                 // jarInitOk = true;
                 // showSiteSwitch();
-                if(dataInitOk && jarInitOk){
+                if (dataInitOk && jarInitOk) {
                     FastClickCheckUtil.check(v, 1000);
                     jumpActivity(AppsActivity.class);
-                }else {
+                } else {
                     FastClickCheckUtil.check(v, 1000);
                     jumpActivity(SettingActivity.class);
                 }
@@ -256,21 +252,21 @@ public class HomeActivity extends BaseActivity {
         tvName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(dataInitOk && jarInitOk){
+                if (dataInitOk && jarInitOk) {
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean("useCache", true);
                     intent.putExtras(bundle);
                     HomeActivity.this.startActivity(intent);
-                }else {
+                } else {
                     jumpActivity(SettingActivity.class);
                 }
                 return true;
             }
         });
         setLoadSir(this.contentLayout);
-        //mHandler.postDelayed(mFindFocus, 500);
+        // mHandler.postDelayed(mFindFocus, 500);
     }
 
     private void initViewModel() {
@@ -489,7 +485,7 @@ public class HomeActivity extends BaseActivity {
 
     private void exit() {
         if (System.currentTimeMillis() - mExitTime < 2000) {
-            //这一段借鉴来自 q群老哥 IDCardWeb
+            // 这一段借鉴来自 q群老哥 IDCardWeb
             EventBus.getDefault().unregister(this);
             AppManager.getInstance().appExit(0);
             ControlManager.get().stopServer();
@@ -646,12 +642,12 @@ public class HomeActivity extends BaseActivity {
             SelectDialog<SourceBean> dialog = new SelectDialog<>(HomeActivity.this);
             TvRecyclerView tvRecyclerView = dialog.findViewById(R.id.list);
             int spanCount;
-            spanCount = (int)Math.floor(sites.size()/60);
+            spanCount = (int) Math.floor(sites.size() / 60);
             spanCount = Math.min(spanCount, 2);
-            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), spanCount+1));
+            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), spanCount + 1));
             ConstraintLayout cl_root = dialog.findViewById(R.id.cl_root);
             ViewGroup.LayoutParams clp = cl_root.getLayoutParams();
-            clp.width = AutoSizeUtils.mm2px(dialog.getContext(), 380+200*spanCount);
+            clp.width = AutoSizeUtils.mm2px(dialog.getContext(), 380 + 200 * spanCount);
             dialog.setTip("请选择首页数据源");
             dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<SourceBean>() {
                 @Override

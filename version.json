@@ -1,6 +1,6 @@
 {
-  "versionCode": 2,
-  "versionName": "0.0.2",
-  "desc": "测试",
+  "versionCode": 1,
+  "versionName": "0.0.0",
+  "desc": "增加简单更新功能：有可用更新时，在设置界面的“检测更新”会显示小红点提醒，\n点击忽略更新后不在用小红点提醒，但是可以通过点击检测更新来实现更新。",
   "forcedUpgrade": false
 }

@@ -1,65 +1,46 @@
 package com.github.tvbox.osc.bbox.ui.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DiffUtil;
-
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.api.StoreApiConfig;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
 import com.github.tvbox.osc.bbox.base.BaseLazyFragment;
 import com.github.tvbox.osc.bbox.bean.IJKCode;
-import com.github.tvbox.osc.bbox.bean.SourceBean;
+import com.github.tvbox.osc.bbox.constant.URL;
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.player.thirdparty.RemoteTVBox;
-import com.github.tvbox.osc.bbox.ui.activity.HomeActivity;
 import com.github.tvbox.osc.bbox.ui.activity.SettingActivity;
 import com.github.tvbox.osc.bbox.ui.adapter.ApiHistoryDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.adapter.SelectDialogAdapter;
-import com.github.tvbox.osc.bbox.ui.dialog.AboutDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.ApiDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.ApiHistoryDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.BackupDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.SearchRemoteTvDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.SelectDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.StoreApiDialog;
-import com.github.tvbox.osc.bbox.ui.dialog.XWalkInitDialog;
-import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
-import com.github.tvbox.osc.bbox.util.FileUtils;
-import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.HistoryHelper;
-import com.github.tvbox.osc.bbox.util.LOG;
-import com.github.tvbox.osc.bbox.util.OkGoHelper;
-import com.github.tvbox.osc.bbox.util.PlayerHelper;
+import com.github.tvbox.osc.bbox.ui.dialog.*;
+import com.github.tvbox.osc.bbox.update.component.CustomUpdateChecker;
+import com.github.tvbox.osc.bbox.update.component.CustomUpdateParser;
+import com.github.tvbox.osc.bbox.update.component.CustomUpdatePrompter;
+import com.github.tvbox.osc.bbox.update.pojo.VersionInfoVo;
+import com.github.tvbox.osc.bbox.update.service.OkGoUpdateHttpService;
+import com.github.tvbox.osc.bbox.util.*;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
-
+import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate.utils.UpdateUtils;
+import okhttp3.HttpUrl;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import okhttp3.HttpUrl;
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 /**
  * @author pj567
@@ -83,6 +64,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvFastSearchText;
     private TextView tvRecStyleText;
     private TextView tvIjkCachePlay;
+    private View notificationPoint;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -99,6 +81,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
 
     @Override
     protected void init() {
+        notificationPoint = findViewById(R.id.notification_point);
         tvFastSearchText = findViewById(R.id.showFastSearchText);
         tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "已开启" : "已关闭");
         tvRecStyleText = findViewById(R.id.showRecStyleText);
@@ -133,6 +116,11 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvPlay.setText(PlayerHelper.getPlayerName(Hawk.get(HawkConfig.PLAY_TYPE, 0)));
         tvRender.setText(PlayerHelper.getRenderName(Hawk.get(HawkConfig.PLAY_RENDER, 0)));
         tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
+        checkHasUpdate();
+        findViewById(R.id.llCheckUpdate).setOnClickListener( v -> {
+            checkUpdate();
+            notificationPoint.setVisibility(View.GONE);
+        });
         findViewById(R.id.llDebug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -761,6 +749,55 @@ public class ModelSettingFragment extends BaseLazyFragment {
         findViewById(R.id.llClearCache).setOnClickListener((view -> onClickClearCache(view)));
     }
 
+    private void checkHasUpdate () {
+        if (Hawk.get(HawkConfig.IS_IGNORE_VERSION, false)) {LOG.i("已忽略更新");return;}
+        // LOG.i("checkHasUpdate");
+        Checker.getInstance().checkProxy(isAvailable -> {
+            String checkUrl = isAvailable ? URL.DOMAIN_NAME_PROXY + URL.GITHUB_VERSION_PATH : URL.GITHUB_VERSION_PATH;
+            StoreApiConfig.get().MyRequest(checkUrl, new StoreApiConfig.StoreApiConfigCallback() {
+                @Override
+                public void success(String json) {
+                    LOG.i(json);
+                    VersionInfoVo versionInfoVo = JsonUtil.fromJson(json, VersionInfoVo.class);
+                    if (versionInfoVo != null && versionInfoVo.getVersionCode() > UpdateUtils.getVersionCode(getContext())){
+                        LOG.i(versionInfoVo.toString());
+                            // 有新版本
+                            Hawk.put(HawkConfig.VERSION_INFO_STR, json);
+                            notificationPoint.setVisibility(View.VISIBLE);
+
+                    }
+                    else {
+                        // 已是最新版本
+                        Hawk.put(HawkConfig.VERSION_INFO_STR, json);
+                        notificationPoint.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void error(String msg) {
+                    Toast.makeText(mContext, "请求：" + checkUrl + "失败！", Toast.LENGTH_SHORT);
+                    Hawk.put(HawkConfig.VERSION_INFO_STR, "");
+                }
+            });
+        });
+    }
+
+    private void checkUpdate () {
+        Hawk.put(HawkConfig.IS_IGNORE_VERSION, false);
+        Checker.getInstance().checkProxy(isAvailable -> {
+            String checkUrl = isAvailable ? URL.DOMAIN_NAME_PROXY + URL.GITHUB_VERSION_PATH : URL.GITHUB_VERSION_PATH;
+            String apkUrl = isAvailable ? URL.DOMAIN_NAME_PROXY + URL.APK_PATH : URL.APK_PATH;
+            XUpdate.newBuild(mContext)
+                    .updateUrl(checkUrl)
+                    .updateChecker(new CustomUpdateChecker(getActivity()))
+                    .updateParser(new CustomUpdateParser(mContext, apkUrl))
+                    .updatePrompter(new CustomUpdatePrompter())
+                    // .updateDownLoader(new CustomUpdateDownloader())
+                    .updateHttpService(new OkGoUpdateHttpService())
+                    .update();
+        });
+    }
+
     private void onClickIjkCachePlay(View v) {
         FastClickCheckUtil.check(v);
         Hawk.put(HawkConfig.IJK_CACHE_PLAY, !Hawk.get(HawkConfig.IJK_CACHE_PLAY, false));
@@ -770,6 +807,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private void onClickClearCache(View v) {
         FastClickCheckUtil.check(v);
         String cachePath = FileUtils.getCachePath();
+        LOG.i("cachePath: " + cachePath);
         File cacheDir = new File(cachePath);
         if (!cacheDir.exists()) return;
         new Thread(() -> {

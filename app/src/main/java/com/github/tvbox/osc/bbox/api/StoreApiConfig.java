@@ -1,10 +1,8 @@
 package com.github.tvbox.osc.bbox.api;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.github.tvbox.osc.bbox.ui.dialog.StoreApiDialog;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.github.tvbox.osc.bbox.util.LOG;
 import com.google.gson.Gson;
@@ -18,8 +16,6 @@ import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.github.tvbox.osc.bbox.ui.activity.LivePlayActivity.context;
 
 public class StoreApiConfig {
     private static StoreApiConfig instance;
@@ -36,6 +32,7 @@ public class StoreApiConfig {
     }
 
     public void MyRequest(String url, StoreApiConfigCallback callback) {
+        LOG.i("request url : " + url);
         OkGo.<String>get(url).headers("User-Agent", "okhttp/3.15").headers("Accept", "text/html," + "application/xhtml+xml,application/xml;q=0.9,image/avif," + "image/webp,image/apng," + "*/*;q=0.8,application/signed-exchange;v=b3;" + "q=0.9").execute(new AbsCallback<String>() {
             @Override
             public void onError(Response<String> response) {

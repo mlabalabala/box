@@ -1,7 +1,5 @@
 package com.github.tvbox.osc.bbox.util;
 
-import java.util.HashMap;
-
 /**
  * @author pj567
  * @date :2020/12/23
@@ -49,6 +47,8 @@ public class HawkConfig {
     public static final String STORE_API_NAME_HISTORY = "store_api_name_history";
     public static final String STORE_API_MAP = "store_api_map";
     public static final String DEFAULT_STORE_API = "default_store_api";
+    public static final String VERSION_INFO_STR = "version_info_str";
+    public static final String IS_IGNORE_VERSION = "is_ignore_version";
 
     public static boolean hotVodDelete;
 
