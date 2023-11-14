@@ -1,40 +1,23 @@
 package com.github.tvbox.osc.bbox.ui.dialog;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.StoreApiConfig;
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.server.ControlManager;
-import com.github.tvbox.osc.bbox.ui.adapter.ApiHistoryDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.tv.QRCodeGen;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.LOG;
-import com.hjq.permissions.OnPermissionCallback;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.orhanobut.hawk.Hawk;
-
+import me.jessyan.autosize.utils.AutoSizeUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import me.jessyan.autosize.utils.AutoSizeUtils;
 
 /**
  * 描述

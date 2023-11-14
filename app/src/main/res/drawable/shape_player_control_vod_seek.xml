@@ -8,7 +8,7 @@
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
-                <solid android:color="@color/color_CC353744" />
+                <solid android:color="@color/color_LIGHT" />
             </shape>
         </clip>
     </item>
@@ -16,7 +16,7 @@
         <clip>
             <shape>
 <!--                进度条颜色-->
-                <solid android:color="@color/color_353744" />
+                <solid android:color="@color/color_BD0CADE2" />
             </shape>
         </clip>
     </item>

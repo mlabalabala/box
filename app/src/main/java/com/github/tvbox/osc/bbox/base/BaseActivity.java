@@ -11,11 +11,9 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.PermissionChecker;
-
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.callback.EmptyCallback;
 import com.github.tvbox.osc.bbox.callback.LoadingCallback;
@@ -23,15 +21,14 @@ import com.github.tvbox.osc.bbox.util.AppManager;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import me.jessyan.autosize.AutoSizeCompat;
+import me.jessyan.autosize.internal.CustomAdapt;
+import xyz.doikki.videoplayer.util.CutoutUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import me.jessyan.autosize.AutoSizeCompat;
-import me.jessyan.autosize.internal.CustomAdapt;
-import xyz.doikki.videoplayer.util.CutoutUtil;
 
 /**
  * @author pj567

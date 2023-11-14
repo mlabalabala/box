@@ -16,6 +16,16 @@
         android:paddingRight="@dimen/vs_50"
         android:paddingBottom="@dimen/vs_20">
 
+        <View
+                android:layout_width="@dimen/vs_5"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vs_8"
+                android:layout_marginEnd="@dimen/vs_12"
+                android:layout_marginRight="@dimen/vs_12"
+                android:layout_marginBottom="@dimen/vs_8"
+                android:background="@color/my_color" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/vs_50"

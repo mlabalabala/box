@@ -1,4 +1,4 @@
-# box 玉幂草
+# Jade box
 
 
 #### 源项目
@@ -53,13 +53,13 @@ TVBox 简易修改 多源版本
 - 增加简单更新功能，目的是为了提醒有可用的新版本，有可用更新时，在设置界面的“检测更新”会显示小红点提醒，点击忽略更新后不在用小红点提醒，但是可以通过点击检测更新来实现更新。**永远不会强制更新**。此版本（玉幂草_SHJ_202311080127.apk）之前的都没有更新模块，如果不喜欢提醒的话可以选择其他之前版本。
 - 其他默认功能的小修小补
 
-默认线路位置 ```com/github/tvbox/osc/bbox/base/App.java```<br/>可以选择使用 ```raw.gitmirror.com``` 加速访问自建的仓库
-<br/>有需求的可以自行修改（不过建议改自己的仓库，改其他网络线路可能存在如果线路失效需重新改代码重新生成比较麻烦）
+##### 应用名更改位置```app/src/main/res/values/strings.xml```
+##### 默认线路位置 ```com/github/tvbox/osc/bbox/base/App.java```
 
-[自建仓库](https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default)
-<br><br>蓝奏云限制分享apk文件，大家自行打包吧
-<br>放一个链接，有办法的同学可以自己下载
+##### [自建仓库](https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default)
+蓝奏云限制分享apk文件，大家自行打包吧 。放一个链接，有办法的同学可以自己下载吧
+##### 测试可能不太够，有BUG请提issue
 <br>[码：6111](https://bunny6111.lanzouq.com/b04whwgwj)
-# Actions中有生成脚本！！！
+### Actions中有生成脚本
 
 

@@ -16,29 +16,16 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.JsPromptResult;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
-
 import com.github.catvod.crawler.Spider;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
@@ -59,14 +46,7 @@ import com.github.tvbox.osc.bbox.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.dialog.SearchSubtitleDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.SubtitleDialog;
-import com.github.tvbox.osc.bbox.util.AdBlocker;
-import com.github.tvbox.osc.bbox.util.DefaultConfig;
-import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.LOG;
-import com.github.tvbox.osc.bbox.util.MD5;
-import com.github.tvbox.osc.bbox.util.PlayerHelper;
-import com.github.tvbox.osc.bbox.util.VideoParseRuler;
-import com.github.tvbox.osc.bbox.util.XWalkUtils;
+import com.github.tvbox.osc.bbox.util.*;
 import com.github.tvbox.osc.bbox.util.thunder.Jianpian;
 import com.github.tvbox.osc.bbox.util.thunder.Thunder;
 import com.github.tvbox.osc.bbox.viewmodel.SourceViewModel;
@@ -76,39 +56,26 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.orhanobut.hawk.Hawk;
-
+import me.jessyan.autosize.AutoSize;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xwalk.core.XWalkJavascriptResult;
-import org.xwalk.core.XWalkResourceClient;
-import org.xwalk.core.XWalkSettings;
-import org.xwalk.core.XWalkUIClient;
-import org.xwalk.core.XWalkView;
-import org.xwalk.core.XWalkWebResourceRequest;
-import org.xwalk.core.XWalkWebResourceResponse;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import me.jessyan.autosize.AutoSize;
+import org.xwalk.core.*;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkTimedText;
 import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.ProgressManager;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayFragment extends BaseLazyFragment {
     private MyVideoView mVideoView;
@@ -118,6 +85,7 @@ public class PlayFragment extends BaseLazyFragment {
     private VodController mController;
     private SourceViewModel sourceViewModel;
     private Handler mHandler;
+    private String mFinalUrl;
 
     private final long videoDuration = -1;
 
@@ -138,6 +106,10 @@ public class PlayFragment extends BaseLazyFragment {
         initView();
         initViewModel();
         initData();
+    }
+
+    public String getFinalUrl(){
+        return mFinalUrl;
     }
 
     public long getSavedProgress(String url) {
@@ -522,7 +494,7 @@ public class PlayFragment extends BaseLazyFragment {
         if(autoRetryCount>0 && url.contains(".m3u8")){
             url="http://home.jundie.top:666/unBom.php?m3u8="+url;//尝试去bom头再次播放
         }
-        String finalUrl = url;
+        mFinalUrl = url;
         if (mActivity == null) return;
         requireActivity().runOnUiThread(new Runnable() {
             @Override
@@ -531,7 +503,7 @@ public class PlayFragment extends BaseLazyFragment {
                 if (mVideoView != null) {
                     mVideoView.release();
 
-                    if (finalUrl != null) {
+                    if (mFinalUrl != null) {
                         try {
                             int playerType = mVodPlayerCfg.getInt("pl");
                             if (playerType >= 10) {
@@ -539,7 +511,7 @@ public class PlayFragment extends BaseLazyFragment {
                                 String playTitle = mVodInfo.name + " " + vs.name;
                                 setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + "进行播放", true, false);
                                 boolean callResult = false;
-                                callResult = PlayerHelper.runExternalPlayer(playerType, requireActivity(), finalUrl, playTitle, playSubtitle, headers);
+                                callResult = PlayerHelper.runExternalPlayer(playerType, requireActivity(), mFinalUrl, playTitle, playSubtitle, headers);
                                 setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + (callResult ? "成功" : "失败"), callResult, !callResult);
                                 return;
                             }
@@ -550,9 +522,9 @@ public class PlayFragment extends BaseLazyFragment {
                         PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
                         mVideoView.setProgressKey(progressKey);
                         if (headers != null) {
-                            mVideoView.setUrl(finalUrl, headers);
+                            mVideoView.setUrl(mFinalUrl, headers);
                         } else {
-                            mVideoView.setUrl(finalUrl);
+                            mVideoView.setUrl(mFinalUrl);
                         }
                         mVideoView.start();
                         mController.resetSpeed();
@@ -729,7 +701,6 @@ public class PlayFragment extends BaseLazyFragment {
         int requestedOrientation = getActivity().getRequestedOrientation();
         if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            mController.mLandscapePortraitBtn.setText("竖屏");
         }
         if (mController.onBackPressed()) {
             return true;

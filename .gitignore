@@ -2,4 +2,4 @@
 /.gradle/
 local.properties
 */build/
-assembleRelease.bat
+handleRelease.bat

@@ -14,8 +14,11 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,10 +69,13 @@ import java.util.Date;
 import java.util.List;
 
 public class HomeActivity extends BaseActivity {
+    private float height = 0f;
+
     private LinearLayout topLayout;
     private LinearLayout contentLayout;
     private TextView tvDate;
     private TextView tvName;
+    private ImageView tvSetting;
     private TvRecyclerView mGridView;
     private NoScrollViewPager mViewPager;
     private SourceViewModel sourceViewModel;
@@ -147,7 +153,20 @@ public class HomeActivity extends BaseActivity {
         initData();
     }
 
+    private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus)
+                // v.animate().rotation(180f).setDuration(100).setInterpolator(new BounceInterpolator()).start();
+                v.animate().rotation(60f).setDuration(100).setInterpolator(new LinearInterpolator()).start();
+            else
+                // v.animate().rotation(0f).setDuration(100).setInterpolator(new BounceInterpolator()).start();
+                v.animate().rotation(0f).setDuration(100).setInterpolator(new LinearInterpolator()).start();
+        }
+    };
+
     private void initView() {
+        this.tvSetting = findViewById(R.id.setting);
         this.topLayout = findViewById(R.id.topLayout);
         this.tvDate = findViewById(R.id.tvDate);
         this.tvName = findViewById(R.id.tvName);
@@ -234,6 +253,10 @@ public class HomeActivity extends BaseActivity {
                 return false;
             }
         });
+
+        tvSetting.clearFocus();
+        tvSetting.setOnFocusChangeListener(focusChangeListener);
+        tvSetting.setOnClickListener(view -> jumpActivity(SettingActivity.class));
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,6 +265,7 @@ public class HomeActivity extends BaseActivity {
                 // showSiteSwitch();
                 if (dataInitOk && jarInitOk) {
                     FastClickCheckUtil.check(v, 1000);
+                    Toast.makeText(mContext, "加载应用列表中...", Toast.LENGTH_SHORT).show();
                     jumpActivity(AppsActivity.class);
                 } else {
                     FastClickCheckUtil.check(v, 1000);
@@ -267,6 +291,21 @@ public class HomeActivity extends BaseActivity {
         });
         setLoadSir(this.contentLayout);
         // mHandler.postDelayed(mFindFocus, 500);
+
+
+        ViewTreeObserver vto = topLayout.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                height = tvSetting.getMeasuredHeight() * 1f;
+                // width = tvSetting.getMeasuredWidth()*1f;
+                if (vto.isAlive()) {
+                    vto.removeOnPreDrawListener(this);
+                }
+                //一定要返回true，返回false会不进行绘制，界面空白
+                return true;
+            }
+        });
     }
 
     private void initViewModel() {
@@ -438,6 +477,7 @@ public class HomeActivity extends BaseActivity {
                     } else {
                         fragments.add(UserFragment.newInstance(null));
                     }
+
                 } else {
                     fragments.add(GridFragment.newInstance(data));
                 }
@@ -450,6 +490,7 @@ public class HomeActivity extends BaseActivity {
                 field.set(mViewPager, scroller);
                 scroller.setmDuration(300);
             } catch (Exception e) {
+                LOG.e(e.getMessage());
             }
             mViewPager.setPageTransformer(true, new DefaultTransformer());
             mViewPager.setAdapter(pageAdapter);
@@ -593,35 +634,30 @@ public class HomeActivity extends BaseActivity {
             }
         });
         if (hide && topHide == 0) {
-            animatorSet.playTogether(new Animator[]{
+            animatorSet.playTogether(
                     ObjectAnimator.ofObject(viewObj, "marginTop", new IntEvaluator(),
-                            new Object[]{
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 10.0f)),
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 0.0f))
-                            }),
+                            AutoSizeUtils.mm2px(this.mContext, 10.0f),
+                            AutoSizeUtils.mm2px(this.mContext, 0.0f)),
                     ObjectAnimator.ofObject(viewObj, "height", new IntEvaluator(),
-                            new Object[]{
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 50.0f)),
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 1.0f))
-                            }),
-                    ObjectAnimator.ofFloat(this.topLayout, "alpha", new float[]{1.0f, 0.0f})});
+                            AutoSizeUtils.mm2px(this.mContext, height),
+                            // AutoSizeUtils.mm2px(this.mContext, 50.0f),
+                            AutoSizeUtils.mm2px(this.mContext, 1.0f)),
+                    ObjectAnimator.ofFloat(this.topLayout, "alpha", 1.0f, 0.0f)
+            );
             animatorSet.setDuration(200);
             animatorSet.start();
             return;
         }
         if (!hide && topHide == 1) {
-            animatorSet.playTogether(new Animator[]{
+            animatorSet.playTogether(
                     ObjectAnimator.ofObject(viewObj, "marginTop", new IntEvaluator(),
-                            new Object[]{
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 0.0f)),
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 10.0f))
-                            }),
+                            AutoSizeUtils.mm2px(this.mContext, 0.0f),
+                            AutoSizeUtils.mm2px(this.mContext, 10.0f)),
                     ObjectAnimator.ofObject(viewObj, "height", new IntEvaluator(),
-                            new Object[]{
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 1.0f)),
-                                    Integer.valueOf(AutoSizeUtils.mm2px(this.mContext, 50.0f))
-                            }),
-                    ObjectAnimator.ofFloat(this.topLayout, "alpha", new float[]{0.0f, 1.0f})});
+                            AutoSizeUtils.mm2px(this.mContext, 1.0f),
+                            AutoSizeUtils.mm2px(this.mContext, height)),
+                    ObjectAnimator.ofFloat(this.topLayout, "alpha", 0.0f, 1.0f)
+            );
             animatorSet.setDuration(200);
             animatorSet.start();
             return;

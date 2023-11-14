@@ -285,13 +285,15 @@ public class ModelSettingFragment extends BaseLazyFragment {
             }
         });
 
-
         findViewById(R.id.llStoreApi).setOnClickListener( v -> {
             FastClickCheckUtil.check(v);
             StoreApiDialog storeApiDialog = new StoreApiDialog(mActivity);
             EventBus.getDefault().register(storeApiDialog);
-            storeApiDialog.setOnListener(name -> {
-                Hawk.put(HawkConfig.STORE_API_NAME, name);
+            storeApiDialog.setOnListener(new StoreApiDialog.OnListener() {
+                @Override
+                public void onchange(String name) {
+                    Hawk.put(HawkConfig.STORE_API_NAME, name);
+                }
             });
             storeApiDialog.setOnDismissListener(dialog -> {
                 ((BaseActivity) mActivity).hideSysBar();
@@ -754,22 +756,26 @@ public class ModelSettingFragment extends BaseLazyFragment {
         // LOG.i("checkHasUpdate");
         Checker.getInstance().checkProxy(isAvailable -> {
             String checkUrl = isAvailable ? URL.DOMAIN_NAME_PROXY + URL.GITHUB_VERSION_PATH : URL.GITHUB_VERSION_PATH;
-            StoreApiConfig.get().MyRequest(checkUrl, new StoreApiConfig.StoreApiConfigCallback() {
+            StoreApiConfig.get().doGet(checkUrl, new StoreApiConfig.StoreApiConfigCallback() {
                 @Override
                 public void success(String json) {
-                    LOG.i(json);
-                    VersionInfoVo versionInfoVo = JsonUtil.fromJson(json, VersionInfoVo.class);
-                    if (versionInfoVo != null && versionInfoVo.getVersionCode() > UpdateUtils.getVersionCode(getContext())){
-                        LOG.i(versionInfoVo.toString());
+                    try {
+                        LOG.i(json);
+                        VersionInfoVo versionInfoVo = JsonUtil.fromJson(json, VersionInfoVo.class);
+                        if (versionInfoVo != null && versionInfoVo.getVersionCode() > UpdateUtils.getVersionCode(getContext())) {
+                            LOG.i(versionInfoVo.toString());
                             // 有新版本
                             Hawk.put(HawkConfig.VERSION_INFO_STR, json);
                             notificationPoint.setVisibility(View.VISIBLE);
 
+                        } else {
+                            // 已是最新版本
+                            Hawk.put(HawkConfig.VERSION_INFO_STR, json);
+                            notificationPoint.setVisibility(View.GONE);
+                        }
                     }
-                    else {
-                        // 已是最新版本
-                        Hawk.put(HawkConfig.VERSION_INFO_STR, json);
-                        notificationPoint.setVisibility(View.GONE);
+                    catch (Exception e) {
+                        LOG.i(e.getMessage());
                     }
                 }
 

@@ -33,8 +33,20 @@
     <color name="color_59353744">#59353744</color>
     <color name="color_80FF0057">#80FF0057</color>
 
-    <color name="my_color">#CCEF4CB4</color>
-    <color name="color_DARK">#A6FF0057</color>
-    <color name="color_LIGHT">#CCEF4CB4</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_FF000000">#FF000000</color>
+    <color name="color_000000_90">#E6000000</color>
+    <color name="color_000000_80">#CC000000</color>
+    <color name="color_000000_70">#B3000000</color>
+    <color name="color_000000_60">#99000000</color>
+    <color name="color_000000_40">#66000000</color>
+    <color name="color_000000_30">#48000000</color>
+    <color name="color_000000_20">#32000000</color>
+    <color name="color_000000_15">#26000000</color>
+
+    <color name="my_color">#B8B8B8</color>
+    <color name="color_DARK">#B6007BA0</color>
+    <color name="color_LIGHT">#3EFFFFFF</color>
+    <color name="color_DEF">#732D2D2D</color>
 
 </resources>

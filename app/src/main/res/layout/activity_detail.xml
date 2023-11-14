@@ -211,10 +211,22 @@
                         android:id="@+id/tvCollect"
                         android:layout_width="@dimen/vs_120"
                         android:layout_height="@dimen/vs_40"
+                        android:layout_marginEnd="@dimen/vs_10"
+                        android:layout_marginRight="@dimen/vs_10"
                         android:background="@drawable/button_detail_collect"
                         android:focusable="true"
                         android:gravity="center"
                         android:text="加入收藏"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/vs_20" />
+                    <TextView
+                        android:id="@+id/tvDownload"
+                        android:layout_width="@dimen/vs_120"
+                        android:layout_height="@dimen/vs_40"
+                        android:background="@drawable/button_detail_download"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:text="下载视频"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vs_20" />
                 </LinearLayout>

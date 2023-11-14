@@ -4,20 +4,20 @@
     <item android:state_focused="false"
           android:state_pressed="true" >
         <shape>
-            <corners android:radius="@dimen/vs_10" />
+            <corners android:radius="@dimen/vs_20" />
             <solid android:color="@color/color_DARK"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape>
-            <corners android:radius="10mm" />
+            <corners android:radius="@dimen/vs_20" />
             <solid android:color="@color/color_LIGHT"/>
         </shape>
     </item>
     <item android:state_focused="false">
         <shape>
-            <corners android:radius="@dimen/vs_10" />
-            <solid android:color="@color/color_6C3D3D3D"/>
+            <corners android:radius="@dimen/vs_20" />
+            <solid android:color="@color/color_DEF"/>
         </shape>
     </item>
 </selector>

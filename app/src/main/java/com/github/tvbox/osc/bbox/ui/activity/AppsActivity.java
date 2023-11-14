@@ -9,21 +9,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
-import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.bean.AppInfo;
+import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.ui.adapter.AppsAdapter;
 import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

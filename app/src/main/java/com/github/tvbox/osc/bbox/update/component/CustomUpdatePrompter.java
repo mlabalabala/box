@@ -24,7 +24,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
         String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateProxy.getContext(), updateEntity);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(updateProxy.getContext())
-            .setTitle(String.format("检测到新版本！是否下载？\n忽略后不再显示小红点提醒，可手动检查更新", updateEntity.getVersionName()))
+            .setTitle(String.format("检测到新版本！是否下载？\n忽略后可手动检查更新", updateEntity.getVersionName()))
             .setMessage(updateInfo)
             .setPositiveButton("立即下载", new DialogInterface.OnClickListener() {
                 @Override
@@ -32,27 +32,23 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
                     updateProxy.startDownload(updateEntity, new OnFileDownloadListener() {
                         @Override
                         public void onStart() {
-                            LOG.i("onStart()");
                             HProgressDialogUtils.showHorizontalProgressDialog(updateProxy.getContext(), "下载进度", true);
                         }
 
                         @Override
                         public void onProgress(float progress, long total) {
-                            LOG.i("onProgress()");
                             HProgressDialogUtils.setProgress(Math.round(progress * 100));
                             HProgressDialogUtils.setMax(total);
                         }
 
                         @Override
                         public boolean onCompleted(File file) {
-                            LOG.i("onCompleted()");
                             HProgressDialogUtils.cancel();
                             return true;
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
-                            LOG.i("onError()");
                             HProgressDialogUtils.cancel();
                         }
                     });
