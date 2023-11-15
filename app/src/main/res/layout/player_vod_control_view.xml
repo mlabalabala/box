@@ -70,8 +70,8 @@
                     android:id="@+id/curr_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="@dimen/vs_10"
-                    android:paddingRight="@dimen/vs_10"
+                    android:paddingEnd="@dimen/vs_30"
+                    android:paddingRight="@dimen/vs_30"
                     android:text="00:00"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/ts_20" />
@@ -99,8 +99,8 @@
                     android:id="@+id/total_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/vs_10"
-                    android:paddingLeft="@dimen/vs_10"
+                    android:paddingStart="@dimen/vs_30"
+                    android:paddingLeft="@dimen/vs_30"
                     android:text="00:00"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/ts_20" />
@@ -194,8 +194,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_40"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_refresh" />
             </LinearLayout>
@@ -275,7 +275,7 @@
                 android:padding="@dimen/vs_8"
                 android:text="16:9"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_16" />
+                android:textSize="@dimen/ts_20" />
 
             <LinearLayout
                     android:id="@+id/play_speed"
@@ -302,7 +302,7 @@
             </LinearLayout>
             <TextView
                     android:id="@+id/play_speed_text"
-                    android:layout_width="@dimen/vs_60"
+                    android:layout_width="@dimen/vs_70"
                     android:layout_height="@dimen/vs_60"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/vs_6"
@@ -312,9 +312,9 @@
                     android:focusable="false"
                     android:gravity="center"
                     android:padding="@dimen/vs_8"
-                    android:text="x1.0"
+                    android:text="x1.00"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/ts_16" />
+                    android:textSize="@dimen/ts_20" />
 
             <LinearLayout
                     android:id="@+id/play_player"
@@ -383,7 +383,7 @@
 
             <TextView
                     android:id="@+id/play_time_start"
-                    android:layout_width="@dimen/vs_70"
+                    android:layout_width="@dimen/vs_80"
                     android:layout_height="@dimen/vs_60"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
@@ -396,13 +396,13 @@
                     android:nextFocusUp="@id/play_time_start"
                     android:nextFocusDown="@id/play_time_start"
                     android:padding="@dimen/vs_8"
-                    android:text="01:00"
+                    android:text="00:00"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/ts_16" />
+                    android:textSize="@dimen/ts_20" />
 
             <TextView
                     android:id="@+id/play_time_end"
-                    android:layout_width="@dimen/vs_70"
+                    android:layout_width="@dimen/vs_80"
                     android:layout_height="@dimen/vs_60"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_4"
@@ -414,9 +414,9 @@
                     android:nextFocusUp="@id/play_time_end"
                     android:nextFocusDown="@id/play_time_end"
                     android:padding="@dimen/vs_8"
-                    android:text="01:00"
+                    android:text="00:00"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/ts_16" />
+                    android:textSize="@dimen/ts_20" />
 
             <!--添加片头片尾重置按钮-->
             <TextView

@@ -52,9 +52,9 @@
     <color name="color_000000_20">#32000000</color>
     <color name="color_000000_15">#26000000</color>
 
-    <color name="my_color">#B8B8B8</color>
-    <color name="color_DARK">#B6007BA0</color>
-    <color name="color_LIGHT">#3EFFFFFF</color>
-    <color name="color_DEF">#732D2D2D</color>
+    <color name="my_color">#2962FF</color>
+    <color name="color_DARK">#662962FF</color>
+    <color name="color_LIGHT">#662962FF</color>
+    <color name="color_DEF">#803D3D3D</color>
 
 </resources>

@@ -15,12 +15,7 @@ import com.github.tvbox.osc.bbox.bean.LiveChannelItem;
 import com.github.tvbox.osc.bbox.bean.ParseBean;
 import com.github.tvbox.osc.bbox.bean.SourceBean;
 import com.github.tvbox.osc.bbox.server.ControlManager;
-import com.github.tvbox.osc.bbox.util.AES;
-import com.github.tvbox.osc.bbox.util.AdBlocker;
-import com.github.tvbox.osc.bbox.util.DefaultConfig;
-import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.MD5;
-import com.github.tvbox.osc.bbox.util.VideoParseRuler;
+import com.github.tvbox.osc.bbox.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -169,6 +164,7 @@ public class ApiConfig {
                     public void onSuccess(Response<String> response) {
                         try {
                             String json = response.body();
+                            LOG.i(json);
                             parseJson(apiUrl, json);
                             try {
                                 File cacheDir = cache.getParentFile();

@@ -602,14 +602,14 @@ public class VodController extends BaseController {
             mPlayerTimeStartBtn.setVisibility(GONE);
             mPlayerTimeSkipBtn.setVisibility(GONE);
             // mPlayerTimeResetBtn.setVisibility(GONE);
-            mNextBtn.setNextFocusLeftId(R.id.zimu_select);
+            // mNextBtn.setNextFocusLeftId(R.id.zimu_select);
         } else {
             mPlayerSpeedBtn.setVisibility(View.VISIBLE);
             mPlayerTimeStartEndText.setVisibility(View.VISIBLE);
             mPlayerTimeStartBtn.setVisibility(View.VISIBLE);
             mPlayerTimeSkipBtn.setVisibility(View.VISIBLE);
             // mPlayerTimeResetBtn.setVisibility(View.VISIBLE);
-            mNextBtn.setNextFocusLeftId(R.id.play_time_start);
+            // mNextBtn.setNextFocusLeftId(R.id.play_time_start);
         }
     }
 
