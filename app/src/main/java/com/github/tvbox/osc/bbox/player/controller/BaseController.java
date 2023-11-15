@@ -7,10 +7,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import com.github.tvbox.osc.bbox.R;
+import com.github.tvbox.osc.bbox.util.LOG;
 import xyz.doikki.videoplayer.controller.BaseVideoController;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.controller.IGestureComponent;
@@ -64,6 +69,15 @@ public abstract class BaseController extends BaseVideoController implements Gest
                         mSlideInfo.setVisibility(GONE);
                         break;
                     }
+
+                    case 201: { // 亮度+音量调整
+                        mDialogSlideProgress.setVisibility(VISIBLE);
+                        break;
+                    }
+                    case 202: { // 亮度+音量调整 关闭
+                        mDialogSlideProgress.setVisibility(GONE);
+                        break;
+                    }
                     default: {
                         if (mHandlerCallback != null)
                             mHandlerCallback.callback(msg);
@@ -88,6 +102,10 @@ public abstract class BaseController extends BaseVideoController implements Gest
     private ViewGroup mPauseRoot;
     private TextView mPauseTime;
 
+    private LinearLayout mDialogSlideProgress;
+    private ImageView mProgressBarImg;
+    private ProgressBar mProgressBar;
+
     @Override
     protected void initView() {
         super.initView();
@@ -98,6 +116,10 @@ public abstract class BaseController extends BaseVideoController implements Gest
         mLoading = findViewWithTag("vod_control_loading");
         mPauseRoot = findViewWithTag("vod_control_pause");
         mPauseTime = findViewWithTag("vod_control_pause_t");
+
+        mDialogSlideProgress = findViewWithTag("dialog_slide_progress");
+        mProgressBarImg = findViewWithTag("progressbar_slide_progress_img");
+        mProgressBar = findViewWithTag("progressbar_slide_progress");
     }
 
     @Override
@@ -332,12 +354,18 @@ public abstract class BaseController extends BaseVideoController implements Gest
                 ((IGestureComponent) component).onBrightnessChange(percent);
             }
         }
+        assert mActivity != null;
+        LOG.i("亮度: "+percent);
+        mProgressBarImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.play_brightness));
+        mProgressBar.setProgress(percent);
         Message msg = Message.obtain();
-        msg.what = 100;
+        msg.what = 201;
         msg.obj = "亮度" + percent + "%";
         mHandler.sendMessage(msg);
-        mHandler.removeMessages(101);
-        mHandler.sendEmptyMessageDelayed(101, 1000);
+        // mHandler.removeMessages(101);
+        // mHandler.sendEmptyMessageDelayed(101, 1000);
+        mHandler.removeMessages(202);
+        mHandler.sendEmptyMessageDelayed(202, 1000);
     }
 
     protected void slideToChangeVolume(float deltaY) {
@@ -355,12 +383,16 @@ public abstract class BaseController extends BaseVideoController implements Gest
                 ((IGestureComponent) component).onVolumeChange(percent);
             }
         }
+        assert mActivity != null;
+        LOG.i("音量: "+percent);
+        mProgressBarImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.play_volume));
+        mProgressBar.setProgress(percent);
         Message msg = Message.obtain();
-        msg.what = 100;
+        msg.what = 201;
         msg.obj = "音量" + percent + "%";
         mHandler.sendMessage(msg);
-        mHandler.removeMessages(101);
-        mHandler.sendEmptyMessageDelayed(101, 1000);
+        mHandler.removeMessages(202);
+        mHandler.sendEmptyMessageDelayed(202, 1000);
     }
 
     @Override

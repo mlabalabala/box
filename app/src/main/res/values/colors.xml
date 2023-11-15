@@ -33,6 +33,14 @@
     <color name="color_59353744">#59353744</color>
     <color name="color_80FF0057">#80FF0057</color>
 
+    <color name="color_FFFFFF_90">#E6FFFFFF</color>
+    <color name="color_FFFFFF_80">#CCFFFFFF</color>
+    <color name="color_FFFFFF_70">#B3FFFFFF</color>
+    <color name="color_FFFFFF_50">#80FFFFFF</color>
+    <color name="color_FFFFFF_40">#66FFFFFF</color>
+    <color name="color_FFFFFF_20">#32FFFFFF</color>
+    <color name="color_FFFFFF_15">#26FFFFFF</color>
+
     <color name="transparent">#00000000</color>
     <color name="color_FF000000">#FF000000</color>
     <color name="color_000000_90">#E6000000</color>

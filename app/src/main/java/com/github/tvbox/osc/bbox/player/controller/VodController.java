@@ -620,7 +620,7 @@ public class VodController extends BaseController {
             int height = mControlWrapper.getVideoSize()[1];
             double screenSqrt = ScreenUtils.getSqrt(mActivity);
             LOG.i("screenSqrt: "+screenSqrt+", width: " + width + ", height: " + height);
-            if (null != uiModeManager && Configuration.UI_MODE_TYPE_TELEVISION == uiModeManager.getCurrentModeType() && screenSqrt < 10.0 && width < height) {
+            if (null != uiModeManager && Configuration.UI_MODE_TYPE_TELEVISION != uiModeManager.getCurrentModeType() && screenSqrt < 10.0 && width < height) {
                 mLandscapePortraitBtn.setVisibility(View.VISIBLE);
             }
         }

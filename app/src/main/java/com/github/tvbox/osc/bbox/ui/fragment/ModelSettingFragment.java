@@ -118,6 +118,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
         checkHasUpdate();
         findViewById(R.id.llCheckUpdate).setOnClickListener( v -> {
+            Toast.makeText(mActivity, "检查更新中...", Toast.LENGTH_SHORT).show();
             checkUpdate();
             notificationPoint.setVisibility(View.GONE);
         });

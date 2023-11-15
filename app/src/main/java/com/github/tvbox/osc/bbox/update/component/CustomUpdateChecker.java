@@ -23,7 +23,6 @@ public class CustomUpdateChecker implements IUpdateChecker {
 
     @Override
     public void onBeforeCheck() {
-        Toast.makeText(mActivity, "检查更新中...", Toast.LENGTH_SHORT).show();
         // CProgressDialogUtils.showProgressDialog(mActivity, "检查更新中...");
     }
 

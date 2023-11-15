@@ -173,8 +173,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_40"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_replay" />
             </LinearLayout>
@@ -215,8 +215,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_40"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_subtitle" />
             </LinearLayout>
@@ -236,8 +236,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_40"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_audio" />
             </LinearLayout>
@@ -256,8 +256,8 @@
 
                 <ImageView
                         android:id="@+id/play_scale_img"
-                        android:layout_width="@dimen/vs_60"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_aspect" />
             </LinearLayout>
@@ -330,8 +330,8 @@
 
                 <ImageView
                         android:id="@+id/play_player_img"
-                        android:layout_width="@dimen/vs_40"
-                        android:layout_height="@dimen/vs_40"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
                         android:src="@drawable/v_type" />
 
@@ -547,6 +547,39 @@
 
     </FrameLayout>
 
+    <LinearLayout
+            android:id="@+id/dialog_tv_slide_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_progressbar_bg"
+            android:orientation="horizontal"
+            android:tag="dialog_slide_progress"
+            android:padding="@dimen/vs_20"
+            android:visibility="gone">
+
+        <ImageView
+                android:id="@+id/dialog_tv_slide_progress_img"
+                android:layout_width="@dimen/vs_30"
+                android:layout_height="@dimen/vs_30"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/vs_30"
+                android:layout_marginEnd="@dimen/vs_30"
+                android:alpha="0.9"
+                android:tag="progressbar_slide_progress_img"
+                android:src="@drawable/play_brightness" />
+
+        <ProgressBar
+                android:id="@+id/dialog_tv_slide_progress_txt"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/play_progress_horizontal"
+                android:layout_width="@dimen/vs_150"
+                android:layout_height="@dimen/vs_5"
+                android:layout_gravity="center"
+                android:max="100"
+                android:tag="progressbar_slide_progress" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_slide_progress_text"
         android:layout_width="@dimen/vs_200"
@@ -631,7 +664,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/vs_90"
             android:gravity="center_vertical"
             android:visibility="gone"
             tools:visibility="visible">
