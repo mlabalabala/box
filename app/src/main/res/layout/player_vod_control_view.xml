@@ -526,8 +526,7 @@
                     android:layout_height="@dimen/vs_60"
                     android:layout_gravity="center"
                     android:focusable="false"
-                    android:paddingRight="@dimen/vs_10"
-                    android:paddingEnd="@dimen/vs_10"
+                    android:paddingHorizontal="@dimen/vs_10"
                     android:focusableInTouchMode="false"
                     android:src="@drawable/icon_play"/>
 
@@ -617,11 +616,10 @@
                 android:layout_width="@dimen/vs_60"
                 android:layout_height="@dimen/vs_60"
                 android:focusable="false"
-                android:paddingRight="@dimen/vs_10"
-                android:paddingEnd="@dimen/vs_10"
+                android:paddingHorizontal="@dimen/vs_10"
                 android:layout_gravity="center"
                 android:focusableInTouchMode="false"
-                tools:src="@drawable/icon_back" />
+                tools:src="@drawable/icon_pre" />
 
         <TextView
             android:id="@+id/tv_progress_text"
