@@ -3,7 +3,7 @@
     android:shape="oval">
     <!--    进度条圆点常规状态颜色-->
 <!--    <solid android:color="@color/color_02F8E1" />-->
-    <solid android:color="@color/color_1890FF" />
+    <solid android:color="@color/color_theme_80" />
     <size
         android:width="@dimen/vs_20"
         android:height="@dimen/vs_20" />

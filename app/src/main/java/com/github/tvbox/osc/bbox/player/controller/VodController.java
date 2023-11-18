@@ -842,11 +842,13 @@ public class VodController extends BaseController {
     void showBottom() {
         mHandler.removeMessages(1003);
         mHandler.sendEmptyMessage(1002);
+        mHandler.postDelayed(myRunnable, 8000);
     }
 
     void hideBottom() {
         mHandler.removeMessages(1002);
         mHandler.sendEmptyMessage(1003);
+        mHandler.removeCallbacks(myRunnable);
     }
 
     @Override
@@ -858,8 +860,7 @@ public class VodController extends BaseController {
         int keyCode = event.getKeyCode();
         int action = event.getAction();
         if (isBottomVisible()) {
-            mHandler.removeMessages(1002);
-            mHandler.removeMessages(1003);
+            myHandle.removeCallbacks(myRunnable);
             myHandle.postDelayed(myRunnable, myHandleSeconds);
             return super.dispatchKeyEvent(event);
         }

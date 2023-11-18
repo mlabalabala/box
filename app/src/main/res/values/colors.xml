@@ -33,6 +33,16 @@
     <color name="color_59353744">#59353744</color>
     <color name="color_80FF0057">#80FF0057</color>
 
+    <!-- Main Theme E50914 D81F26 -->
+    <color name="color_theme">#D81F26</color>
+    <color name="color_theme_80">#CCD81F26</color>
+    <color name="color_theme_70">#B3D81F26</color>
+    <color name="color_theme_60">#99D81F26</color>
+    <color name="color_theme_50">#80D81F26</color>
+    <color name="color_theme_40">#66D81F26</color>
+    <!-- Main Dialog Button BG -->
+    <color name="color_theme_dark_70">#B3D81F26</color>
+
     <color name="color_FFFFFF_90">#E6FFFFFF</color>
     <color name="color_FFFFFF_80">#CCFFFFFF</color>
     <color name="color_FFFFFF_70">#B3FFFFFF</color>
@@ -52,9 +62,6 @@
     <color name="color_000000_20">#32000000</color>
     <color name="color_000000_15">#26000000</color>
 
-    <color name="my_color">#2962FF</color>
-    <color name="color_DARK">#662962FF</color>
-    <color name="color_LIGHT">#662962FF</color>
     <color name="color_DEF">#803D3D3D</color>
 
 </resources>

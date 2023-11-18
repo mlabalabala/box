@@ -17,13 +17,13 @@
     <item android:state_focused="false" android:state_pressed="true">
         <shape>
             <corners android:radius="@dimen/vs_10" />
-            <solid android:color="@color/color_DARK"/>
+            <solid android:color="@color/color_theme_40"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape>
             <corners android:radius="@dimen/vs_10" />
-            <solid android:color="@color/color_LIGHT" />
+            <solid android:color="@color/color_theme_40" />
             <!--            <stroke android:width="2mm" android:color="@android:color/white" />-->
         </shape>
     </item>

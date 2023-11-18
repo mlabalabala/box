@@ -42,14 +42,13 @@
                 android:layout_width="@dimen/vs_60"
                 android:layout_height="@dimen/vs_60"
                 android:layout_gravity="right"
-                android:layout_marginRight="@dimen/vs_30"
+                android:layout_marginRight="@dimen/vs_20"
+                android:layout_marginEnd="@dimen/vs_20"
                 android:layout_marginBottom="@dimen/vs_150"
                 android:background="@drawable/shape_btn_focus"
                 android:focusable="false"
                 android:gravity="center"
-                android:visibility="gone"
-                android:orientation="horizontal"
-                android:layout_marginEnd="@dimen/vs_20">
+                android:visibility="gone">
 
             <ImageView
                     android:layout_width="@dimen/vs_40"
@@ -131,8 +130,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_60"
-                        android:layout_height="@dimen/vs_60"
+                        android:layout_width="@dimen/vs_48"
+                        android:layout_height="@dimen/vs_48"
                         android:layout_gravity="center"
                         android:src="@drawable/v_prev" />
             </LinearLayout>
@@ -152,8 +151,8 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_60"
-                        android:layout_height="@dimen/vs_60"
+                        android:layout_width="@dimen/vs_48"
+                        android:layout_height="@dimen/vs_48"
                         android:layout_gravity="center"
                         android:src="@drawable/v_next" />
             </LinearLayout>
@@ -173,9 +172,10 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_50"
-                        android:layout_height="@dimen/vs_50"
+                        android:layout_width="@dimen/vs_48"
+                        android:layout_height="@dimen/vs_48"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:src="@drawable/v_replay" />
             </LinearLayout>
 
@@ -194,9 +194,10 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:layout_width="@dimen/vs_50"
-                        android:layout_height="@dimen/vs_50"
+                        android:layout_width="@dimen/vs_48"
+                        android:layout_height="@dimen/vs_48"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:src="@drawable/v_refresh" />
             </LinearLayout>
 
@@ -218,6 +219,7 @@
                         android:layout_width="@dimen/vs_50"
                         android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:src="@drawable/v_subtitle" />
             </LinearLayout>
 
@@ -239,6 +241,7 @@
                         android:layout_width="@dimen/vs_50"
                         android:layout_height="@dimen/vs_50"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:src="@drawable/v_audio" />
             </LinearLayout>
 
@@ -294,8 +297,8 @@
 
                 <ImageView
                         android:id="@+id/play_speed_img"
-                        android:layout_width="@dimen/vs_60"
-                        android:layout_height="@dimen/vs_60"
+                        android:layout_width="@dimen/vs_48"
+                        android:layout_height="@dimen/vs_48"
                         android:layout_gravity="center"
                         android:src="@drawable/v_ffwd" />
 

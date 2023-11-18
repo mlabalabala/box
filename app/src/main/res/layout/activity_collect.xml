@@ -24,7 +24,7 @@
                 android:layout_marginEnd="@dimen/vs_12"
                 android:layout_marginRight="@dimen/vs_12"
                 android:layout_marginBottom="@dimen/vs_8"
-                android:background="@color/my_color" />
+                android:background="@color/color_theme_80" />
 
         <TextView
             android:layout_width="wrap_content"

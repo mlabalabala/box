@@ -40,6 +40,71 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <!-- Alternative Themes -->
+    <style name="NetfxTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#D81F26</item>
+        <item name="color_theme_80">#CCD81F26</item>
+        <item name="color_theme_70">#B3D81F26</item>
+        <item name="color_theme_60">#99D81F26</item>
+        <item name="color_theme_50">#80D81F26</item>
+        <item name="color_theme_40">#66D81F26</item>
+        <item name="color_theme_dark_70">#B38C1418</item>
+    </style>
+    <style name="DoraeTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#18A2E7</item>
+        <item name="color_theme_80">#CC18A2E7</item>
+        <item name="color_theme_70">#B318A2E7</item>
+        <item name="color_theme_60">#9918A2E7</item>
+        <item name="color_theme_50">#8018A2E7</item>
+        <item name="color_theme_40">#6618A2E7</item>
+        <item name="color_theme_dark_70">#B3106D9C</item>
+    </style>
+    <style name="PepsiTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#004B93</item>
+        <item name="color_theme_80">#CC004B93</item>
+        <item name="color_theme_70">#B3004B93</item>
+        <item name="color_theme_60">#99004B93</item>
+        <item name="color_theme_50">#80004B93</item>
+        <item name="color_theme_40">#66004B93</item>
+        <item name="color_theme_dark_70">#B3002547</item>
+    </style>
+    <style name="NarutoTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#FF7439</item>
+        <item name="color_theme_80">#CCFF7439</item>
+        <item name="color_theme_70">#B3FF7439</item>
+        <item name="color_theme_60">#99FF7439</item>
+        <item name="color_theme_50">#80FF7439</item>
+        <item name="color_theme_40">#66FF7439</item>
+        <item name="color_theme_dark_70">#B3B35127</item>
+    </style>
+    <style name="MinionTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#FFD55E</item>
+        <item name="color_theme_80">#CCFFD55E</item>
+        <item name="color_theme_70">#B3FFD55E</item>
+        <item name="color_theme_60">#99FFD55E</item>
+        <item name="color_theme_50">#80FFD55E</item>
+        <item name="color_theme_40">#66FFD55E</item>
+        <item name="color_theme_dark_70">#B3B39542</item>
+    </style>
+    <style name="YagamiTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#FF2F70</item>
+        <item name="color_theme_80">#CCFF2F70</item>
+        <item name="color_theme_70">#B3FF2F70</item>
+        <item name="color_theme_60">#99FF2F70</item>
+        <item name="color_theme_50">#80FF2F70</item>
+        <item name="color_theme_40">#66FF2F70</item>
+        <item name="color_theme_dark_70">#B3B3204E</item>
+    </style>
+    <style name="SakuraTheme" parent="AppTheme.NoActionBar">
+        <item name="color_theme">#FD9BDB</item>
+        <item name="color_theme_80">#CCFD9BDB</item>
+        <item name="color_theme_70">#B3FD9BDB</item>
+        <item name="color_theme_60">#99FD9BDB</item>
+        <item name="color_theme_50">#80FD9BDB</item>
+        <item name="color_theme_40">#66FD9BDB</item>
+        <item name="color_theme_dark_70">#B3B06B98</item>
+    </style>
+
     <style name="epg_window_btn">
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/item_bg_selector_right</item>
