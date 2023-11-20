@@ -48,11 +48,11 @@
                 android:background="@drawable/shape_btn_focus"
                 android:focusable="false"
                 android:gravity="center"
-                android:visibility="gone">
+                android:visibility="visible">
 
             <ImageView
-                    android:layout_width="@dimen/vs_40"
-                    android:layout_height="@dimen/vs_40"
+                    android:layout_width="@dimen/vs_30"
+                    android:layout_height="@dimen/vs_30"
                     android:layout_gravity="center"
                     android:src="@drawable/v_landscape_portrait" />
         </LinearLayout>
@@ -558,6 +558,7 @@
             android:orientation="horizontal"
             android:tag="dialog_slide_progress"
             android:padding="@dimen/vs_20"
+            tools:visibility="visible"
             android:visibility="gone">
 
         <ImageView
