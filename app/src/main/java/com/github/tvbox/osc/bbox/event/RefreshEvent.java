@@ -22,6 +22,8 @@ public class RefreshEvent {
     public static final int TYPE_FILTER_CHANGE = 13;
     public static final int TYPE_STORE_CONFIG_CHANGE = 14;
     public static final int TYPE_APP_REFRESH = 15;
+    public static final int TYPE_API_LIVE_URL = 16;
+    public static final int TYPE_API_EPG_URL = 17;
     public int type;
     public Object obj;
 

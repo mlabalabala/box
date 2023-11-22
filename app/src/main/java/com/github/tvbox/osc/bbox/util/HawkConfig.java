@@ -50,6 +50,9 @@ public class HawkConfig {
     public static final String VERSION_INFO_STR = "version_info_str";
     public static final String IS_IGNORE_VERSION = "is_ignore_version";
 
+    public static final String LIVE_URL = "live_url";
+    public static final String LIVE_HISTORY = "live_history";
+
     public static boolean hotVodDelete;
 
 }

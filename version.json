@@ -1,6 +1,6 @@
 {
-  "versionCode": 3,
+  "versionCode": 4,
   "versionName": "0.0.0",
-  "desc": "1.播放页、详情页、按钮等UI修改",
+  "desc": "播放页、详情页、按钮等UI修改；\n增加自定义直播源；",
   "forcedUpgrade": false
 }

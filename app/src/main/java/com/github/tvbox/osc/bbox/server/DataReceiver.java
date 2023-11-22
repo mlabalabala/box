@@ -18,4 +18,8 @@ public interface DataReceiver {
     void onStoreReceived(String url);
 
     void onPushReceived(String url);
+
+    void onLiveReceived(String url);
+
+    void onEpgReceived(String url);
 }

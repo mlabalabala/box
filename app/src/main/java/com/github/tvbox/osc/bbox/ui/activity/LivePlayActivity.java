@@ -15,39 +15,19 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
-import com.github.tvbox.osc.bbox.bean.Epginfo;
-import com.github.tvbox.osc.bbox.bean.LiveChannelGroup;
-import com.github.tvbox.osc.bbox.bean.LiveChannelItem;
-import com.github.tvbox.osc.bbox.bean.LiveDayListGroup;
-import com.github.tvbox.osc.bbox.bean.LiveEpgDate;
-import com.github.tvbox.osc.bbox.bean.LivePlayerManager;
-import com.github.tvbox.osc.bbox.bean.LiveSettingGroup;
-import com.github.tvbox.osc.bbox.bean.LiveSettingItem;
+import com.github.tvbox.osc.bbox.bean.*;
 import com.github.tvbox.osc.bbox.player.controller.LiveController;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveChannelGroupAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveChannelItemAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveEpgAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveEpgDateAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveSettingGroupAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.LiveSettingItemAdapter;
-import com.github.tvbox.osc.bbox.ui.adapter.MyEpgAdapter;
+import com.github.tvbox.osc.bbox.ui.adapter.*;
+import com.github.tvbox.osc.bbox.ui.dialog.ApiHistoryDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.LivePasswordDialog;
 import com.github.tvbox.osc.bbox.ui.tv.widget.ViewObj;
 import com.github.tvbox.osc.bbox.util.EpgUtil;
@@ -58,7 +38,6 @@ import com.github.tvbox.osc.bbox.util.live.TxtSubscribe;
 import com.github.tvbox.osc.bbox.util.urlhttp.CallBackUtil;
 import com.github.tvbox.osc.bbox.util.urlhttp.UrlHttpUtil;
 import com.google.gson.JsonArray;
-import org.apache.commons.lang3.StringUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -66,25 +45,16 @@ import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import com.squareup.picasso.Picasso;
-
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import xyz.doikki.videoplayer.player.VideoView;
 
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import xyz.doikki.videoplayer.player.VideoView;
+import java.util.*;
 
 /**
  * @author pj567
@@ -1503,6 +1473,50 @@ public class LivePlayActivity extends BaseActivity {
                 }
                 liveSettingItemAdapter.selectItem(position, select, false);
                 break;
+            case 5:// 直播历史 takagen99 : Live History
+                switch (position) {
+                    case 0:
+                        // takagen99 : Added Live History list selection - 直播列表
+                        ArrayList<String> liveHistory = Hawk.get(HawkConfig.LIVE_HISTORY, new ArrayList<String>());
+                        if (liveHistory.isEmpty())
+                            return;
+                        String current = Hawk.get(HawkConfig.LIVE_URL, "");
+                        int idx = 0;
+                        if (liveHistory.contains(current))
+                            idx = liveHistory.indexOf(current);
+                        ApiHistoryDialog dialog = new ApiHistoryDialog(LivePlayActivity.this);
+                        dialog.setTip(getString(R.string.dia_history_live));
+                        dialog.setAdapter(new ApiHistoryDialogAdapter.SelectDialogInterface() {
+                            @Override
+                            public void click(String liveURL) {
+                                Hawk.put(HawkConfig.LIVE_URL, liveURL);
+                                liveChannelGroupList.clear();
+                                try {
+                                    liveURL = Base64.encodeToString(liveURL.getBytes("UTF-8"), Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP);
+                                    liveURL = "http://127.0.0.1:9978/proxy?do=live&type=txt&ext=" + liveURL;
+                                    loadProxyLives(liveURL);
+                                } catch (Throwable th) {
+                                    th.printStackTrace();
+                                }
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void del(String value, ArrayList<String> data) {
+                                Hawk.put(HawkConfig.LIVE_HISTORY, data);
+                            }
+                        }, liveHistory, idx);
+                        dialog.show();
+                        break;
+                }
+                break;
+            case 6:// 退出直播 takagen99 : Added Exit Option
+                switch (position) {
+                    case 0:
+                        finish();
+                        break;
+                }
+                break;
         }
         mHandler.removeCallbacks(mHideSettingLayoutRun);
         mHandler.postDelayed(mHideSettingLayoutRun, 5000);
@@ -1609,18 +1623,22 @@ public class LivePlayActivity extends BaseActivity {
     }
 
     private void initLiveSettingGroupList() {
-        ArrayList<String> groupNames = new ArrayList<>(Arrays.asList("线路选择", "画面比例", "播放解码", "超时换源", "偏好设置"));
+        ArrayList<String> groupNames = new ArrayList<>(Arrays.asList("线路选择", "画面比例", "播放解码", "超时换源", "偏好设置", "直播地址", "退出直播"));
         ArrayList<ArrayList<String>> itemsArrayList = new ArrayList<>();
         ArrayList<String> sourceItems = new ArrayList<>();
         ArrayList<String> scaleItems = new ArrayList<>(Arrays.asList("默认", "16:9", "4:3", "填充", "原始", "裁剪"));
         ArrayList<String> playerDecoderItems = new ArrayList<>(Arrays.asList("系统", "ijk硬解", "ijk软解", "exo"));
         ArrayList<String> timeoutItems = new ArrayList<>(Arrays.asList("5s", "10s", "15s", "20s", "25s", "30s"));
         ArrayList<String> personalSettingItems = new ArrayList<>(Arrays.asList("显示时间", "显示网速", "换台反转", "跨选分类"));
+        ArrayList<String> liveAdd = new ArrayList<>(Arrays.asList("列表历史"));
+        ArrayList<String> exitConfirm = new ArrayList<>(Arrays.asList("确定"));
         itemsArrayList.add(sourceItems);
         itemsArrayList.add(scaleItems);
         itemsArrayList.add(playerDecoderItems);
         itemsArrayList.add(timeoutItems);
         itemsArrayList.add(personalSettingItems);
+        itemsArrayList.add(liveAdd);
+        itemsArrayList.add(exitConfirm);
 
         liveSettingGroupList.clear();
         for (int i = 0; i < groupNames.size(); i++) {

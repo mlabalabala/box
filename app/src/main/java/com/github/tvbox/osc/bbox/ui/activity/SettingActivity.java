@@ -105,8 +105,10 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
+    private String currentLive;
     private void initData() {
         currentApi = Hawk.get(HawkConfig.API_URL, "");
+        currentLive = Hawk.get(HawkConfig.LIVE_URL, "");
         homeSourceKey = ApiConfig.get().getHomeSourceBean().getKey();
         homeRec = Hawk.get(HawkConfig.HOME_REC, 0);
         dnsOpt = Hawk.get(HawkConfig.DOH_URL, 0);
@@ -178,11 +180,13 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, ""))) ||
-                !currentApi.equals(Hawk.get(HawkConfig.API_URL, "")) ||
+                !currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))  ||
+                !currentLive.equals(Hawk.get(HawkConfig.LIVE_URL, "")) ||
                 homeRec != Hawk.get(HawkConfig.HOME_REC, 0) ||
                 dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)) {
             AppManager.getInstance().finishAllActivity();
-            if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {
+            if (currentApi.equals(Hawk.get(HawkConfig.API_URL, "")) &
+                    (currentLive.equals(Hawk.get(HawkConfig.LIVE_URL, "")))) {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("useCache", true);
                 jumpActivity(HomeActivity.class, bundle);

@@ -1,8 +1,8 @@
 package com.github.tvbox.osc.bbox.server;
 
-import java.util.Map;
-
 import fi.iki.elonen.NanoHTTPD;
+
+import java.util.Map;
 
 /**
  * @author pj567
@@ -47,6 +47,14 @@ public class InputRequestProcess implements RequestProcess {
                         }
                         case "store": {
                             mDataReceiver.onStoreReceived(params.get("url").trim());
+                            break;
+                        }
+                        case "live": {
+                            mDataReceiver.onLiveReceived(params.get("url").trim());
+                            break;
+                        }
+                        case "epg": {
+                            mDataReceiver.onEpgReceived(params.get("url").trim());
                             break;
                         }
                         case "push": {

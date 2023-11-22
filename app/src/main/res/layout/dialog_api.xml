@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/vs_360"
+        android:layout_height="@dimen/vs_420"
         android:layout_gravity="center"
         android:background="@drawable/shape_dialog_bg_main"
         android:orientation="horizontal"
@@ -42,47 +42,96 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vs_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/apiHistory"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/vs_5"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:padding="@dimen/vs_10"
-                    android:text="配置历史"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/ts_22"
-                    android:visibility="gone" />
+                    android:layout_marginBottom="@dimen/vs_2"
+                    android:orientation="horizontal">
 
-                <TextView
-                android:id="@+id/storagePermission"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/vs_5"
-                android:layout_weight="1"
-                android:background="@drawable/button_dialog_main"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="@dimen/vs_10"
-                android:text="存储权限"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_22" />
+                <EditText
+                        android:id="@+id/epgInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_dialog_api_input"
+                        android:imeOptions="actionDone"
+                        android:nextFocusDown="@id/liveUlrInput"
+                        android:hint="请输入EPG地址"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/vs_2"
+                        android:paddingTop="@dimen/vs_10"
+                        android:paddingRight="@dimen/vs_2"
+                        android:paddingBottom="@dimen/vs_10"
+                        android:textColor="@color/color_CC000000"
+                        android:textColorHint="@color/color_6C3D3D3D"
+                        android:textSize="@dimen/ts_26" />
+
+                <LinearLayout
+                        android:id="@+id/EPGHistory"
+                        android:layout_width="@dimen/vs_80"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/vs_5"
+                        android:layout_marginLeft="@dimen/vs_5"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:nextFocusDown="@id/liveHistory"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/vs_10">
+
+                    <ImageView
+                            android:layout_width="@dimen/vs_30"
+                            android:layout_height="@dimen/vs_30"
+                            android:focusable="true"
+                            android:src="@drawable/icon_history" />
+                </LinearLayout>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/vs_0"
-                android:layout_weight="1" />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vs_2"
+                    android:orientation="horizontal">
+
+                <EditText
+                        android:id="@+id/liveUlrInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_dialog_api_input"
+                        android:imeOptions="actionDone"
+                        android:nextFocusDown="@id/input"
+                        android:hint="请输入直播源地址"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/vs_2"
+                        android:paddingTop="@dimen/vs_10"
+                        android:paddingRight="@dimen/vs_2"
+                        android:paddingBottom="@dimen/vs_10"
+                        android:textColor="@color/color_CC000000"
+                        android:textColorHint="@color/color_6C3D3D3D"
+                        android:textSize="@dimen/ts_26" />
+
+                <LinearLayout
+                        android:id="@+id/liveHistory"
+                        android:layout_width="@dimen/vs_80"
+                        android:layout_height="wrap_content"
+                        android:nextFocusDown="@id/apiHistory"
+                        android:layout_marginStart="@dimen/vs_5"
+                        android:layout_marginLeft="@dimen/vs_5"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/vs_10">
+
+                    <ImageView
+                            android:layout_width="@dimen/vs_30"
+                            android:layout_height="@dimen/vs_30"
+                            android:focusable="true"
+                            android:src="@drawable/icon_history" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,11 +140,12 @@
 
                 <EditText
                     android:id="@+id/input"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/input_dialog_api_input"
                     android:imeOptions="actionDone"
+                    android:nextFocusDown="@id/storagePermission"
                     android:hint="请输入配置地址"
                     android:inputType="text"
                     android:maxLines="1"
@@ -107,19 +157,83 @@
                     android:textColorHint="@color/color_6C3D3D3D"
                     android:textSize="@dimen/ts_26" />
 
-                <TextView
-                    android:id="@+id/inputSubmit"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                        android:id="@+id/apiHistory"
+                        android:layout_width="@dimen/vs_80"
+                        android:layout_height="wrap_content"
+                        android:nextFocusDown="@id/inputSubmit"
+                        android:layout_marginStart="@dimen/vs_5"
+                        android:layout_marginLeft="@dimen/vs_5"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/vs_10">
+
+                    <ImageView
+                            android:layout_width="@dimen/vs_30"
+                            android:layout_height="@dimen/vs_30"
+                            android:focusable="true"
+                            android:src="@drawable/icon_history" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_0"
+                    android:layout_weight="1" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/vs_5"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:padding="@dimen/vs_10"
-                    android:text="确定"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/ts_22" />
+                    android:layout_marginVertical="@dimen/vs_10"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:id="@+id/apiHistory1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/vs_5"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/vs_10"
+                        android:text="配置历史"
+                        android:textColor="@color/color_FFFFFF"
+                        android:textSize="@dimen/ts_22"
+                        android:visibility="gone" />
+
+                <TextView
+                        android:id="@+id/storagePermission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/vs_5"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/vs_10"
+                        android:text="存储权限"
+                        android:textColor="@color/color_FFFFFF"
+                        android:textSize="@dimen/ts_22" />
+
+                <TextView
+                        android:id="@+id/inputSubmit"
+                        android:layout_width="@dimen/vs_80"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/vs_5"
+                        android:background="@drawable/button_dialog_main"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/vs_10"
+                        android:text="确定"
+                        android:textColor="@color/color_FFFFFF"
+                        android:textSize="@dimen/ts_22" />
             </LinearLayout>
 
         </LinearLayout>

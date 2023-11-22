@@ -5,20 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.receiver.SearchReceiver;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.LOG;
 import com.orhanobut.hawk.Hawk;
-
 import org.greenrobot.eventbus.EventBus;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 /**
  * @author pj567
@@ -87,6 +81,16 @@ public class ControlManager {
                 @Override
                 public void onPushReceived(String url) {
                     EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_PUSH_URL, url));
+                }
+
+                @Override
+                public void onLiveReceived(String url) {
+                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_API_LIVE_URL, url));
+                }
+
+                @Override
+                public void onEpgReceived(String url) {
+                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_API_EPG_URL, url));
                 }
             });
             try {
