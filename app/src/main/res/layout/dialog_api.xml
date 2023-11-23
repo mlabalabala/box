@@ -16,6 +16,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center_vertical"
                 >
             <ImageView
                 android:id="@+id/ivQRCode"
@@ -25,9 +26,10 @@
                 android:focusable="false" />
             <TextView
                 android:id="@+id/tvAddress"
-                android:layout_width="@dimen/vs_300"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/vs_20"
                 android:textColor="@color/color_CC000000"
                 android:textSize="@dimen/ts_24"
                 tools:text="http://192.168.3.2:9978/" />
