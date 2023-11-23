@@ -23,9 +23,10 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
     private void showUpdatePrompt(final @NonNull UpdateEntity updateEntity, final @NonNull IUpdateProxy updateProxy) {
         String updateInfo = UpdateUtils.getDisplayUpdateInfo(updateProxy.getContext(), updateEntity);
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(updateProxy.getContext())
-            .setTitle(String.format("检测到新版本！是否下载？\n忽略后可手动检查更新", updateEntity.getVersionName()))
-            .setMessage(updateInfo)
+            .setTitle("检测到新版本！是否下载？\n忽略后可手动检查更新")
+            .setMessage(updateInfo + "\n下载链接: " + updateEntity.getDownloadUrl())
             .setPositiveButton("立即下载", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -43,6 +44,7 @@ public class CustomUpdatePrompter implements IUpdatePrompter {
 
                         @Override
                         public boolean onCompleted(File file) {
+                            // Toast.makeText(updateProxy.getContext(), "下载完成，正在跳转安装页面...", Toast.LENGTH_SHORT).show();
                             HProgressDialogUtils.cancel();
                             return true;
                         }

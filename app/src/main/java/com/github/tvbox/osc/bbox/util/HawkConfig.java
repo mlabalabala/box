@@ -53,6 +53,9 @@ public class HawkConfig {
     public static final String LIVE_URL = "live_url";
     public static final String LIVE_HISTORY = "live_history";
 
+    public static final String PROXY_URL = "proxy_url";
+    public static final String PROXY_URL_HISTORY = "proxy_url_history";
+
     public static boolean hotVodDelete;
 
 }

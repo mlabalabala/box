@@ -22,6 +22,10 @@ function epg() {
     doAction('epg', { url: $('#diy_epg_url').val() });
 }
 
+function proxy() {
+    doAction('proxy', { url: $('#diy_proxy_url').val() });
+}
+
 function doAction(action, kv) {
     kv['do'] = action;
     // alert(JSON.stringify(kv));

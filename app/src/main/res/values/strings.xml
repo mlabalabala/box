@@ -5,4 +5,5 @@
     <string name="dia_history_list">配置历史列表</string>
     <string name="dia_history_live">直播历史列表</string>
     <string name="dia_history_epg">EPG历史列表</string>
+    <string name="dia_proxy_epg">GITHUB代理历史列表</string>
 </resources>

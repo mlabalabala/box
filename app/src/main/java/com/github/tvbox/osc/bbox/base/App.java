@@ -6,6 +6,7 @@ import androidx.multidex.MultiDexApplication;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.callback.EmptyCallback;
 import com.github.tvbox.osc.bbox.callback.LoadingCallback;
+import com.github.tvbox.osc.bbox.constant.URL;
 import com.github.tvbox.osc.bbox.data.AppDataManager;
 import com.github.tvbox.osc.bbox.server.ControlManager;
 import com.github.tvbox.osc.bbox.util.*;
@@ -22,6 +23,8 @@ import me.jessyan.autosize.unit.Subunits;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
@@ -99,23 +102,69 @@ public class App extends MultiDexApplication {
         // Hawk
         Hawk.init(this).build();
 
+        putDefault(HawkConfig.DEBUG_OPEN, false);
+        putDefault(HawkConfig.PLAY_TYPE, 1);
+        putDefault(HawkConfig.HOME_REC, 1);
+        // 默认渲染方式：推荐手机使用0-texture，电视1-surface
+        putDefault(HawkConfig.PLAY_RENDER, 1);
+        putDefault(HawkConfig.IJK_CODEC, "硬解码");
+        putDefault(HawkConfig.HOME_REC_STYLE, false);// 首页多行
+
+        putDefault(HawkConfig.PROXY_URL, URL.DOMAIN_NAME_PROXY);
+        putDefaultApis();
+
+        /*
+        if (Hawk.contains(HawkConfig.AVAILABLE_PROXY_URL)) {
+            Checker.getInstance().checkProxy(isAvailable -> {
+                if (!isAvailable) {
+                    LOG.i("代理链接失效，删除缓存");
+                    Hawk.delete(HawkConfig.AVAILABLE_PROXY_URL);
+                    Checker.getInstance().getAllProxyUrls(url -> {
+                        if (!Hawk.contains(HawkConfig.AVAILABLE_PROXY_URL)) {
+                            LOG.i("更新代理链接" + url + "写入缓存");
+                            Hawk.put(HawkConfig.AVAILABLE_PROXY_URL, url);
+                            putDefaultApis(url);
+                        }
+                    });
+                }
+                else {
+                    LOG.i("代理链接依旧可用");
+                }
+            }, Hawk.get(HawkConfig.AVAILABLE_PROXY_URL, ""));
+        }
+        else {
+            Checker.getInstance().getAllProxyUrls(url -> {
+                if (!Hawk.contains(HawkConfig.AVAILABLE_PROXY_URL)) {
+                    LOG.i("将代理链接" + url + "写入缓存");
+                    Hawk.put(HawkConfig.AVAILABLE_PROXY_URL, url);
+                    putDefaultApis(url);
+                }
+            });
+        }
+        */
+    }
+
+    private void putDefaultApis() {
+        String url = URL.DOMAIN_NAME_PROXY;
+
+        // 默认加速历史记录
+        List<String> proxyUrlHistory = Hawk.get(HawkConfig.PROXY_URL_HISTORY, new ArrayList<>());
+        proxyUrlHistory.add(url);
+        proxyUrlHistory.add("https://github.moeyy.xyz/");
+        proxyUrlHistory.add("https://gh.ddlc.top/");
+        proxyUrlHistory.add("https://ghps.cc/");
+        proxyUrlHistory.add("https://raw.bunnylblbblbl.eu.org/");
         // 默认线路地址
         String defaultApiName = "自备份线路";
-        String defaultApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
+        String defaultApi = url + URL.DEFAULT_API_URL;
         // 默认仓库地址
-        // String defaultStoreApi = "https://raw.staticdn.net/mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        // String defaultStoreApi = "https://raw.gitmirror.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        // String defaultStoreApi = "https://ghproxy.com/https://raw.githubusercontent.com//mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        // String defaultStoreApi = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
-        String defaultStoreApi = "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
+        String defaultStoreApi = url + URL.DEFAULT_STORE_API_URL;
 
-        HashMap<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
+        Map<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
         defaultApiMap.put(defaultApiName, defaultApi);
 
-        ArrayList<String> defaultApiHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
+        List<String> defaultApiHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
         defaultApiHistory.add(defaultApiName);
-
-        Hawk.put(HawkConfig.DEBUG_OPEN, false);
 
         // 不添加默认线路
         // putDefault(HawkConfig.API_URL, defaultApi);
@@ -124,12 +173,7 @@ public class App extends MultiDexApplication {
         // putDefault(HawkConfig.API_MAP, defaultApiMap);
 
         putDefault(HawkConfig.DEFAULT_STORE_API, defaultStoreApi);
-        putDefault(HawkConfig.PLAY_TYPE, 1);
-        putDefault(HawkConfig.HOME_REC, 1);
-        // 默认渲染方式：推荐手机使用0-texture，电视1-surface
-        putDefault(HawkConfig.PLAY_RENDER, 1);
-        putDefault(HawkConfig.IJK_CODEC, "硬解码");
-        putDefault(HawkConfig.HOME_REC_STYLE, false);// 首页多行
+        putDefault(HawkConfig.PROXY_URL_HISTORY, proxyUrlHistory);
     }
 
     private void putDefault(String key, Object value) {

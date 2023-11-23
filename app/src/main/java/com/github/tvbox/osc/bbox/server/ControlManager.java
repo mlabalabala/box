@@ -92,6 +92,11 @@ public class ControlManager {
                 public void onEpgReceived(String url) {
                     EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_API_EPG_URL, url));
                 }
+
+                @Override
+                public void onProxyReceived(String url) {
+                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_PROXY_URL, url));
+                }
             });
             try {
                 mServer.start();

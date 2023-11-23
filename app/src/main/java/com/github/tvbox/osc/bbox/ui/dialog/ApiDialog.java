@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.github.tvbox.osc.bbox.R;
+import com.github.tvbox.osc.bbox.constant.URL;
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.server.ControlManager;
 import com.github.tvbox.osc.bbox.ui.activity.HomeActivity;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述
@@ -40,6 +42,7 @@ public class ApiDialog extends BaseDialog {
     private EditText inputApi;
     private EditText liveApi;
     private EditText epgApi;
+    private EditText proxyUrl;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refresh(RefreshEvent event) {
@@ -52,6 +55,9 @@ public class ApiDialog extends BaseDialog {
         else if (event.type == RefreshEvent.TYPE_API_EPG_URL){
             epgApi.setText((String) event.obj);
         }
+        else if (event.type == RefreshEvent.TYPE_PROXY_URL){
+            proxyUrl.setText((String) event.obj);
+        }
     }
 
     public ApiDialog(@NonNull @NotNull Context context) {
@@ -63,10 +69,12 @@ public class ApiDialog extends BaseDialog {
         inputApi = findViewById(R.id.input);
         liveApi = findViewById(R.id.liveUlrInput);
         epgApi = findViewById(R.id.epgInput);
+        proxyUrl = findViewById(R.id.proxyInput);
         //内置网络接口在此处添加
         inputApi.setText(Hawk.get(HawkConfig.API_URL, ""));
         liveApi.setText(Hawk.get(HawkConfig.LIVE_URL, ""));
         epgApi.setText(Hawk.get(HawkConfig.EPG_URL, ""));
+        proxyUrl.setText(Hawk.get(HawkConfig.PROXY_URL, ""));
 
         findViewById(R.id.inputSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +123,7 @@ public class ApiDialog extends BaseDialog {
                     if (liveHistory.size() > 20)
                         liveHistory.remove(20);
                     Hawk.put(HawkConfig.LIVE_HISTORY, liveHistory);
+                    dismiss();
                 }
 
                 String newEPG = epgApi.getText().toString().trim();
@@ -127,6 +136,21 @@ public class ApiDialog extends BaseDialog {
                     if (EPGHistory.size() > 20)
                         EPGHistory.remove(20);
                     Hawk.put(HawkConfig.EPG_HISTORY, EPGHistory);
+                    dismiss();
+                }
+
+                String newProxyUrl = proxyUrl.getText().toString().trim();
+                // Capture proxy input into Settings
+                Hawk.put(HawkConfig.PROXY_URL, newProxyUrl);
+                if (!newProxyUrl.isEmpty()) {
+                    putDefaultApis(newProxyUrl);
+                    ArrayList<String> proxyHistory = Hawk.get(HawkConfig.PROXY_URL_HISTORY, new ArrayList<String>());
+                    if (!proxyHistory.contains(newProxyUrl))
+                        proxyHistory.add(0, newProxyUrl);
+                    if (proxyHistory.size() > 20)
+                        proxyHistory.remove(20);
+                    Hawk.put(HawkConfig.PROXY_URL_HISTORY, proxyHistory);
+                    dismiss();
                 }
             }
         });
@@ -257,6 +281,31 @@ public class ApiDialog extends BaseDialog {
             }, EPGHistory, idx);
             dialog.show();
         });
+        findViewById(R.id.proxyHistory).setOnClickListener(v -> {
+            ArrayList<String> proxyHistory = Hawk.get(HawkConfig.PROXY_URL_HISTORY, new ArrayList<String>());
+            if (proxyHistory.isEmpty())
+                return;
+            String current = Hawk.get(HawkConfig.PROXY_URL, "");
+            int idx = 0;
+            if (proxyHistory.contains(current))
+                idx = proxyHistory.indexOf(current);
+            ApiHistoryDialog dialog = new ApiHistoryDialog(getContext());
+            dialog.setTip(HomeActivity.getRes().getString(R.string.dia_proxy_epg));
+            dialog.setAdapter(new ApiHistoryDialogAdapter.SelectDialogInterface() {
+                @Override
+                public void click(String proxyURL) {
+                    proxyUrl.setText(proxyURL);
+                    Hawk.put(HawkConfig.PROXY_URL, proxyURL);
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void del(String value, ArrayList<String> data) {
+                    Hawk.put(HawkConfig.PROXY_URL_HISTORY, data);
+                }
+            }, proxyHistory, idx);
+            dialog.show();
+        });
 
         findViewById(R.id.storagePermission).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,9 +339,32 @@ public class ApiDialog extends BaseDialog {
         refreshQRCode();
     }
 
+    private void putDefaultApis(String url) {
+        URL.DOMAIN_NAME_PROXY = url;
+        // 默认线路地址
+        String defaultApiName = "自备份线路";
+        String defaultApi = url + URL.DEFAULT_API_URL;
+        // 默认仓库地址
+        String defaultStoreApi = url + URL.DEFAULT_STORE_API_URL;
+
+        Map<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
+        defaultApiMap.put(defaultApiName, defaultApi);
+
+        List<String> defaultApiHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
+        defaultApiHistory.add(defaultApiName);
+
+        // 不添加默认线路
+        // putDefault(HawkConfig.API_URL, defaultApi);
+        // putDefault(HawkConfig.API_NAME, defaultApiName);
+        // putDefault(HawkConfig.API_NAME_HISTORY, defaultApiHistory);
+        // putDefault(HawkConfig.API_MAP, defaultApiMap);
+
+        Hawk.put(HawkConfig.DEFAULT_STORE_API, defaultStoreApi);
+    }
+
     private void refreshQRCode() {
         String address = ControlManager.get().getAddress(false);
-        tvAddress.setText(String.format("手机/电脑扫描上方二维码或者直接浏览器访问地址\n%s", address));
+        tvAddress.setText(address);
         ivQRCode.setImageBitmap(QRCodeGen.generateBitmap(address, AutoSizeUtils.mm2px(getContext(), 300), AutoSizeUtils.mm2px(getContext(), 300)));
     }
 

@@ -64,7 +64,7 @@ public class CustomUpdateChecker implements IUpdateChecker {
         }
     }
 
-    private void processUpdateEntity(UpdateEntity updateEntity, @NonNull String result, @NonNull IUpdateProxy updateProxy) throws Exception {
+    private void processUpdateEntity(UpdateEntity updateEntity, @NonNull String result, @NonNull IUpdateProxy updateProxy) {
         if (updateEntity != null) {
             if (updateEntity.isHasUpdate()) {
                 if (updateEntity.isIgnorable() && Hawk.get(HawkConfig.IS_IGNORE_VERSION, false)) {

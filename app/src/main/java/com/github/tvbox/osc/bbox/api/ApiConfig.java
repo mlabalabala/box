@@ -151,7 +151,7 @@ public class ApiConfig {
                     public void onSuccess(Response<String> response) {
                         try {
                             String json = response.body();
-                            LOG.i(json);
+                            // LOG.i(json);
                             parseJson(apiUrl, json);
                             try {
                                 File cacheDir = cache.getParentFile();

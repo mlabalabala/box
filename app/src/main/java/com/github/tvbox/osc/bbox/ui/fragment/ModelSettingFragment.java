@@ -303,7 +303,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
             storeApiDialog.show();
         });
 
-        findViewById(R.id.llApiHistory).setOnClickListener( v -> {
+         findViewById(R.id.llApiHistory).setOnClickListener( v -> {
             // ArrayList<String> apiHistory = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<>());
             // ArrayList<String> nameHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
             ArrayList<String> history = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());

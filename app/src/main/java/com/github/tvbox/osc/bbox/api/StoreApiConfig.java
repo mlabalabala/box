@@ -2,6 +2,7 @@ package com.github.tvbox.osc.bbox.api;
 
 import android.content.Context;
 import android.widget.Toast;
+import com.github.tvbox.osc.bbox.constant.URL;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.github.tvbox.osc.bbox.util.LOG;
 import com.google.gson.Gson;
@@ -60,7 +61,7 @@ public class StoreApiConfig {
         if (storeMap.isEmpty()) {
             Toast.makeText(context, "仓库为空，使用默认仓库", Toast.LENGTH_SHORT).show();
             String name = "自备份仓库";
-            String sotreApi = Hawk.get(HawkConfig.DEFAULT_STORE_API, "https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json");
+            String sotreApi = Hawk.get(HawkConfig.DEFAULT_STORE_API, Hawk.get(HawkConfig.PROXY_URL, "https://raw.bunnylblbblbl.eu.org/") + URL.DEFAULT_STORE_API_URL);
             storeMap.put(name, sotreApi);
             storeNameHistory.add(name);
             Hawk.put(HawkConfig.STORE_API_NAME_HISTORY, storeNameHistory);
