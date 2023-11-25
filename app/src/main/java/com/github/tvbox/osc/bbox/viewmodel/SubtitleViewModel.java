@@ -74,6 +74,7 @@ public class SubtitleViewModel extends ViewModel {
             String searchApiUrl = "https://secure.assrt.net/sub/";
             OkGo.<String>get(searchApiUrl)
                     .params("searchword", title)
+                    .params("sort", "rank")
                     .params("page", page)
                     .params("no_redir", "1")
                     .execute(new AbsCallback<String>() {
@@ -82,7 +83,7 @@ public class SubtitleViewModel extends ViewModel {
                             try {
                                 String content = response.body();
                                 Document doc = Jsoup.parse(content);
-                                Elements items = doc.select(".resultcard .subitem a.introtitle");
+                                Elements items = doc.select(".resultcard .sublist_box_title a.introtitle");
                                 List<Subtitle> data = new ArrayList<>();
                                 for (Element item : items) {
                                     String title = item.attr("title");

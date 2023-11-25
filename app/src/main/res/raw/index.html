@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
 	<meta name="wechat-enable-text-zoom-em" content="true">
-	<title>BBox</title>
+	<title>T V B O X</title>
 	<meta name="layoutmode" content="standard">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" type="text/css" href="ui.css">
@@ -18,7 +18,7 @@
 				<div id="panel1" role="tabpanel" aria-labelledby="tab1" class="weui-tab__panel">
 					<div class="weui-form">
 						<div class="weui-form__text-area">
-							<h2 class="weui-form__title">BBox . 搜索</h2>
+							<h2 class="weui-form__title">搜 索</h2>
 						</div>
 						<div class="weui-form__control-area">
 							<div class="weui-cells__group weui-cells__group_form">
@@ -39,7 +39,7 @@
 				<div id="panel2" role="tabpanel" aria-labelledby="tab2" class="weui-tab__panel" style="display: none;">
 					<div class="weui-form">
 						<div class="weui-form__text-area">
-							<h2 class="weui-form__title">BBox . 推送</h2>
+							<h2 class="weui-form__title">推 送</h2>
 						</div>
 						<div class="weui-form__control-area">
 							<div class="weui-cells__group weui-cells__group_form">
@@ -60,7 +60,7 @@
 				<div id="panel3" role="tabpanel" aria-labelledby="tab3" class="weui-tab__panel" style="display: none;">
 					<div class="weui-form" style="min-height: 0;">
 						<div class="weui-form__text-area">
-							<h2 class="weui-form__title">BBox . 接口</h2>
+							<h2 class="weui-form__title">接 口</h2>
 						</div>
 						<div class="weui-form__control-area" style="margin-bottom: 0px !important;">
 							<div class="weui-cells__group weui-cells__group_form">
@@ -75,10 +75,28 @@
 												class="weui-cell__control weui-btn weui-btn_default weui-vcode-btn">确定</button>
 											<h2 class="custom_title"></h2>
 											<input id="diy_api_url"
-												class="weui-input0 weui-cell__control weui-cell__control_flex input_container" type="text"
+												class="input_container weui-input0 weui-cell__control weui-cell__control_flex" type="text"
 												value="" placeholder="请输入自定义配置接口地址..." />
 											<button onclick="api(); return false;"
 												class="weui-cell__control weui-btn weui-btn_default weui-vcode-btn">确定</button>
+											<h2 class="custom_title"></h2>
+											<input id="diy_live_url"
+												   class="input_container weui-input0 weui-cell__control weui-cell__control_flex" type="text"
+												   value="" placeholder="请输入自定义直播源地址..." />
+											<button onclick="live(); return false;"
+													class="weui-cell__control weui-btn weui-btn_default weui-vcode-btn">确定</button>
+											<h2 class="custom_title"></h2>
+											<input id="diy_epg_url"
+												   class="input_container weui-input0 weui-cell__control weui-cell__control_flex" type="text"
+												   value="" placeholder="请输入自定义EPG地址..." />
+											<button onclick="epg(); return false;"
+													class="weui-cell__control weui-btn weui-btn_default weui-vcode-btn">确定</button>
+											<h2 class="custom_title"></h2>
+											<input id="diy_proxy_url"
+												   class="input_container weui-input0 weui-cell__control weui-cell__control_flex" type="text"
+												   value="" placeholder="请输入GITHUB加速地址..." />
+											<button onclick="proxy(); return false;"
+													class="weui-cell__control weui-btn weui-btn_default weui-vcode-btn">确定</button>
 										</div>
 									</div>
 								</div>

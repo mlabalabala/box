@@ -169,6 +169,7 @@ public class AbsJson implements Serializable {
         }
         movie.videoList = videoList;
         xml.movie = movie;
+        xml.msg = msg;
         return xml;
     }
 }

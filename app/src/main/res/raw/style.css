@@ -107,6 +107,7 @@ textarea {
 ::placeholder {
   color: rgba(0, 0, 0, 0.3);
   color: var(--weui-FG-2);
+  color: rgba(96, 96, 96, 0.5);
 }
 body {
   --weui-BG-0: #ededed;
@@ -1310,7 +1311,7 @@ input.weui-btn_mini {
   -webkit-appearance: none;
   background-color: transparent;
   font-size: inherit;
-  color: inherit;
+  color: gray;
   height: 1.41176471em;
   line-height: 1.41176471;
 }
@@ -2638,9 +2639,9 @@ page {
   line-height: 2;
   border-radius: 6px;
   color: #06ae56;
-  color: var(--weui-BTN-DEFAULT-COLOR);
+  /*color: var(--weui-BTN-DEFAULT-COLOR);*/
   background-color: #f2f2f2;
-  background-color: var(--weui-BTN-DEFAULT-BG);
+  /*background-color: var(--weui-BTN-DEFAULT-BG);*/
 }
 .weui-cells__group_form .weui-vcode-btn:before {
   display: none;

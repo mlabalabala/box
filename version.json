@@ -1,0 +1,6 @@
+{
+  "versionCode": 5,
+  "versionName": "0.0.0",
+  "desc": "播放页、详情页、按钮等UI修改；\n增加自定义直播源；\n添加自定义GITHUB加速站，可以选择速度快的镜像站来获取基础信息",
+  "forcedUpgrade": false
+}

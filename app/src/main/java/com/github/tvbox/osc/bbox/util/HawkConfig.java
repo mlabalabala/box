@@ -1,7 +1,5 @@
 package com.github.tvbox.osc.bbox.util;
 
-import java.util.HashMap;
-
 /**
  * @author pj567
  * @date :2020/12/23
@@ -19,9 +17,9 @@ public class HawkConfig {
     public static final String PARSE_WEBVIEW = "parse_webview"; // true 系统 false xwalk
     public static final String IJK_CODEC = "ijk_codec";
     public static final String PLAY_TYPE = "play_type";//0 系统 1 ijk 2 exo 10 MXPlayer
-    public static final String PLAY_RENDER = "play_render"; //0 texture 2
-    public static final String PLAY_SCALE = "play_scale"; //0 texture 2
-    public static final String PLAY_TIME_STEP = "play_time_step"; //0 texture 2
+    public static final String PLAY_RENDER = "play_render"; //0-texture 1-surface
+    public static final String PLAY_SCALE = "play_scale"; //参考VideoView
+    public static final String PLAY_TIME_STEP = "play_time_step"; //
     public static final String DOH_URL = "doh_url";
     public static final String HOME_REC = "home_rec"; // 0 豆瓣热播 1 数据源推荐 2 历史
     public static final String HISTORY_NUM = "history_num";
@@ -48,6 +46,15 @@ public class HawkConfig {
     public static final String STORE_API_NAME = "store_api_name";
     public static final String STORE_API_NAME_HISTORY = "store_api_name_history";
     public static final String STORE_API_MAP = "store_api_map";
+    public static final String DEFAULT_STORE_API = "default_store_api";
+    public static final String VERSION_INFO_STR = "version_info_str";
+    public static final String IS_IGNORE_VERSION = "is_ignore_version";
+
+    public static final String LIVE_URL = "live_url";
+    public static final String LIVE_HISTORY = "live_history";
+
+    public static final String PROXY_URL = "proxy_url";
+    public static final String PROXY_URL_HISTORY = "proxy_url_history";
 
     public static boolean hotVodDelete;
 

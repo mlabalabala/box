@@ -14,20 +14,32 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                outputFileName =  "SHJ_BBox.apk"
+            def oldFile = output.outputFile
+            def newName = '';
+            //只有release编译时生效
+            if(variant.buildType.name.equals('release')){
+                // APK输出文件名规则：极剪-版本名-.apk
+//                def releaseApkName = "app_${variant.buildType.name}.apk"
+                def releaseApkName = "Jade_SHJ_${releaseTime()}_${variant.buildType.name}.apk"
+                // 设置apk输出文件夹
+                output.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/Release")
+                // 设置apk输出文件名
+                output.outputFileName = releaseApkName
             }
+//            def outputFile = output.outputFile
+//            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                outputFileName = "玉幂草_SHJ_${releaseTime()}_{$buildTypes}.apk"
+//            }
         }
     }
 
     defaultConfig {
-        applicationId 'com.github.tvbox.osc.bbox'
+        applicationId 'org.eu.bunnyabc.box'
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
-        versionCode 1
-        versionName '666999'
+        versionCode 5
+        versionName '0.0.0'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -56,7 +68,7 @@ android {
             minifyEnabled true
 
             ndk {
-                abiFilters 'armeabi-v7a', 'x86_64', 'x86'
+                abiFilters 'armeabi-v7a'
             }
         }
     }
@@ -79,10 +91,14 @@ android {
     }
 }
 
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
 
-
+//    implementation 'com.github.xuexiangjys:XUpdate:2.1.2' // 版本更新
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'androidx.appcompat:appcompat:1.3.0'
@@ -91,6 +107,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation files('libs/thunder.jar')
     implementation files('libs/commons-lang3-3.12.0.jar')
+    implementation files('libs/xupdate-lib-release.aar')
 
     implementation 'com.squareup.okhttp3:okhttp:3.12.11'
     annotationProcessor 'androidx.room:room-compiler:2.3.0'

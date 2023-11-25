@@ -14,6 +14,18 @@ function store() {
     doAction('store', { url: $('#diy_store_url').val() });
 }
 
+function live() {
+    doAction('live', { url: $('#diy_live_url').val() });
+}
+
+function epg() {
+    doAction('epg', { url: $('#diy_epg_url').val() });
+}
+
+function proxy() {
+    doAction('proxy', { url: $('#diy_proxy_url').val() });
+}
+
 function doAction(action, kv) {
     kv['do'] = action;
     // alert(JSON.stringify(kv));
