@@ -51,6 +51,7 @@ public class App extends MultiDexApplication {
         EpgUtil.init();
         // 初始化Web服务器
         ControlManager.init(this);
+        LOG.i("Web服务器初始化完成！");
         // 初始化数据库
         AppDataManager.init();
         LoadSir.beginBuilder()
@@ -111,6 +112,10 @@ public class App extends MultiDexApplication {
         putDefault(HawkConfig.HOME_REC_STYLE, false);// 首页多行
 
         putDefault(HawkConfig.PROXY_URL, URL.DOMAIN_NAME_PROXY);
+        // 默认换台反转
+        putDefault(HawkConfig.LIVE_CHANNEL_REVERSE, true);
+        // 默认显示时间
+        putDefault(HawkConfig.LIVE_SHOW_TIME, true);
         putDefaultApis();
 
         /*

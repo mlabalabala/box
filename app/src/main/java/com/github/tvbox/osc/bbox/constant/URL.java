@@ -15,6 +15,8 @@ public class URL {
     public static final String DEFAULT_API_URL = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
     // 默认仓库线路
     public static final String DEFAULT_STORE_API_URL = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
+    // 默认直播线路
+    public static final String DEFAULT_LIVE_URL = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/live.txt";
 
 
 }

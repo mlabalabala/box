@@ -27,6 +27,7 @@ import com.github.tvbox.osc.bbox.base.BaseActivity;
 import com.github.tvbox.osc.bbox.bean.*;
 import com.github.tvbox.osc.bbox.player.controller.LiveController;
 import com.github.tvbox.osc.bbox.ui.adapter.*;
+import com.github.tvbox.osc.bbox.ui.dialog.ApiDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.ApiHistoryDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.LivePasswordDialog;
 import com.github.tvbox.osc.bbox.ui.tv.widget.ViewObj;
@@ -46,6 +47,7 @@ import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -325,6 +327,9 @@ public class LivePlayActivity extends BaseActivity {
                 return false;
             }
         });
+        // 作为直播播放器需要使用
+        // ApiConfig.get().onlyLoadLive();
+        // ControlManager.get().startServer();
         initEpgDateView();
         initEpgListView();
         initDayList();
@@ -1449,7 +1454,7 @@ public class LivePlayActivity extends BaseActivity {
             case 3://超时换源
                 Hawk.put(HawkConfig.LIVE_CONNECT_TIMEOUT, position);
                 break;
-            case 4://超时换源
+            case 4://偏好设置
                 boolean select = false;
                 switch (position) {
                     case 0:
@@ -1476,6 +1481,19 @@ public class LivePlayActivity extends BaseActivity {
             case 5:// 直播历史 takagen99 : Live History
                 switch (position) {
                     case 0:
+
+                        ApiDialog dlg = new ApiDialog(LivePlayActivity.this);
+                        EventBus.getDefault().register(dlg);
+                        dlg.setOnListener(url -> {
+                        });
+                        dlg.setOnDismissListener(dialog1 -> {
+                            this.hideSysBar();
+                            EventBus.getDefault().unregister(dialog1);
+                        });
+                        dlg.show();
+                        break;
+                    case 1:
+
                         // takagen99 : Added Live History list selection - 直播列表
                         ArrayList<String> liveHistory = Hawk.get(HawkConfig.LIVE_HISTORY, new ArrayList<String>());
                         if (liveHistory.isEmpty())
@@ -1630,7 +1648,7 @@ public class LivePlayActivity extends BaseActivity {
         ArrayList<String> playerDecoderItems = new ArrayList<>(Arrays.asList("系统", "ijk硬解", "ijk软解", "exo"));
         ArrayList<String> timeoutItems = new ArrayList<>(Arrays.asList("5s", "10s", "15s", "20s", "25s", "30s"));
         ArrayList<String> personalSettingItems = new ArrayList<>(Arrays.asList("显示时间", "显示网速", "换台反转", "跨选分类"));
-        ArrayList<String> liveAdd = new ArrayList<>(Arrays.asList("列表历史"));
+        ArrayList<String> liveAdd = new ArrayList<>(Arrays.asList("线路配置", "列表历史"));
         ArrayList<String> exitConfirm = new ArrayList<>(Arrays.asList("确定"));
         itemsArrayList.add(sourceItems);
         itemsArrayList.add(scaleItems);
