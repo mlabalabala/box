@@ -1,7 +1,7 @@
 # Jade box
 
-### [手机版](https://github.com/mlabalabala/TVBoxOS-Mobile)
-### [TV版](https://github.com/mlabalabala/box)
+### [竖屏版](https://github.com/mlabalabala/TVBoxOS-Mobile)
+### [横屏版](https://github.com/mlabalabala/box)
 ###
 #### 源项目
 #### https://github.com/CatVodTVOfficial/TVBoxOSC
@@ -11,7 +11,7 @@
 #### https://github.com/CatVodTVOfficial/TVBoxOSC
 #### https://github.com/q215613905/TVBoxOS
 #### https://github.com/takagen99/Box
-#### [手机版源项目    https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile](https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile)
+#### [竖屏版源项目    https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile](https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile)
 
 ---
 #### 数据源参考
