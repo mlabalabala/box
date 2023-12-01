@@ -61,7 +61,8 @@ TVBox 简易修改 多源版本 支持安卓4.4
 - 默认线路位置 ```app/src/main/java/com/github/tvbox/osc/bbox/constant/URL.java```
 
 - [自建仓库](https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default)
-- 蓝奏云限制分享apk文件，大家自行打包吧 。放一个链接，有办法的同学可以自己下载吧[**码：6111**](https://bunny6111.lanzouq.com/b04whwgwj)
+- 蓝奏云限制分享apk文件，大家自行打包吧 。放一个链接，有办法的同学可以自己下载吧 [**码：6111**](https://bunny6111.lanzouq.com/b04whwgwj)
+- 蓝奏云中LIVE版自用即可，可开机自启，直播资源来源于网络，可以自定义配置直播源（配置完需要重启应用生效）
 ### 测试可能不太够，有BUG请提issue
 ### Actions中有生成脚本
 
