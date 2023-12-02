@@ -11,6 +11,17 @@
         android:id="@+id/mVideoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+	<TextView
+			android:id="@+id/numberTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:visibility="gone"
+			android:text="011"
+			android:textColor="@color/color_FFFFFF_70"
+			tools:visibility="visible"
+			android:textSize="@dimen/vs_200"/>
 	<LinearLayout
 
 		android:layout_gravity="bottom|center"
@@ -111,7 +122,6 @@
 			android:id="@+id/ll_typeSelect"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
-			android:layout_margin="20dp"
 			android:background="@drawable/bg_channel_list"
 			android:baselineAligned="false"
 			android:padding="0dp">
@@ -728,7 +738,7 @@
 			android:layout_width="@dimen/vs_40"
 			android:layout_height="@dimen/vs_40"
 			android:layout_marginRight="@dimen/vs_10"
-			android:src="@drawable/app_icon"
+			android:src="@drawable/icon_loading"
 			android:layout_alignParentTop="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true" />
@@ -742,38 +752,39 @@
 			android:layout_alignBottom="@+id/iv_circle_bg" />
 
 		<com.github.tvbox.osc.bbox.ui.tv.widget.MarqueeTextView
-			android:id="@+id/tv_right_top_channel_name"
-			android:layout_width="@dimen/vs_150"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:layout_marginEnd="@dimen/vs_5"
-			android:layout_marginRight="@dimen/vs_5"
-			android:layout_toStartOf="@+id/iv_circle_bg"
-			android:layout_toLeftOf="@+id/iv_circle_bg"
-			android:ellipsize="marquee"
-			android:gravity="center"
-			android:marqueeRepeatLimit="marquee_forever"
-			android:singleLine="true"
-			android:text="测试频道"
-			android:textColor="#FFFCFFFF"
-			android:textSize="@dimen/vs_30" />
+				android:id="@+id/tv_right_top_channel_name"
+				android:layout_width="@dimen/vs_150"
+				android:layout_height="match_parent"
+				android:layout_alignParentTop="true"
+				android:layout_marginEnd="@dimen/vs_5"
+				android:layout_marginRight="@dimen/vs_5"
+				android:layout_toStartOf="@+id/iv_circle_bg"
+				android:layout_toLeftOf="@+id/iv_circle_bg"
+				android:ellipsize="marquee"
+				android:gravity="center"
+				android:marqueeRepeatLimit="marquee_forever"
+				android:singleLine="true"
+				android:text="测试频道"
+				android:textColor="#FFFCFFFF"
+				android:textSize="@dimen/vs_30"/>
 
 		<TextView
-			android:id="@+id/tv_right_top_tipnetspeed"
-			android:layout_width="@dimen/vs_150"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_gravity="center"
-			android:layout_marginEnd="@dimen/vs_5"
-			android:layout_marginRight="@dimen/vs_5"
-			android:layout_toStartOf="@+id/iv_circle_bg"
-			android:layout_toLeftOf="@+id/iv_circle_bg"
-			android:gravity="center"
-			android:singleLine="true"
-			android:text=""
-			tools:text="0Kb/s"
-			android:textColor="#FFFCFFFF"
-			android:textSize="@dimen/vs_20" />
+				android:id="@+id/tv_right_top_tipnetspeed"
+				android:layout_width="@dimen/vs_150"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_gravity="center"
+				android:layout_marginEnd="@dimen/vs_5"
+				android:layout_marginRight="@dimen/vs_5"
+				android:layout_toStartOf="@+id/iv_circle_bg"
+				android:layout_toLeftOf="@+id/iv_circle_bg"
+				android:gravity="center"
+				android:singleLine="true"
+				android:text=""
+				android:visibility="invisible"
+				tools:text="0Kb/s"
+				android:textColor="#FFFCFFFF"
+				android:textSize="@dimen/vs_20"/>
 	</RelativeLayout>
 
 

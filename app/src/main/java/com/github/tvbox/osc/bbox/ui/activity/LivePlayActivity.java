@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -31,16 +32,13 @@ import com.github.tvbox.osc.bbox.ui.dialog.ApiDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.ApiHistoryDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.LivePasswordDialog;
 import com.github.tvbox.osc.bbox.ui.tv.widget.ViewObj;
-import com.github.tvbox.osc.bbox.util.EpgUtil;
-import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
-import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.PlayerHelper;
+import com.github.tvbox.osc.bbox.util.*;
 import com.github.tvbox.osc.bbox.util.live.TxtSubscribe;
 import com.github.tvbox.osc.bbox.util.urlhttp.CallBackUtil;
 import com.github.tvbox.osc.bbox.util.urlhttp.UrlHttpUtil;
 import com.google.gson.JsonArray;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
@@ -92,7 +90,7 @@ public class LivePlayActivity extends BaseActivity {
     private LivePlayerManager livePlayerManager = new LivePlayerManager();
     private ArrayList<Integer> channelGroupPasswordConfirmed = new ArrayList<>();
 
-//EPG   by 龍
+    //EPG   by 龍
     private static LiveChannelItem  channel_Name = null;
     private static Hashtable hsEpg = new Hashtable();
     private CountDownTimer countDownTimer;
@@ -233,6 +231,7 @@ public class LivePlayActivity extends BaseActivity {
         iv_playpause = findViewById(R.id.iv_playpause);
         iv_play = findViewById(R.id.iv_play);
 
+        numberTextView = findViewById(R.id.numberTextView);
 
         if(show){
             backcontroller.setVisibility(View.VISIBLE);
@@ -328,7 +327,7 @@ public class LivePlayActivity extends BaseActivity {
             }
         });
         // 作为直播播放器需要使用
-        // ApiConfig.get().onlyLoadLive();
+        // ApiConfig.get().onlyLoadBaseConfig();
         // ControlManager.get().startServer();
         initEpgDateView();
         initEpgListView();
@@ -404,7 +403,6 @@ public class LivePlayActivity extends BaseActivity {
 
                 ArrayList arrayList = new ArrayList();
 
-                Log.d("返回的EPG信息", paramString);
                 try {
                     if (paramString.contains("epg_data")) {
                         final JSONArray jSONArray = new JSONObject(paramString).optJSONArray("epg_data");
@@ -417,14 +415,18 @@ public class LivePlayActivity extends BaseActivity {
                             }
                     }
 
+                    showEpg(date, arrayList);
+                    String savedEpgKey = channelName + "_" + liveEpgDateAdapter.getItem(liveEpgDateAdapter.getSelectedIndex()).getDatePresented();
+                    if (!hsEpg.contains(savedEpgKey))
+                        hsEpg.put(savedEpgKey, arrayList);
+                    // showBottomEpg();
                 } catch (JSONException jSONException) {
                     jSONException.printStackTrace();
                 }
-                showEpg(date, arrayList);
-                String savedEpgKey = channelName + "_" + liveEpgDateAdapter.getItem(liveEpgDateAdapter.getSelectedIndex()).getDatePresented();
-                if (!hsEpg.contains(savedEpgKey))
-                    hsEpg.put(savedEpgKey, arrayList);
-                // showBottomEpg();
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
@@ -562,10 +564,30 @@ public class LivePlayActivity extends BaseActivity {
         }
     }
 
+    private TextView numberTextView;
+    private String enteredNumber = "";
+
+
+    private void changeChannel(String channelNumber) {
+        numberTextView.setVisibility(View.GONE);
+        enteredNumber = "";
+        if (StringUtils.isBlank(channelNumber)) return;
+
+        int cn = Integer.parseInt(channelNumber) - 1;
+        LOG.i("台号：" + cn);
+        LOG.i("liveChannelGroupList：" + liveChannelGroupList.size());
+        List<LiveChannelItem> liveChannels = liveChannelGroupList.get(currentChannelGroupIndex).getLiveChannels();
+        LOG.i("liveChannels：" + liveChannelGroupList.get(0).getLiveChannels().size());
+        if (cn < liveChannels.size()) {
+            playChannel(currentChannelGroupIndex, cn, false);
+        }
+    }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             int keyCode = event.getKeyCode();
+            LOG.i(String.valueOf(keyCode));
             if (keyCode == KeyEvent.KEYCODE_MENU) {
                 showSettingGroup();
             } else if (!isListOrSettingLayoutVisible()) {
@@ -596,14 +618,45 @@ public class LivePlayActivity extends BaseActivity {
                             playNextSource();
                         }
                         break;
+                    case KeyEvent.KEYCODE_0:
+                    case KeyEvent.KEYCODE_1:
+                    case KeyEvent.KEYCODE_2:
+                    case KeyEvent.KEYCODE_3:
+                    case KeyEvent.KEYCODE_4:
+                    case KeyEvent.KEYCODE_5:
+                    case KeyEvent.KEYCODE_6:
+                    case KeyEvent.KEYCODE_7:
+                    case KeyEvent.KEYCODE_8:
+                    case KeyEvent.KEYCODE_9:
+                        // 拼接数字并更新TextView
+                        if (enteredNumber.length() < 3) {
+                            numberTextView.setVisibility(View.VISIBLE);
+                            enteredNumber += (keyCode - KeyEvent.KEYCODE_0);
+                            numberTextView.setText(enteredNumber);
+                        }
+
+                        mHandler.removeCallbacksAndMessages(null); // 移除之前的延迟任务
+                        if (enteredNumber.length() == 3) {
+                            mHandler.postDelayed(()-> changeChannel(enteredNumber), 100);
+                        }
+                        mHandler.postDelayed(()-> changeChannel(enteredNumber), 1000 * 3);
+                        break;
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
                     case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                        showChannelList();
+                        if (View.VISIBLE == numberTextView.getVisibility())
+                        {
+                            mHandler.removeCallbacksAndMessages(null); // 移除之前的延迟任务
+                            changeChannel(enteredNumber);
+                        }
+                        else {
+                            showChannelList();
+                        }
                         break;
                 }
             }
         } else if (event.getAction() == KeyEvent.ACTION_UP) {
+
         }
         return super.dispatchKeyEvent(event);
     }
@@ -735,7 +788,7 @@ public class LivePlayActivity extends BaseActivity {
     private boolean playChannel(int channelGroupIndex, int liveChannelIndex, boolean changeSource) {
         if ((channelGroupIndex == currentChannelGroupIndex && liveChannelIndex == currentLiveChannelIndex && !changeSource)
                 || (changeSource && currentLiveChannelItem.getSourceNum() == 1)) {
-           // showChannelInfo();
+            // showChannelInfo();
             return true;
         }
         mVideoView.release();
@@ -760,7 +813,7 @@ public class LivePlayActivity extends BaseActivity {
         backcontroller.setVisibility(View.GONE);
         ll_right_top_huikan.setVisibility(View.GONE);
         mVideoView.setUrl(currentLiveChannelItem.getUrl());
-       // showChannelInfo();
+        // showChannelInfo();
         mVideoView.start();
         return true;
     }
@@ -1031,7 +1084,7 @@ public class LivePlayActivity extends BaseActivity {
                     sBar = (SeekBar) findViewById(R.id.pb_progressbar);
                     sBar.setMax(shiyi_time_c*1000);
                     sBar.setProgress((int)  mVideoView.getCurrentPosition());
-                   // long dd = mVideoView.getDuration();
+                    // long dd = mVideoView.getDuration();
                     tv_currentpos.setText(durationToString((int)mVideoView.getCurrentPosition()));
                     tv_duration.setText(durationToString(shiyi_time_c*1000));
                     showProgressBars(true);
@@ -1175,7 +1228,7 @@ public class LivePlayActivity extends BaseActivity {
         });
         controller.setCanChangePosition(false);
         controller.setEnableInNormal(true);
-        controller.setGestureEnabled(true);
+        controller.setGestureEnabled(false);
         controller.setDoubleTapTogglePlayEnabled(false);
         mVideoView.setVideoController(controller);
         mVideoView.setProgressManager(null);
@@ -1513,6 +1566,7 @@ public class LivePlayActivity extends BaseActivity {
                                     liveURL = Base64.encodeToString(liveURL.getBytes("UTF-8"), Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP);
                                     liveURL = "http://127.0.0.1:9978/proxy?do=live&type=txt&ext=" + liveURL;
                                     loadProxyLives(liveURL);
+                                    // reload();
                                 } catch (Throwable th) {
                                     th.printStackTrace();
                                 }
@@ -1540,11 +1594,24 @@ public class LivePlayActivity extends BaseActivity {
         mHandler.postDelayed(mHideSettingLayoutRun, 5000);
     }
 
+    /**
+     * 重启activity
+     */
+    private void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
+
     private void initLiveChannelList() {
         List<LiveChannelGroup> list = ApiConfig.get().getChannelGroupList();
         if (list.isEmpty()) {
-            Toast.makeText(App.getInstance(), "频道列表为空", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(App.getInstance(), "频道列表为空，读取本地文件", Toast.LENGTH_SHORT).show();
+            loadLives();
             return;
         }
 
@@ -1559,6 +1626,34 @@ public class LivePlayActivity extends BaseActivity {
         }
     }
 
+    public void loadLives() {
+        LOG.e("LOADING LOCAL FILE!");
+        JsonArray livesArray;
+        LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap = new LinkedHashMap<>();
+        TxtSubscribe.parse(linkedHashMap, FileUtils.readRawFile(R.raw.live));
+        livesArray = TxtSubscribe.live2JsonArray(linkedHashMap);
+
+        ApiConfig.get().loadLives(livesArray);
+        List<LiveChannelGroup> list = ApiConfig.get().getChannelGroupList();
+        if (list.isEmpty()) {
+            Toast.makeText(App.getInstance(), "频道列表为空", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        liveChannelGroupList.clear();
+        liveChannelGroupList.addAll(list);
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                LivePlayActivity.this.showSuccess();
+                initLiveState();
+            }
+        });
+
+    }
+
     public void loadProxyLives(String url) {
         try {
             Uri parsedUrl = Uri.parse(url);
@@ -1569,15 +1664,17 @@ public class LivePlayActivity extends BaseActivity {
             return;
         }
         showLoading();
-        OkGo.<String>get(url).execute(new AbsCallback<String>() {
+        OkGo.<String>get(url).execute(new StringCallback() {
 
             @Override
-            public String convertResponse(okhttp3.Response response) throws Throwable {
-                return response.body().string();
+            public void onError(Response<String> response) {
+                super.onError(response);
+                loadLives();
             }
 
             @Override
             public void onSuccess(Response<String> response) {
+                LOG.i("SUCCESS!");
                 JsonArray livesArray;
                 LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap = new LinkedHashMap<>();
                 TxtSubscribe.parse(linkedHashMap, response.body());
@@ -1601,7 +1698,9 @@ public class LivePlayActivity extends BaseActivity {
                     }
                 });
             }
+
         });
+
     }
 
     private void initLiveState() {
