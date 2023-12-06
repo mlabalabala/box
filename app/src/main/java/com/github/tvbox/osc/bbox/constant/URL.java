@@ -13,6 +13,7 @@ public class URL {
     // https://raw.bunnylblbblbl.eu.org/https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json
     // 默认线路
     public static final String DEFAULT_API_URL = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/default";
+    // public static final String DEFAULT_API_URL = "https://raw.githubusercontent.com/gaotianliuyun/gao/master/0821.json";
     // 默认仓库线路
     public static final String DEFAULT_STORE_API_URL = "https://raw.githubusercontent.com/mlabalabala/TVResource/main/boxCfg/ori_source.json";
     // 默认直播线路

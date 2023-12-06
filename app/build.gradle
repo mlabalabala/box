@@ -38,7 +38,7 @@ android {
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
-        versionCode 6
+        versionCode 7
         versionName '0.0.0'
         multiDexEnabled true
         //设置room的Schema的位置

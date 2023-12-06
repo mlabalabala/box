@@ -4,6 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+            android:id="@+id/dialog_tv_slide_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_progressbar_bg"
+            android:orientation="horizontal"
+            android:tag="dialog_slide_progress"
+            android:padding="@dimen/vs_20"
+            tools:visibility="visible"
+            android:visibility="gone">
+
+        <ImageView
+                android:id="@+id/dialog_tv_slide_progress_img"
+                android:layout_width="@dimen/vs_30"
+                android:layout_height="@dimen/vs_30"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/vs_30"
+                android:layout_marginEnd="@dimen/vs_30"
+                android:alpha="0.9"
+                android:tag="progressbar_slide_progress_img"
+                android:src="@drawable/play_brightness" />
+
+        <ProgressBar
+                android:id="@+id/dialog_tv_slide_progress_txt"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/play_progress_horizontal"
+                android:layout_width="@dimen/vs_150"
+                android:layout_height="@dimen/vs_5"
+                android:layout_gravity="center"
+                android:max="100"
+                android:tag="progressbar_slide_progress" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/tv_pause_container"
         android:layout_width="match_parent"
