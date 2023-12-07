@@ -36,6 +36,7 @@
         <activity
             android:name=".ui.activity.HomeActivity"
             android:screenOrientation="sensorLandscape">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +47,8 @@
 
         <activity
             android:name=".ui.activity.LivePlayActivity"
-            android:screenOrientation="sensorLandscape" />
+            android:screenOrientation="sensorLandscape" >
+        </activity>
         <activity
             android:name=".ui.activity.DetailActivity"
             android:configChanges="orientation|screenSize"

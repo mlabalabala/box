@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.server.ControlManager;
-import com.github.tvbox.osc.bbox.util.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
@@ -494,5 +493,21 @@ public class FileUtils {
             }
         }
         return;
+    }
+
+    public static String readRawFile(int id) {
+        StringBuilder tv = new StringBuilder();
+        try {
+            InputStream is = App.getInstance().getResources().openRawResource(id);
+            InputStreamReader isr = new InputStreamReader(is,"UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            String str = "";
+            while((str = br.readLine()) != null){
+                tv.append(str).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tv.toString();
     }
 }

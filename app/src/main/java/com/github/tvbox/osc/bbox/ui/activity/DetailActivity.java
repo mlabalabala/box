@@ -516,7 +516,8 @@ public class DetailActivity extends BaseActivity {
         }
         w += 32;
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth()/3;
-        int offset = screenWidth/w;
+        int playViewWidth = llPlayerPlace.getWidth();
+        int offset = (screenWidth-playViewWidth)/w;
         if(offset <=2) offset =2;
         if(offset > 6) offset =6;
         mGridViewLayoutMgr.setSpanCount(offset);
