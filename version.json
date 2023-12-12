@@ -1,6 +1,6 @@
 {
   "versionCode": 6,
   "versionName": "0.0.0",
-  "desc": "- 直播相关更新，UI调整，支持自定义直播源，数字按钮换台，直播页bug修改",
+  "desc": "- 支持m3u格式直播源\n- 包名更改为tv.org.eu.bunnyabc（更新后会与之前版本共存，需要手动卸载旧版本）",
   "forcedUpgrade": false
 }
