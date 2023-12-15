@@ -1,6 +1,6 @@
 {
-  "versionCode": 6,
+  "versionCode": 8,
   "versionName": "0.0.0",
-  "desc": "- 支持m3u格式直播源\n- 包名更改为tv.org.eu.bunnyabc（更新后会与之前版本共存，需要手动卸载旧版本）",
+  "desc": "- 支持m3u格式直播源\n- 包名更改为tv.org.eu.bunnyabc（更新后会与之前版本共存，需要手动卸载旧版本）\n- 适配饭阿里？可能",
   "forcedUpgrade": false
 }
