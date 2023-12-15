@@ -4,36 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
-
-import android.util.Base64;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
-import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.event.ServerEvent;
 import com.github.tvbox.osc.bbox.util.FileUtils;
 import com.github.tvbox.osc.bbox.util.OkGoHelper;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
+import fi.iki.elonen.NanoHTTPD;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.*;
-import java.net.*;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import fi.iki.elonen.NanoHTTPD;
 
 /**
  * @author pj567
@@ -47,6 +39,8 @@ public class RemoteServer extends NanoHTTPD {
     private DataReceiver mDataReceiver;
     private ArrayList<RequestProcess> getRequestList = new ArrayList<>();
     private ArrayList<RequestProcess> postRequestList = new ArrayList<>();
+
+    public static String m3u8Content;
 
     public RemoteServer(int port, Context context) {
         super(port);
@@ -97,22 +91,32 @@ public class RemoteServer extends NanoHTTPD {
                     }
                 }
                 if (fileName.equals("/proxy")) {
-                    Map<String, String> params = session.getParms();
+                    Map < String, String > params = session.getParms();
+                    params.putAll(session.getHeaders());
+                    params.put("request-headers", new Gson().toJson(session.getHeaders()));
                     if (params.containsKey("do")) {
                         Object[] rs = ApiConfig.get().proxyLocal(params);
-                        try {
-                            int code = (int) rs[0];
-                            String mime = (String) rs[1];
-                            InputStream stream = rs[2] != null ? (InputStream) rs[2] : null;
-                            Response response = NanoHTTPD.newChunkedResponse(
-                                    NanoHTTPD.Response.Status.lookup(code),
-                                    mime,
-                                    stream
-                            );
-                            return response;
-                        } catch (Throwable th) {
-                            return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "500");
+                        //if (rs[0] instanceof Response) {
+                        //    return (Response) rs[0];
+                        //}
+                        int code = (int) rs[0];
+                        String mime = (String) rs[1];
+                        InputStream stream = rs[2] != null ? (InputStream) rs[2] : null;
+                        Response response = NanoHTTPD.newChunkedResponse(
+                                NanoHTTPD.Response.Status.lookup(code),
+                                mime,
+                                stream);
+                        if (rs.length > 3) {
+                            try {
+                                HashMap < String, String > headers = (HashMap < String, String > ) rs[3];
+                                for (String key: headers.keySet()) {
+                                    response.addHeader(key, headers.get(key));
+                                }
+                            } catch (Throwable th) {
+                                th.printStackTrace();
+                            }
                         }
+                        return response;
                     }
                 } else if (fileName.startsWith("/file/")) {
                     try {
@@ -141,22 +145,9 @@ public class RemoteServer extends NanoHTTPD {
                         rs = new byte[0];
                     }
                     return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, "application/dns-message", new ByteArrayInputStream(rs), rs.length);
-                } else if (fileName.startsWith("/push/")) {
-                    String url = fileName.substring(6);
-                    if (url.startsWith("b64:")) {
-                        try {
-                            url = new String(Base64.decode(url.substring(4), Base64.DEFAULT | Base64.URL_SAFE | Base64.NO_WRAP), "UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        url = URLDecoder.decode(url);
-                    }
-                    EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_PUSH_URL, url));
-                    return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, "ok");
                 }
             } else if (session.getMethod() == Method.POST) {
-                Map<String, String> files = new HashMap<String, String>();
+                Map < String, String > files = new HashMap < String, String > ();
                 try {
                     if (session.getHeaders().containsKey("content-type")) {
                         String hd = session.getHeaders().get("content-type");
@@ -177,24 +168,23 @@ public class RemoteServer extends NanoHTTPD {
                 } catch (NanoHTTPD.ResponseException rex) {
                     return createPlainTextResponse(rex.getStatus(), rex.getMessage());
                 }
-                for (RequestProcess process : postRequestList) {
+                for (RequestProcess process: postRequestList) {
                     if (process.isRequest(session, fileName)) {
                         return process.doResponse(session, fileName, session.getParms(), files);
                     }
                 }
                 try {
-                    Map<String, String> params = session.getParms();
+                    Map < String, String > params = session.getParms();
                     if (fileName.equals("/upload")) {
                         String path = params.get("path");
-                        for (String k : files.keySet()) {
+                        for (String k: files.keySet()) {
                             if (k.startsWith("files-")) {
                                 String fn = params.get(k);
                                 String tmpFile = files.get(k);
                                 File tmp = new File(tmpFile);
                                 String root = Environment.getExternalStorageDirectory().getAbsolutePath();
                                 File file = new File(root + "/" + path + "/" + fn);
-                                if (file.exists())
-                                    file.delete();
+                                if (file.exists()) file.delete();
                                 if (tmp.exists()) {
                                     if (fn.toLowerCase().endsWith(".zip")) {
                                         unzip(tmp, root + "/" + path);
@@ -202,8 +192,7 @@ public class RemoteServer extends NanoHTTPD {
                                         FileUtils.copyFile(tmp, file);
                                     }
                                 }
-                                if (tmp.exists())
-                                    tmp.delete();
+                                if (tmp.exists()) tmp.delete();
                             }
                         }
                         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, "OK");
@@ -215,8 +204,7 @@ public class RemoteServer extends NanoHTTPD {
                         if (!file.exists()) {
                             file.mkdirs();
                             File flag = new File(root + "/" + path + "/" + name + "/.tvbox_folder");
-                            if (!flag.exists())
-                                flag.createNewFile();
+                            if (!flag.exists()) flag.createNewFile();
                         }
                         return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, "OK");
                     } else if (fileName.equals("/delFolder")) {
@@ -280,12 +268,12 @@ public class RemoteServer extends NanoHTTPD {
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
         if (ipAddress == 0) {
             try {
-                Enumeration<NetworkInterface> enumerationNi = NetworkInterface.getNetworkInterfaces();
+                Enumeration < NetworkInterface > enumerationNi = NetworkInterface.getNetworkInterfaces();
                 while (enumerationNi.hasMoreElements()) {
                     NetworkInterface networkInterface = enumerationNi.nextElement();
                     String interfaceName = networkInterface.getDisplayName();
                     if (interfaceName.equals("eth0") || interfaceName.equals("wlan0")) {
-                        Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses();
+                        Enumeration < InetAddress > enumIpAddr = networkInterface.getInetAddresses();
                         while (enumIpAddr.hasMoreElements()) {
                             InetAddress inetAddress = enumIpAddr.nextElement();
                             if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
@@ -326,15 +314,14 @@ public class RemoteServer extends NanoHTTPD {
             info.add("files", new JsonArray());
             return info.toString();
         }
-        Arrays.sort(list, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                if (o1.isDirectory() && o2.isFile()) return -1;
-                return o1.isFile() && o2.isDirectory() ? 1 : o1.getName().compareTo(o2.getName());
-            }
+        Arrays.sort(list, new Comparator < File > () {@Override
+        public int compare(File o1, File o2) {
+            if (o1.isDirectory() && o2.isFile()) return -1;
+            return o1.isFile() && o2.isDirectory() ? 1 : o1.getName().compareTo(o2.getName());
+        }
         });
         JsonArray result = new JsonArray();
-        for (File f : list) {
+        for (File f: list) {
             if (f.getName().startsWith(".")) {
                 if (f.getName().equals(".tvbox_folder")) {
                     info.addProperty("del", 1);
@@ -358,7 +345,7 @@ public class RemoteServer extends NanoHTTPD {
             destDir.mkdirs();
         }
         ZipFile zip = new ZipFile(zipFilePath);
-        Enumeration<ZipEntry> iter = (Enumeration<ZipEntry>) zip.entries();
+        Enumeration < ZipEntry > iter = (Enumeration < ZipEntry > ) zip.entries();
         while (iter.hasMoreElements()) {
             ZipEntry entry = iter.nextElement();
             InputStream is = zip.getInputStream(entry);
@@ -367,19 +354,16 @@ public class RemoteServer extends NanoHTTPD {
                 extractFile(is, filePath);
             } else {
                 File dir = new File(filePath);
-                if (!dir.exists())
-                    dir.mkdirs();
+                if (!dir.exists()) dir.mkdirs();
                 File flag = new File(dir + "/.tvbox_folder");
-                if (!flag.exists())
-                    flag.createNewFile();
+                if (!flag.exists()) flag.createNewFile();
             }
         }
     }
 
     void extractFile(InputStream inputStream, String destFilePath) throws Throwable {
         File dst = new File(destFilePath);
-        if (dst.exists())
-            dst.delete();
+        if (dst.exists()) dst.delete();
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFilePath));
         byte[] bytesIn = new byte[2048];
         int len = inputStream.read(bytesIn);
