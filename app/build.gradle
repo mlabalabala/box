@@ -34,11 +34,11 @@ android {
     }
 
     defaultConfig {
-        applicationId 'org.eu.bunnyabc.box'
+        applicationId 'tv.org.eu.bunnyabc'
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
-        versionCode 7
+        versionCode 8
         versionName '0.0.0'
         multiDexEnabled true
         //设置room的Schema的位置
