@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/input_dialog_api_input"
                         android:imeOptions="actionDone"
-                        android:nextFocusDown="@id/liveUlrInput"
+                        android:nextFocusDown="@id/epgInput"
                         android:hint="请输入GITHUB加速地址"
                         android:inputType="text"
                         android:maxLines="1"
@@ -80,7 +80,7 @@
                         android:layout_marginLeft="@dimen/vs_5"
                         android:background="@drawable/button_dialog_main"
                         android:focusable="true"
-                        android:nextFocusDown="@id/liveHistory"
+                        android:nextFocusDown="@id/EPGHistory"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="@dimen/vs_10">
