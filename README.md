@@ -1,6 +1,6 @@
 # Jade box
 
-### [竖屏版](https://github.com/mlabalabala/TVBoxOS-Mobile)
+### [竖屏版(存在问题：看不了玩偶；未解决，暂时不搞了)](https://github.com/mlabalabala/TVBoxOS-Mobile)
 ### [横屏版](https://github.com/mlabalabala/box)
 ###
 #### 源项目
