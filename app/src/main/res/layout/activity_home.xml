@@ -37,14 +37,14 @@
 
         <ImageView
                 android:id="@+id/setting"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="@dimen/vs_8"
+                android:layout_width="@dimen/vs_50"
+                android:layout_height="@dimen/vs_50"
+                android:padding="@dimen/vs_5"
                 android:focusable="true"
-                android:gravity="right|center_vertical"
                 android:alpha="0.75"
                 android:background="@drawable/shape_btn_focus"
-                android:src="@drawable/icon_setting"/>
+                android:src="@drawable/icon_setting"
+                android:contentDescription="设  置"/>
 
         <TextView
             android:id="@+id/tvDate"
