@@ -27,5 +27,5 @@ jobs:
       - name: Upload App To Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: 暴剋兕SHJ
+          name: box
           path: ${{ github.workspace }}/apk/*
