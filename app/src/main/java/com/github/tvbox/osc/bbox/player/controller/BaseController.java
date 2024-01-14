@@ -229,11 +229,13 @@ public abstract class BaseController extends BaseVideoController implements Gest
             return true;
         mStreamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         Activity activity = PlayerUtils.scanForActivity(getContext());
-        if (activity == null) {
-            mBrightness = 0;
-        } else {
-            mBrightness = activity.getWindow().getAttributes().screenBrightness;
-        }
+        // if (activity == null) {
+        //     mBrightness = 0;
+        // } else {
+        //     mBrightness = activity.getWindow().getAttributes().screenBrightness;
+        // }
+        mBrightness = null == activity? 0:activity.getWindow().getAttributes().screenBrightness;
+        LOG.i("当前亮度: " + mBrightness);
         mFirstTouch = true;
         mChangePosition = false;
         mChangeBrightness = false;
@@ -339,7 +341,7 @@ public abstract class BaseController extends BaseVideoController implements Gest
         Window window = activity.getWindow();
         WindowManager.LayoutParams attributes = window.getAttributes();
         int height = getMeasuredHeight();
-        if (mBrightness == -1.0f) mBrightness = 0.5f;
+        if (mBrightness == -1.0f) mBrightness = 0.2f;
         float brightness = deltaY * 2 / height * 1.0f + mBrightness;
         if (brightness < 0) {
             brightness = 0f;

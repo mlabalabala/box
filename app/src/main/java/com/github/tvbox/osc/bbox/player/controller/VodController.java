@@ -19,10 +19,12 @@ import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.bean.IJKCode;
 import com.github.tvbox.osc.bbox.bean.ParseBean;
 import com.github.tvbox.osc.bbox.subtitle.widget.SimpleSubtitleView;
+import com.github.tvbox.osc.bbox.ui.activity.DetailActivity;
 import com.github.tvbox.osc.bbox.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.bbox.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.bbox.util.*;
+import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import org.jetbrains.annotations.NotNull;
@@ -193,6 +195,20 @@ public class VodController extends BaseController {
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
 
         initSubtitleInfo();
+
+        mTopRoot1.setOnClickListener(view -> {
+            boolean showPreview = Hawk.get(HawkConfig.SHOW_PREVIEW, true);
+            assert mActivity != null;
+            if (showPreview) {
+                mTopRoot1.setVisibility(GONE);
+                mTopRoot2.setVisibility(GONE);
+                mBottomRoot.setVisibility(GONE);
+                mHandler.removeCallbacks(myRunnable);
+                ((DetailActivity) mActivity).toggleFullPreview();
+            } else {
+                mActivity.finish();
+            }
+        });
 
         myHandle = new Handler();
         myRunnable = new Runnable() {

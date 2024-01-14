@@ -696,15 +696,16 @@
                 android:id="@+id/tv_info_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:ellipsize="end"
+                android:ellipsize="marquee"
                 android:singleLine="true"
-                android:width="680dp"
-                android:paddingTop="@dimen/vs_20"
-                android:paddingLeft="@dimen/vs_20"
-                android:text="http://"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_20" />
+                tools:text="http://"
+                android:textColor="@color/color_FFFFFF"
+                android:drawablePadding="20dp"
+                android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+        />
 
         <TextView
                 android:id="@+id/tv_videosize"
