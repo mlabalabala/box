@@ -22,9 +22,7 @@ import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
@@ -159,19 +157,17 @@ public class App extends MultiDexApplication {
         proxyUrlHistory.add("https://gh.ddlc.top/");
         proxyUrlHistory.add("https://ghps.cc/");
         proxyUrlHistory.add("https://raw.bunnylblbblbl.eu.org/");
-        // 默认线路地址
-        String defaultApiName = "自备份线路";
-        String defaultApi = url + URL.DEFAULT_API_URL;
         // 默认仓库地址
-        String defaultStoreApi = url + URL.DEFAULT_STORE_API_URL;
-
-        Map<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
-        defaultApiMap.put(defaultApiName, defaultApi);
-
-        List<String> defaultApiHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
-        defaultApiHistory.add(defaultApiName);
+        String defaultStoreApi = URL.DEFAULT_STORE_API_URL;
 
         // 不添加默认线路
+        // 默认线路地址
+        // String defaultApiName = "自备份线路";
+        // String defaultApi = url + URL.DEFAULT_API_URL;
+        // Map<String, String> defaultApiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
+        // defaultApiMap.put(defaultApiName, defaultApi);
+        // List<String> defaultApiHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
+        // defaultApiHistory.add(defaultApiName);
         // putDefault(HawkConfig.API_URL, defaultApi);
         // putDefault(HawkConfig.API_NAME, defaultApiName);
         // putDefault(HawkConfig.API_NAME_HISTORY, defaultApiHistory);
