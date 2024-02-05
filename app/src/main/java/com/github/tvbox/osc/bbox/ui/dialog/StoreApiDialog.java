@@ -55,6 +55,7 @@ public class StoreApiDialog extends BaseDialog {
         }
 
         findViewById(R.id.inputSubmit).setOnClickListener(v -> {
+
             // String name = inputStoreApiName.getText().toString().trim();
             String url = inputStoreApiUrl.getText().toString().trim();
 

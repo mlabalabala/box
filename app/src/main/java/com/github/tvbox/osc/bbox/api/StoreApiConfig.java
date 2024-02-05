@@ -58,8 +58,9 @@ public class StoreApiConfig {
         HashMap<String, String> storeMap = Hawk.get(HawkConfig.STORE_API_MAP, new HashMap<>());
         ArrayList<String> storeNameHistory = Hawk.get(HawkConfig.STORE_API_NAME_HISTORY, new ArrayList<>());
 
+        /*
         if (storeMap.isEmpty()) {
-            Toast.makeText(context, "仓库为空，使用默认仓库", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "仓库为空，使用备份仓库", Toast.LENGTH_SHORT).show();
             String name = "自备份仓库";
             String sotreApi = Hawk.get(HawkConfig.DEFAULT_STORE_API, Hawk.get(HawkConfig.PROXY_URL, "https://raw.bunnylblbblbl.eu.org/") + URL.DEFAULT_STORE_API_URL);
             storeMap.put(name, sotreApi);
@@ -69,8 +70,9 @@ public class StoreApiConfig {
             Hawk.put(HawkConfig.STORE_API_MAP, storeMap);
             Hawk.put(HawkConfig.STORE_API, sotreApi);
         }
+        */
 
-        String storeUrl = storeMap.get(Hawk.get(HawkConfig.STORE_API_NAME, ""));
+        String storeUrl = storeMap.isEmpty() ? URL.DEFAULT_STORE_API_URL:storeMap.get(Hawk.get(HawkConfig.STORE_API_NAME, ""));
 
         LOG.i("订阅仓库地址：" + storeUrl);
 
@@ -132,7 +134,7 @@ public class StoreApiConfig {
                     String result = MutiUrl(sourceJson);
                     Toast.makeText(context, "单源链接，" + result, Toast.LENGTH_SHORT).show();
                     String currentStoreName = Hawk.get(HawkConfig.STORE_API_NAME, "");
-                    if (!storeNameHistory.contains(currentStoreName)) {
+                    if (!currentStoreName.isEmpty() && !storeNameHistory.contains(currentStoreName)) {
                         storeNameHistory.add(0, currentStoreName);
                     }
                 }
@@ -142,7 +144,7 @@ public class StoreApiConfig {
 
             @Override
             public void error(String msg) {
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
