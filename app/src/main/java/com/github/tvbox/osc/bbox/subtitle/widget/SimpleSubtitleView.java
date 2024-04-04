@@ -27,8 +27,6 @@ package com.github.tvbox.osc.bbox.subtitle.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.Nullable;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -38,16 +36,15 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.annotation.Nullable;
 import com.github.tvbox.osc.bbox.cache.CacheManager;
 import com.github.tvbox.osc.bbox.subtitle.DefaultSubtitleEngine;
 import com.github.tvbox.osc.bbox.subtitle.SubtitleEngine;
 import com.github.tvbox.osc.bbox.subtitle.model.Subtitle;
 import com.github.tvbox.osc.bbox.util.MD5;
+import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 import java.util.List;
-
-import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 /**
  * @author AveryZhong.
@@ -108,7 +105,9 @@ public class SimpleSubtitleView extends TextView
         text = text.replaceAll("(?:\\r\\n)", "<br />");
         text = text.replaceAll("(?:\\r)", "<br />");
         text = text.replaceAll("(?:\\n)", "<br />");
-        text = text.replaceAll("\\{[\\s\\S]*\\}", "");
+        text = text.replaceAll("\\\\N", "<br />");
+        text = text.replaceAll("\\{[\\s\\S]*?\\}", "");
+        text = text.replaceAll("^.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,", "");
         setText(Html.fromHtml(text));
     }
 

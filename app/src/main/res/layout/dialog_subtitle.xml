@@ -30,6 +30,7 @@
                 android:padding="@dimen/vs_10"
                 android:text="选择内置字幕"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
 

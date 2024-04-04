@@ -28,24 +28,22 @@ package com.github.tvbox.osc.bbox.subtitle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
-
+import androidx.annotation.Nullable;
 import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.cache.CacheManager;
-import com.github.tvbox.osc.bbox.subtitle.model.Subtitle;
-import com.github.tvbox.osc.bbox.subtitle.model.Time;
 import com.github.tvbox.osc.bbox.util.FileUtils;
 import com.github.tvbox.osc.bbox.util.MD5;
 import com.github.tvbox.osc.bbox.util.SubtitleHelper;
+import com.github.tvbox.osc.bbox.subtitle.model.Subtitle;
+import com.github.tvbox.osc.bbox.subtitle.model.Time;
+import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-
-import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 /**
  * @author AveryZhong.
@@ -62,7 +60,7 @@ public class DefaultSubtitleEngine implements SubtitleEngine {
     private Handler mWorkHandler;
     @Nullable
     private List<Subtitle> mSubtitles;
-    private UIRenderTask mUIRenderTask;
+    private com.github.tvbox.osc.bbox.subtitle.UIRenderTask mUIRenderTask;
     private AbstractPlayer mMediaPlayer;
     private OnSubtitlePreparedListener mOnSubtitlePreparedListener;
     private OnSubtitleChangeListener mOnSubtitleChangeListener;
@@ -85,9 +83,9 @@ public class DefaultSubtitleEngine implements SubtitleEngine {
             return;
         }
 
-        SubtitleLoader.loadSubtitle(path, new SubtitleLoader.Callback() {
+        com.github.tvbox.osc.bbox.subtitle.SubtitleLoader.loadSubtitle(path, new com.github.tvbox.osc.bbox.subtitle.SubtitleLoader.Callback() {
             @Override
-            public void onSuccess(final SubtitleLoadSuccessResult subtitleLoadSuccessResult) {
+            public void onSuccess(final com.github.tvbox.osc.bbox.subtitle.SubtitleLoadSuccessResult subtitleLoadSuccessResult) {
                 if (subtitleLoadSuccessResult == null) {
                     Log.d(TAG, "onSuccess: subtitleLoadSuccessResult is null.");
                     return;
@@ -228,7 +226,7 @@ public class DefaultSubtitleEngine implements SubtitleEngine {
                     long delay = REFRESH_INTERVAL;
                     if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                         long position = mMediaPlayer.getCurrentPosition();
-                        Subtitle subtitle = SubtitleFinder.find(position, mSubtitles);
+                        Subtitle subtitle = com.github.tvbox.osc.bbox.subtitle.SubtitleFinder.find(position, mSubtitles);
                         notifyRefreshUI(subtitle);
                         if (subtitle != null) {
                             delay = subtitle.end.mseconds - position;
@@ -259,7 +257,7 @@ public class DefaultSubtitleEngine implements SubtitleEngine {
 
     private void notifyRefreshUI(final Subtitle subtitle) {
         if (mUIRenderTask == null) {
-            mUIRenderTask = new UIRenderTask(mOnSubtitleChangeListener);
+            mUIRenderTask = new com.github.tvbox.osc.bbox.subtitle.UIRenderTask(mOnSubtitleChangeListener);
         }
         mUIRenderTask.execute(subtitle);
     }

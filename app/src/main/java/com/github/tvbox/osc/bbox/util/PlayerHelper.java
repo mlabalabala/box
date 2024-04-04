@@ -2,7 +2,6 @@ package com.github.tvbox.osc.bbox.util;
 
 import android.app.Activity;
 import android.content.Context;
-
 import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.bean.IJKCode;
 import com.github.tvbox.osc.bbox.player.IjkMediaPlayer;
@@ -12,14 +11,8 @@ import com.github.tvbox.osc.bbox.player.thirdparty.MXPlayer;
 import com.github.tvbox.osc.bbox.player.thirdparty.ReexPlayer;
 import com.github.tvbox.osc.bbox.player.thirdparty.RemoteTVBox;
 import com.orhanobut.hawk.Hawk;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import tv.danmaku.ijk.media.player.IjkLibLoader;
 import xyz.doikki.videoplayer.exo.ExoMediaPlayerFactory;
 import xyz.doikki.videoplayer.player.AndroidMediaPlayerFactory;
@@ -28,8 +21,15 @@ import xyz.doikki.videoplayer.player.VideoView;
 import xyz.doikki.videoplayer.render.RenderViewFactory;
 import xyz.doikki.videoplayer.render.TextureRenderViewFactory;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class PlayerHelper {
     public static void updateCfg(VideoView videoView, JSONObject playerCfg) {
+        updateCfg(videoView,playerCfg,-1);
+    }
+    public static void updateCfg(VideoView videoView, JSONObject playerCfg,int forcePlayerType) {
         int playerType = Hawk.get(HawkConfig.PLAY_TYPE, 0);
         int renderType = Hawk.get(HawkConfig.PLAY_RENDER, 0);
         String ijkCode = Hawk.get(HawkConfig.IJK_CODEC, "软解码");
@@ -42,6 +42,7 @@ public class PlayerHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        if(forcePlayerType>=0)playerType = forcePlayerType;
         IJKCode codec = ApiConfig.get().getIJKCodec(ijkCode);
         PlayerFactory playerFactory;
         if (playerType == 1) {
@@ -167,6 +168,7 @@ public class PlayerHelper {
             playersInfo.put(11, "Reex播放器");
             playersInfo.put(12, "Kodi播放器");
             playersInfo.put(13, "附近TVBox");
+            playersInfo.put(14, "VLC播放器");
             mPlayersInfo = playersInfo;
         }
         return mPlayersInfo;

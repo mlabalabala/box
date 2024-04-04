@@ -26,12 +26,10 @@
 package com.github.tvbox.osc.bbox.subtitle;
 
 import androidx.annotation.Nullable;
-
 import com.github.tvbox.osc.bbox.subtitle.model.Subtitle;
+import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 import java.util.List;
-
-import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 /**
  * @author AveryZhong.

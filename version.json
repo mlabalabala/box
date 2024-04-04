@@ -1,6 +1,6 @@
 {
-  "versionCode": 9,
+  "versionCode": 12,
   "versionName": "0.0.0",
-  "desc": "- 首页设置按钮调整\n- 播放页点击标题返回",
+  "desc": "修改阿里云盘等加载字幕BUG（可能存在其他BUG，请提issues）",
   "forcedUpgrade": false
 }

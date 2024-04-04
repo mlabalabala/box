@@ -64,7 +64,25 @@ public class App extends MultiDexApplication {
         JSEngine.getInstance().create();
         FileUtils.cleanPlayerCache();
         initXUpdate();
+
+        // davTest();
     }
+
+    // private void davTest () {
+    //     String davUrl = "https://www.bunnyabc.eu.org:15245/dav/";
+    //     String uname = "tvbox_dav";
+    //     String password = "123456";
+    //
+    //     OkHttpSardine client = new OkHttpSardine();
+    //     client.setCredentials(uname, password);
+    //
+    //     try {
+    //         InputStream inputStream = client.get("https://www.bunnyabc.eu.org:15245/dav/test1.txt");
+    //
+    //     } catch (IOException e) {
+    //         throw new RuntimeException(e);
+    //     }
+    // }
 
     private void initXUpdate() {
         XUpdate.get()
@@ -219,5 +237,13 @@ public class App extends MultiDexApplication {
 
     public Activity getCurrentActivity() {
         return AppManager.getInstance().currentActivity();
+    }
+
+    private static String dashData;
+    public void setDashData(String data) {
+        dashData = data;
+    }
+    public String getDashData() {
+        return dashData;
     }
 }
