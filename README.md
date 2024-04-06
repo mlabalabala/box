@@ -80,4 +80,14 @@ TVBox 简易修改 多源版本 支持安卓4.4
 ### 测试可能不太够，有BUG请提issue
 ### Actions中有生成脚本
 
+## Star History
+
+<a href="https://star-history.com/#mlabalabala/box&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=mlabalabala/box&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=mlabalabala/box&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=mlabalabala/box&type=Date" />
+ </picture>
+</a>
+
 
