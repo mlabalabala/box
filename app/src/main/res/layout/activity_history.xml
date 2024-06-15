@@ -51,23 +51,21 @@
             android:focusableInTouchMode="false"
             android:gravity="center"
             android:text="确定键删除当前选中记录"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_theme_70"
             android:textSize="@dimen/ts_24"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvDel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_user_focus"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:padding="@dimen/vs_10"
-            android:text="删除记录"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/ts_24" />
+        <ImageView
+                android:id="@+id/tvDel"
+                android:layout_width="@dimen/vs_60"
+                android:layout_height="@dimen/vs_50"
+                android:layout_gravity="center"
+                android:background="@drawable/button_dialog_vod"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:src="@drawable/icon_delete"
+                android:padding="@dimen/vs_10" />
     </LinearLayout>
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView

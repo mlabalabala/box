@@ -174,7 +174,7 @@ public class App extends MultiDexApplication {
         proxyUrlHistory.add("https://github.moeyy.xyz/");
         proxyUrlHistory.add("https://gh.ddlc.top/");
         proxyUrlHistory.add("https://ghps.cc/");
-        proxyUrlHistory.add("https://raw.bunnylblbblbl.eu.org/");
+        proxyUrlHistory.add("https://raw.bunnyxyz.eu.org/");
         // 默认仓库地址
         String defaultStoreApi = URL.DEFAULT_STORE_API_URL;
 

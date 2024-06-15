@@ -1,11 +1,10 @@
 package com.github.tvbox.osc.bbox.ui.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
@@ -16,7 +15,6 @@ import com.github.tvbox.osc.bbox.ui.adapter.HistoryAdapter;
 import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -30,7 +28,7 @@ import java.util.List;
  * @description:
  */
 public class HistoryActivity extends BaseActivity {
-    private TextView tvDel;
+    private ImageView tvDel;
     private TextView tvDelTip;
     private TvRecyclerView mGridView;
     private HistoryAdapter historyAdapter;
@@ -50,7 +48,7 @@ public class HistoryActivity extends BaseActivity {
     private void toggleDelMode() {
         delMode = !delMode;
         tvDelTip.setVisibility(delMode ? View.VISIBLE : View.GONE);
-        tvDel.setTextColor(delMode ? getResources().getColor(R.color.color_FF0057) : Color.WHITE);
+        tvDel.setImageResource(delMode ? R.drawable.icon_delete_select : R.drawable.icon_delete);
     }
 
     private void initView() {

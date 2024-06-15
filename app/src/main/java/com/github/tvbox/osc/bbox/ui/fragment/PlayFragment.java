@@ -33,7 +33,6 @@ import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.base.BaseLazyFragment;
 import com.github.tvbox.osc.bbox.bean.ParseBean;
 import com.github.tvbox.osc.bbox.bean.SourceBean;
-import com.github.tvbox.osc.bbox.bean.Subtitle;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.cache.CacheManager;
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
@@ -79,6 +78,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayFragment extends BaseLazyFragment {
+
+    private static final String TAG = PlayFragment.class.getSimpleName();
+
     private MyVideoView mVideoView;
     private TextView mPlayLoadTip;
     private ImageView mPlayLoadErr;
@@ -274,20 +276,17 @@ public class PlayFragment extends BaseLazyFragment {
             @Override
             public void openSearchSubtitleDialog() {
                 SearchSubtitleDialog searchSubtitleDialog = new SearchSubtitleDialog(getActivity());
-                searchSubtitleDialog.setSubtitleLoader(new SearchSubtitleDialog.SubtitleLoader() {
-                    @Override
-                    public void loadSubtitle(Subtitle subtitle) {
-                        if (!isAdded()) return;
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                String zimuUrl = subtitle.getUrl();
-                                LOG.i("Remote Subtitle Url: " + zimuUrl);
-                                setSubtitle(zimuUrl);//设置字幕
-                                searchSubtitleDialog.dismiss();
-                            }
-                        });
-                    }
+                searchSubtitleDialog.setSubtitleLoader(subtitle -> {
+                    if (!isAdded()) return;
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String zimuUrl = subtitle.getUrl();
+                            LOG.i("Remote Subtitle Url: " + zimuUrl);
+                            setSubtitle(zimuUrl);//设置字幕
+                            searchSubtitleDialog.dismiss();
+                        }
+                    });
                 });
                 if(mVodInfo.playFlag.contains("Ali")||mVodInfo.playFlag.contains("parse")){
                     searchSubtitleDialog.setSearchWord(mVodInfo.playNote);
@@ -589,6 +588,7 @@ public class PlayFragment extends BaseLazyFragment {
         sourceViewModel.playResult.observe(this, new Observer<JSONObject>() {
             @Override
             public void onChanged(JSONObject info) {
+                LOG.i(TAG + " - info: " + info.toString());
                 if (info != null) {
                     try {
                         progressKey = info.optString("proKey", null);
@@ -599,6 +599,7 @@ public class PlayFragment extends BaseLazyFragment {
                             try {
                                 JSONObject obj =info.getJSONArray("subs").optJSONObject(0);
                                 String url = obj.optString("url", "");
+                                LOG.i(TAG + " - url: " + url);
                                 if (!TextUtils.isEmpty(url) && !FileUtils.hasExtension(url)) {
                                     String format = obj.optString("format", "");
                                     String name = obj.optString("name", "字幕");

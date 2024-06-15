@@ -316,50 +316,54 @@
 	</LinearLayout>
 <!--添加EPG显示，更改样式 by 龍-->
 
-
 	<LinearLayout
-        android:id="@+id/tvRightSettingLayout"
-        android:layout_width="361mm"
-        android:layout_height="match_parent"
-        android:layout_marginRight="-361mm"
-        android:layout_gravity="right"
-		android:background="@drawable/bg_channel_list"
-		android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="visible" >
+			android:id="@+id/tvRightSettingLayout"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_gravity="right"
+			android:gravity="center_vertical"
+			android:orientation="horizontal"
+			android:visibility="visible" >
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
-            android:id="@+id/mSettingItemView"
-            android:layout_width="180mm"
-            android:layout_height="match_parent"
-            android:paddingLeft="5mm"
-            android:paddingTop="10mm"
-            android:paddingRight="5mm"
-            android:paddingBottom="10mm"
-            android:visibility="visible"
-            android:gravity= "center"
-            app:tv_selectedItemIsCentered="true"
-            app:tv_verticalSpacingWithMargins="10mm" />
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:baselineAligned="false"
+			android:background="@drawable/bg_channel_list">
 
-        <View
-            android:layout_width="1mm"
-            android:layout_height="match_parent"
-            android:background="@color/color_FFFFFF"
-            android:layout_gravity="center_horizontal" />
+			<com.owen.tvrecyclerview.widget.TvRecyclerView
+				android:id="@+id/mSettingItemView"
+				android:layout_width="180mm"
+				android:layout_height="match_parent"
+				android:paddingLeft="5mm"
+				android:paddingTop="10mm"
+				android:paddingRight="5mm"
+				android:paddingBottom="10mm"
+				android:visibility="visible"
+				android:gravity= "center"
+				app:tv_selectedItemIsCentered="true"
+				app:tv_verticalSpacingWithMargins="10mm" />
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
-            android:id="@+id/mSettingGroupView"
-            android:layout_width="180mm"
-            android:layout_height="match_parent"
-            android:paddingLeft="5mm"
-            android:paddingTop="10mm"
-            android:paddingRight="5mm"
-            android:paddingBottom="10mm"
-            android:visibility="visible"
-            android:gravity= "center"
-            app:tv_selectedItemIsCentered="true"
-            app:tv_verticalSpacingWithMargins="10mm" />
-    </LinearLayout>
+			<View
+				android:layout_width="1mm"
+				android:layout_height="match_parent"
+				android:background="@color/color_FFFFFF"
+				android:layout_gravity="center_horizontal" />
+
+			<com.owen.tvrecyclerview.widget.TvRecyclerView
+				android:id="@+id/mSettingGroupView"
+				android:layout_width="180mm"
+				android:layout_height="match_parent"
+				android:paddingLeft="5mm"
+				android:paddingTop="10mm"
+				android:paddingRight="5mm"
+				android:paddingBottom="10mm"
+				android:visibility="visible"
+				android:gravity= "center"
+				app:tv_selectedItemIsCentered="true"
+				app:tv_verticalSpacingWithMargins="10mm" />
+		</LinearLayout>
+	</LinearLayout>
 
     <TextView
         android:id="@+id/tvChannel"

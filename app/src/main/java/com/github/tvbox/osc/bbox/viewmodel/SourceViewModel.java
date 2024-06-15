@@ -671,6 +671,7 @@ public class SourceViewModel extends ViewModel {
                         result.put("subtKey", subtitleKey);
                         if (!result.has("flag"))
                             result.put("flag", playFlag);
+                        // LOG.i(SourceViewModel.class.getSimpleName() + "type = 3; result: " + result);
                         playResult.postValue(result);
                     } catch (Throwable th) {
                         th.printStackTrace();

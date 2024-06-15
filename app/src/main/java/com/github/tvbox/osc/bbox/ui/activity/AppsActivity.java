@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppsActivity extends BaseActivity {
-    private TextView tvDel;
+    private ImageView tvDel;
     private TextView tvDelTip;
     private TvRecyclerView mGridViewApps;
     private AppsAdapter appsAdapter;
@@ -77,7 +77,7 @@ public class AppsActivity extends BaseActivity {
         tvDelTip.setVisibility(delMode ? View.VISIBLE : View.GONE);
 
         // takagen99: Added Theme Color
-        tvDel.setTextColor(delMode ? Color.MAGENTA : Color.WHITE);
+        tvDel.setImageResource(delMode ? R.drawable.icon_delete_select : R.drawable.icon_delete);
 
     }
 

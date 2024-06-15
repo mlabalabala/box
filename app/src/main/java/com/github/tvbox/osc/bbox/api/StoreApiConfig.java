@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StoreApiConfig {
-    private static StoreApiConfig instance;
+    private static volatile StoreApiConfig instance;
 
     public static StoreApiConfig get() {
         if (instance == null) {
@@ -52,7 +52,7 @@ public class StoreApiConfig {
 
     public void Subscribe(Context context) {
 
-        Toast.makeText(context, "开始获取订阅，网络慢的话可能需要较长时间！！！", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "开始获取订阅！！！", Toast.LENGTH_SHORT).show();
 
         // 获取多仓地址
         HashMap<String, String> storeMap = Hawk.get(HawkConfig.STORE_API_MAP, new HashMap<>());
