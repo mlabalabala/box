@@ -259,6 +259,8 @@ public class HomeActivity extends BaseActivity {
                 return false;
             }
         });
+
+        tvSetting.clearFocus();
         tvSetting.setOnFocusChangeListener(focusChangeListener);
         tvSetting.setOnClickListener(view -> {
             FastClickCheckUtil.check(view, 500);
