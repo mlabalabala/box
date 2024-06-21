@@ -38,11 +38,10 @@ public class PlayerHelper {
             playerType = playerCfg.getInt("pl");
             renderType = playerCfg.getInt("pr");
             ijkCode = playerCfg.getString("ijk");
-            scale = playerCfg.getInt("sc");
+            scale = Hawk.get(HawkConfig.IS_GLOBAL_SCALE, false) ? Hawk.get(HawkConfig.GLOBAL_PLAY_SCALE, 0) : playerCfg.getInt("sc");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(forcePlayerType>=0)playerType = forcePlayerType;
         IJKCode codec = ApiConfig.get().getIJKCodec(ijkCode);
         PlayerFactory playerFactory;
         if (playerType == 1) {
@@ -168,7 +167,6 @@ public class PlayerHelper {
             playersInfo.put(11, "Reex播放器");
             playersInfo.put(12, "Kodi播放器");
             playersInfo.put(13, "附近TVBox");
-            playersInfo.put(14, "VLC播放器");
             mPlayersInfo = playersInfo;
         }
         return mPlayersInfo;

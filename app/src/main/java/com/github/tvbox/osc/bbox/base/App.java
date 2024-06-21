@@ -178,6 +178,16 @@ public class App extends MultiDexApplication {
         // 默认仓库地址
         String defaultStoreApi = URL.DEFAULT_STORE_API_URL;
 
+        // 添加默认epg历史记录
+        List<String> epgHistory = Hawk.get(HawkConfig.EPG_HISTORY, new ArrayList<>());
+        epgHistory.add("https://epg.112114.xyz?ch={name}&date={date}");
+        epgHistory.add("https://epg.112114.free.hr?ch={name}&date={date}");
+        epgHistory.add("https://epg.112114.eu.org?ch={name}&date={date}");
+        epgHistory.add("https://diyp.112114.xyz?ch={name}&date={date}");
+        // 默认epg
+        String defaultEpgUrl = "https://epg.112114.free.hr?ch={name}&date={date}";
+
+
         // 不添加默认线路
         // 默认线路地址
         // String defaultApiName = "自备份线路";
@@ -195,6 +205,10 @@ public class App extends MultiDexApplication {
 
         putDefault(HawkConfig.DEFAULT_STORE_API, defaultStoreApi);
         putDefault(HawkConfig.PROXY_URL_HISTORY, proxyUrlHistory);
+        putDefault(HawkConfig.EPG_URL, defaultEpgUrl);
+        putDefault(HawkConfig.EPG_HISTORY, epgHistory);
+        putDefault(HawkConfig.LIVE_SHOW_NET_SPEED, true);
+        putDefault(HawkConfig.IS_GLOBAL_SCALE, true);
     }
 
     private void putDefault(String key, Object value) {

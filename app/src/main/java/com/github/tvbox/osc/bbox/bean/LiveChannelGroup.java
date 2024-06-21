@@ -11,7 +11,23 @@ public class LiveChannelGroup {
     private int groupIndex;
     private String groupName;
     private String groupPassword;
+    private int size;
+
+    @Override
+    public String toString() {
+        return "LiveChannelGroup{" +
+                "groupIndex=" + groupIndex +
+                ", groupName='" + groupName + '\'' +
+                ", groupPassword='" + groupPassword + '\'' +
+                ", liveChannelItems=" + liveChannelItems +
+                '}';
+    }
+
     private ArrayList<LiveChannelItem> liveChannelItems;
+
+    public int getSize() {
+        return liveChannelItems.size();
+    }
 
     public int getGroupIndex() {
         return groupIndex;

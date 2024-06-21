@@ -55,6 +55,8 @@ public class HawkConfig {
 
     public static final String PROXY_URL = "proxy_url";
     public static final String PROXY_URL_HISTORY = "proxy_url_history";
+    public static final String IS_GLOBAL_SCALE = "is_global_scale";
+    public static final String GLOBAL_PLAY_SCALE = "global_play_scale";
 
     public static boolean hotVodDelete;
 

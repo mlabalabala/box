@@ -101,7 +101,7 @@ public class ApiDialog extends BaseDialog {
                         nameHistory.add(0,newApi);
                         map.put(newApi, newApi);
 
-                        listener.onchange(newApi);
+                        listener.onchange("api-" + newApi);
                     }
                     if(map.size()>30){
                         map.remove(nameHistory.get(30));
@@ -123,6 +123,7 @@ public class ApiDialog extends BaseDialog {
                     if (liveHistory.size() > 20)
                         liveHistory.remove(20);
                     Hawk.put(HawkConfig.LIVE_HISTORY, liveHistory);
+                    listener.onchange("live-" + newLive);
                     dismiss();
                 }
 

@@ -717,6 +717,10 @@ public class ApiConfig {
         }
     }
 
+    public List<LiveChannelGroup> reloadChannelGroupList() {
+        return liveChannelGroupList;
+    }
+
     public String getSpider() {
         return spider;
     }

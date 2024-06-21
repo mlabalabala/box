@@ -1,6 +1,0 @@
-{
-  "versionCode": 13,
-  "versionName": "0.0.0",
-  "desc": "1.首页默认焦点移到主页按钮上\n2.历史记录、收藏夹、应用页面删除按钮改为图标显示\n3.bugfix",
-  "forcedUpgrade": false
-}

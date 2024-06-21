@@ -275,7 +275,10 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 ApiDialog dialog = new ApiDialog(mActivity);
                 EventBus.getDefault().register(dialog);
                 dialog.setOnListener(url -> {
-                    tvHomeApi.setText(url);
+                    if (-1 != url.indexOf("api-")) {
+                        url = url.replaceAll("api-", "");
+                        tvHomeApi.setText(url);
+                    }
 //                        tvApi.setText(api);
                 });
                 dialog.setOnDismissListener(dialog1 -> {
