@@ -29,7 +29,7 @@ public class LiveChannelGroupAdapter extends BaseQuickAdapter<LiveChannelGroup, 
         TextView tvGroupName = holder.getView(R.id.tvChannelGroupName);
         tvGroupName.setText(item.getGroupName());
         int groupIndex = item.getGroupIndex();
-        if (groupIndex == selectedGroupIndex && groupIndex != focusedGroupIndex) {
+        if (groupIndex == selectedGroupIndex) {
             tvGroupName.setTextColor(mContext.getResources().getColor(R.color.color_1890FF));
         } else {
             tvGroupName.setTextColor(Color.WHITE);

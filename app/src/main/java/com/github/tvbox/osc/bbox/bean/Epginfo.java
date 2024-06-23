@@ -40,4 +40,23 @@ public class Epginfo {
         datestart = Integer.parseInt(start.replace(":", ""));
         dateend = Integer.parseInt(end.replace(":", ""));
     }
+
+    @Override
+    public String toString() {
+        return "Epginfo{" +
+                "startdateTime=" + startdateTime +
+                ", enddateTime=" + enddateTime +
+                ", datestart=" + datestart +
+                ", dateend=" + dateend +
+                ", title='" + title + '\'' +
+                ", originStart='" + originStart + '\'' +
+                ", originEnd='" + originEnd + '\'' +
+                ", start='" + start + '\'' +
+                ", end='" + end + '\'' +
+                ", index=" + index +
+                ", epgDate=" + epgDate +
+                ", currentEpgDate='" + currentEpgDate + '\'' +
+                ", timeFormat=" + timeFormat +
+                '}';
+    }
 }

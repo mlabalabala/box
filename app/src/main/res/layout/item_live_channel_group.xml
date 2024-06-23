@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10mm"
-    android:layout_marginBottom="10mm"
-    android:background="@drawable/shape_live_focus"
-    android:focusable="true"
-    android:focusableInTouchMode="false"
-    android:orientation="horizontal">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10mm"
+              android:layout_marginBottom="10mm"
+              android:background="@drawable/shape_live_focus"
+              android:focusable="true"
+              android:focusableInTouchMode="false"
+              android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvChannelGroupName"
@@ -18,6 +19,8 @@
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
+        tools:text="频道"
+        android:text="频道"
         android:textColor="@android:color/white"
         android:textSize="22mm" />
 </LinearLayout>

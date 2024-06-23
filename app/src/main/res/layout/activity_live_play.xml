@@ -140,8 +140,9 @@
 						android:fadeScrollbars="false"
 						android:listSelector="@drawable/item_bg_selector_left"
 						android:padding="5dp"
+						tools:listitem="@layout/item_live_channel_group"
 						app:tv_verticalSpacingWithMargins="10mm"
-						android:scrollbars="none" />
+						android:scrollbars="none"/>
 
 			</LinearLayout>
 
@@ -217,6 +218,7 @@
 					android:padding="5dp"
 					app:tv_verticalSpacingWithMargins="10mm"
 					android:scrollbars="none"
+					tools:listitem="@layout/item_live_channel"
 					tools:visibility="visible" />
 
 			<LinearLayout
@@ -311,6 +313,7 @@
 						app:tv_selectedItemIsCentered="true"
 						android:visibility="visible"
 						android:scrollbars = "vertical"
+						tools:visibility="visible"
 						app:tv_verticalSpacingWithMargins="10mm" />
 
 				<TextView
@@ -356,6 +359,7 @@
 					android:gravity= "center"
 					app:tv_selectedItemIsCentered="true"
 					android:padding="@dimen/vs_5"
+					tools:listitem="@layout/item_live_channel_group"
 					app:tv_verticalSpacingWithMargins="10mm" />
 
 			<View
@@ -427,6 +431,7 @@
 	<RelativeLayout
 			android:layout_gravity="bottom|center"
 			android:gravity="center_vertical"
+			android:focusable="false"
 			android:id="@+id/ll_epg"
 			android:paddingBottom="5dp"
 			android:layout_width="@dimen/vs_960"
@@ -471,7 +476,7 @@
 					android:visibility="gone"
 					android:textColor="@color/color_FFFFFF"
 					android:textSize="@dimen/ts_100"
-					android:textStyle="bold" />
+					android:textStyle="bold"/>
 			<FrameLayout
 					android:layout_width="@dimen/vs_220"
 					android:layout_height="@dimen/vs_60"
@@ -499,14 +504,14 @@
 						android:textColor="@android:color/white"
 						android:textSize="@dimen/vs_60"
 						android:textStyle="bold"
-						tools:ignore="EllipsizeMaxLines" />
+						tools:ignore="EllipsizeMaxLines"/>
 				<ImageView
 						android:id="@+id/img_live_icon"
 						android:layout_width="@dimen/vs_180"
 						android:layout_height="@dimen/vs_60"
 						android:layout_gravity="center"
 						android:src="@drawable/app_banner"
-						android:scaleType="centerInside" />
+						android:scaleType="centerInside"/>
 
 			</FrameLayout>
 			<com.github.tvbox.osc.bbox.ui.tv.widget.MarqueeTextView
@@ -531,7 +536,7 @@
 					android:singleLine="true"
 					android:text="CCTV 高清"
 					android:textColor="@color/color_FFFFFF"
-					android:textSize="@dimen/ts_34" />
+					android:textSize="@dimen/ts_34"/>
 
 		</LinearLayout>
 		<TextView
@@ -740,6 +745,7 @@
 	<RelativeLayout
 			android:layout_gravity="center|right|top"
 			android:orientation="vertical"
+			android:focusable="false"
 			android:gravity="center_horizontal"
 			android:id="@+id/ll_right_top_loading"
 			android:background="@drawable/shape_user_search"

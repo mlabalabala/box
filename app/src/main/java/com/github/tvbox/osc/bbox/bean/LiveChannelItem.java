@@ -19,11 +19,21 @@ public class LiveChannelItem {
     private int channelIndex;
     private int channelNum;
     private String channelName;
+
+    private String channelEpgInfo;
     private ArrayList<String> channelSourceNames;
     private ArrayList<String> channelUrls;
     public int sourceIndex = 0;
     public int sourceNum = 0;
     public boolean include_back = false;
+
+    public String getChannelEpgInfo() {
+        return channelEpgInfo;
+    }
+
+    public void setChannelEpgInfo(String channelEpgInfo) {
+        this.channelEpgInfo = channelEpgInfo;
+    }
 
     public void setinclude_back(boolean include_back) {
         this.include_back = include_back;
@@ -100,5 +110,20 @@ public class LiveChannelItem {
 
     public String getSourceName() {
         return channelSourceNames.get(sourceIndex);
+    }
+
+    @Override
+    public String toString() {
+        return "LiveChannelItem{" +
+                "channelIndex=" + channelIndex +
+                ", channelNum=" + channelNum +
+                ", channelName='" + channelName + '\'' +
+                ", channelEpgInfo='" + channelEpgInfo + '\'' +
+                ", channelSourceNames=" + channelSourceNames +
+                ", channelUrls=" + channelUrls +
+                ", sourceIndex=" + sourceIndex +
+                ", sourceNum=" + sourceNum +
+                ", include_back=" + include_back +
+                '}';
     }
 }

@@ -1,16 +1,23 @@
 package com.github.tvbox.osc.bbox.util;
 
 import android.content.res.AssetManager;
-
 import com.github.tvbox.osc.bbox.base.App;
+import com.github.tvbox.osc.bbox.bean.Epginfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class EpgUtil {
 
@@ -62,5 +69,19 @@ public class EpgUtil {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static List<Epginfo> getEpgInfoList(String paramString, Date date) throws JSONException {
+        List<Epginfo> list = new ArrayList<>();
+        if (paramString.contains("epg_data")) {
+            final JSONArray jSONArray = new JSONObject(paramString).optJSONArray("epg_data");
+            if (jSONArray != null)
+                for (int b = 0; b < jSONArray.length(); b++) {
+                    JSONObject jSONObject = jSONArray.getJSONObject(b);
+                    Epginfo epgbcinfo = new Epginfo(date,jSONObject.optString("title"), date, jSONObject.optString("start"), jSONObject.optString("end"),b);
+                    list.add(epgbcinfo);
+                }
+        }
+        return list;
     }
 }

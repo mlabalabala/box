@@ -2,7 +2,7 @@ package com.github.tvbox.osc.bbox.ui.adapter;
 
 import android.graphics.Color;
 import android.widget.TextView;
-
+import androidx.core.content.ContextCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.bbox.R;
@@ -27,16 +27,22 @@ public class LiveChannelItemAdapter extends BaseQuickAdapter<LiveChannelItem, Ba
     protected void convert(BaseViewHolder holder, LiveChannelItem item) {
         TextView tvChannelNum = holder.getView(R.id.tvChannelNum);
         TextView tvChannel = holder.getView(R.id.tvChannelName);
+        TextView tvChannelEpgInfo = holder.getView(R.id.tvChannelEpgInfo);
         tvChannelNum.setText(String.format("%s", item.getChannelNum()));
         tvChannel.setText(item.getChannelName());
+        tvChannelEpgInfo.setText(item.getChannelEpgInfo());
         int channelIndex = item.getChannelIndex();
-        if (channelIndex == selectedChannelIndex && channelIndex != focusedChannelIndex) {
-            tvChannelNum.setTextColor(mContext.getResources().getColor(R.color.color_1890FF));
-            tvChannel.setTextColor(mContext.getResources().getColor(R.color.color_1890FF));
-        }
-        else{
+        if (channelIndex == selectedChannelIndex) {
+            tvChannelNum.setTextColor(ContextCompat.getColor(mContext, R.color.color_1890FF));
+            tvChannel.setTextColor(ContextCompat.getColor(mContext, R.color.color_1890FF));
+            tvChannelEpgInfo.setTextColor(ContextCompat.getColor(mContext, R.color.color_BD0CADE2));
+        } else if (channelIndex == focusedChannelIndex) {
+            tvChannelNum.setTextColor(ContextCompat.getColor(mContext, R.color.color_00FF0A));
+            tvChannel.setTextColor(ContextCompat.getColor(mContext, R.color.color_00FF0A));
+        } else{
             tvChannelNum.setTextColor(Color.WHITE);
             tvChannel.setTextColor(Color.WHITE);
+            tvChannelEpgInfo.setTextColor(ContextCompat.getColor(mContext, R.color.color_FFFFFF_50));
         }
     }
 
