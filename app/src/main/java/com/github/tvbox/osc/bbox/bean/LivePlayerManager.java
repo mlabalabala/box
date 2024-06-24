@@ -50,7 +50,7 @@ public class LivePlayerManager {
             if (playerConfig.getInt("pl") == currentPlayerConfig.getInt("pl")
                     && playerConfig.getInt("pr") == currentPlayerConfig.getInt("pr")
                     && playerConfig.getString("ijk").equals(currentPlayerConfig.getString("ijk"))) {
-                videoView.setScreenScaleType(playerConfig.getInt("sc"));
+                videoView.setScreenScaleType(Hawk.get(HawkConfig.IS_GLOBAL_SCALE, false)?Hawk.get(HawkConfig.PLAY_SCALE,0):playerConfig.getInt("sc"));
             } else {
                 PlayerHelper.updateCfg(videoView, playerConfig);
             }
@@ -88,7 +88,7 @@ public class LivePlayerManager {
 
     public int getLivePlayerScale() {
         try {
-            return currentPlayerConfig.getInt("sc");
+            return Hawk.get(HawkConfig.IS_GLOBAL_SCALE, false)?Hawk.get(HawkConfig.PLAY_SCALE,0):currentPlayerConfig.getInt("sc");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,7 +134,8 @@ public class LivePlayerManager {
 
         JSONObject playerConfig = currentPlayerConfig;
         try {
-            playerConfig.put("sc", playerScale);
+            int scale = Hawk.get(HawkConfig.IS_GLOBAL_SCALE, false)?Hawk.get(HawkConfig.PLAY_SCALE,0):playerScale;
+            playerConfig.put("sc", scale);
         } catch (JSONException e) {
             e.printStackTrace();
         }

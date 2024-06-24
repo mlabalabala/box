@@ -795,6 +795,7 @@ public class ApiConfig {
 
     public Spider getCSP(SourceBean sourceBean) {
         boolean js = sourceBean.getApi().endsWith(".js") || sourceBean.getApi().contains(".js?");
+        LOG.d("jsSpider: " + js);
         if (js) return jsLoader.getSpider(sourceBean.getKey(), sourceBean.getApi(), sourceBean.getExt(), sourceBean.getJar());
         return jarLoader.getSpider(sourceBean.getKey(), sourceBean.getApi(), sourceBean.getExt(), sourceBean.getJar());
     }
