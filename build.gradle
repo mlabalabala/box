@@ -4,7 +4,17 @@ buildscript {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
-        google()
+//        google()
+//        jcenter()
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
         maven { url "https://jitpack.io" }
 //        maven { url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2' }
         maven { url 'https://o0halflife0o.github.io/crosswalk/releases/crosswalk/android/maven2' }
@@ -23,7 +33,17 @@ allprojects {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        google()
+//        google()
+//        jcenter()
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
         maven { url "https://jitpack.io" }
 //        maven { url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2' }
         maven { url 'https://o0halflife0o.github.io/crosswalk/releases/crosswalk/android/maven2' }
