@@ -117,7 +117,58 @@ public class ApiConfig {
     }
 
     public void onlyLoadBaseConfig () {
-        parseJson("", "{ \"spider\": \"\", \"wallpaper\": \"\", \"sites\": [], \"parses\": [ { \"name\": \"聚合\", \"type\": 3, \"url\": \"Demo\" } ], \"doh\": [ { \"name\": \"Google\", \"url\": \"https://dns.google/dns-query\", \"ips\": [ \"8.8.4.4\", \"8.8.8.8\" ] }, { \"name\": \"Cloudflare\", \"url\": \"https://cloudflare-dns.com/dns-query\", \"ips\": [ \"1.1.1.1\", \"1.0.0.1\", \"2606:4700:4700::1111\", \"2606:4700:4700::1001\" ] }, { \"name\": \"AdGuard\", \"url\": \"https://dns.adguard.com/dns-query\", \"ips\": [ \"94.140.14.140\", \"94.140.14.141\" ] }, { \"name\": \"DNSWatch\", \"url\": \"https://resolver2.dns.watch/dns-query\", \"ips\": [ \"84.200.69.80\", \"84.200.70.40\" ] }, { \"name\": \"Quad9\", \"url\": \"https://dns.quad9.net/dns-quer\", \"ips\": [ \"9.9.9.9\", \"149.112.112.112\" ] } ], \"rules\": [ { \"name\": \"hwk\", \"hosts\": [ \"haiwaikan\" ], \"regex\": [ \"10.0099\", \"10.3333\", \"16.0599\", \"8.1748\", \"10.85\" ] }, { \"name\": \"yqk\", \"hosts\": [ \"yqk88\" ], \"regex\": [ \"18.4\", \"15.1666\" ] }, { \"name\": \"sn\", \"hosts\": [ \"suonizy\" ], \"regex\": [ \"15.1666\", \"15.2666\" ] }, { \"name\": \"bf\", \"hosts\": [ \"bfzy\" ], \"regex\": [ \"#EXT-X-DISCONTINUITY\\\\r*\\\\n*#EXTINF:3,[\\\\s\\\\S]*?#EXT-X-DISCONTINUITY\" ] }, { \"name\": \"xx\", \"hosts\": [ \"aws.ulivetv.net\" ], \"regex\": [ \"#EXT-X-DISCONTINUITY\\\\r*\\\\n*#EXTINF:8,[\\\\s\\\\S]*?#EXT-X-DISCONTINUITY\" ] }, { \"name\": \"lz\", \"hosts\": [ \"vip.lz\", \"hd.lz\", \"v.cdnlz1\", \"v.cdnlz\" ], \"regex\": [ \"18.5333\" ] }, { \"name\": \"非凡\", \"hosts\": [ \"vip.ffzy\", \"hd.ffzy\" ], \"regex\": [ \"25.0666\" ] }, { \"name\": \"hs\", \"hosts\": [ \"huoshan.com\" ], \"regex\": [ \"item_id=\" ] }, { \"name\": \"dy\", \"hosts\": [ \"douyin.com\" ], \"regex\": [ \"is_play_url=\" ] }, { \"name\": \"nm\", \"hosts\": [ \"toutiaovod.com\" ], \"regex\": [ \"video/tos/cn\" ] }, { \"name\": \"cl\", \"hosts\": [ \"magnet\" ], \"regex\": [ \"最 新\", \"直 播\", \"更 新\" ] } ], \"lives\": [ { \"name\": \"live\", \"type\": 0, \"url\": \"\", \"playerType\": 1, \"ua\": \"okhttp/3.15\", \"epg\": \"http://epg.112114.xyz/?ch={name}&amp;date={date}\" } ] }");
+        String infoJsonStr = "{ \"spider\": \"\", \"wallpaper\": \"\", \"sites\": [], \"parses\": [ { \"name\": \"聚合\", \"type\": 3, \"url\": \"Demo\" } ], \"doh\": [ { \"name\": \"Google\", \"url\": \"https://dns.google/dns-query\", \"ips\": [ \"8.8.4.4\", \"8.8.8.8\" ] }, { \"name\": \"Cloudflare\", \"url\": \"https://cloudflare-dns.com/dns-query\", \"ips\": [ \"1.1.1.1\", \"1.0.0.1\", \"2606:4700:4700::1111\", \"2606:4700:4700::1001\" ] }, { \"name\": \"AdGuard\", \"url\": \"https://dns.adguard.com/dns-query\", \"ips\": [ \"94.140.14.140\", \"94.140.14.141\" ] }, { \"name\": \"DNSWatch\", \"url\": \"https://resolver2.dns.watch/dns-query\", \"ips\": [ \"84.200.69.80\", \"84.200.70.40\" ] }, { \"name\": \"Quad9\", \"url\": \"https://dns.quad9.net/dns-quer\", \"ips\": [ \"9.9.9.9\", \"149.112.112.112\" ] } ], \"rules\": [ { \"name\": \"hwk\", \"hosts\": [ \"haiwaikan\" ], \"regex\": [ \"10.0099\", \"10.3333\", \"16.0599\", \"8.1748\", \"10.85\" ] }, { \"name\": \"yqk\", \"hosts\": [ \"yqk88\" ], \"regex\": [ \"18.4\", \"15.1666\" ] }, { \"name\": \"sn\", \"hosts\": [ \"suonizy\" ], \"regex\": [ \"15.1666\", \"15.2666\" ] }, { \"name\": \"bf\", \"hosts\": [ \"bfzy\" ], \"regex\": [ \"#EXT-X-DISCONTINUITY\\\\r*\\\\n*#EXTINF:3,[\\\\s\\\\S]*?#EXT-X-DISCONTINUITY\" ] }, { \"name\": \"xx\", \"hosts\": [ \"aws.ulivetv.net\" ], \"regex\": [ \"#EXT-X-DISCONTINUITY\\\\r*\\\\n*#EXTINF:8,[\\\\s\\\\S]*?#EXT-X-DISCONTINUITY\" ] }, { \"name\": \"lz\", \"hosts\": [ \"vip.lz\", \"hd.lz\", \"v.cdnlz1\", \"v.cdnlz\" ], \"regex\": [ \"18.5333\" ] }, { \"name\": \"非凡\", \"hosts\": [ \"vip.ffzy\", \"hd.ffzy\" ], \"regex\": [ \"25.0666\" ] }, { \"name\": \"hs\", \"hosts\": [ \"huoshan.com\" ], \"regex\": [ \"item_id=\" ] }, { \"name\": \"dy\", \"hosts\": [ \"douyin.com\" ], \"regex\": [ \"is_play_url=\" ] }, { \"name\": \"nm\", \"hosts\": [ \"toutiaovod.com\" ], \"regex\": [ \"video/tos/cn\" ] }, { \"name\": \"cl\", \"hosts\": [ \"magnet\" ], \"regex\": [ \"最 新\", \"直 播\", \"更 新\" ] } ], \"lives\": [ { \"name\": \"live\", \"type\": 0, \"url\": \"\", \"playerType\": 1, \"ua\": \"okhttp/3.15\", \"epg\": \"http://epg.112114.xyz/?ch={name}&amp;date={date}\" } ] }";
+        JsonObject infoJson = new Gson().fromJson(infoJsonStr, JsonObject.class);
+        String defaultIJKADS="{\"ijk\":[{\"options\":[{\"name\":\"opensles\",\"category\":4,\"value\":\"0\"},{\"name\":\"framedrop\",\"category\":4,\"value\":\"1\"},{\"name\":\"soundtouch\",\"category\":4,\"value\":\"1\"},{\"name\":\"start-on-prepared\",\"category\":4,\"value\":\"1\"},{\"name\":\"http-detect-rangeupport\",\"category\":1,\"value\":\"0\"},{\"name\":\"fflags\",\"category\":1,\"value\":\"fastseek\"},{\"name\":\"skip_loop_filter\",\"category\":2,\"value\":\"48\"},{\"name\":\"reconnect\",\"category\":4,\"value\":\"1\"},{\"name\":\"enable-accurate-seek\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec-all-videos\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec-auto-rotate\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec-handle-resolution-change\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec-hevc\",\"category\":4,\"value\":\"0\"},{\"name\":\"max-buffer-size\",\"category\":4,\"value\":\"15728640\"}],\"group\":\"软解码\"},{\"options\":[{\"name\":\"opensles\",\"category\":4,\"value\":\"0\"},{\"name\":\"framedrop\",\"category\":4,\"value\":\"1\"},{\"name\":\"soundtouch\",\"category\":4,\"value\":\"1\"},{\"name\":\"start-on-prepared\",\"category\":4,\"value\":\"1\"},{\"name\":\"http-detect-rangeupport\",\"category\":1,\"value\":\"0\"},{\"name\":\"fflags\",\"category\":1,\"value\":\"fastseek\"},{\"name\":\"skip_loop_filter\",\"category\":2,\"value\":\"48\"},{\"name\":\"reconnect\",\"category\":4,\"value\":\"1\"},{\"name\":\"enable-accurate-seek\",\"category\":4,\"value\":\"0\"},{\"name\":\"mediacodec\",\"category\":4,\"value\":\"1\"},{\"name\":\"mediacodec-all-videos\",\"category\":4,\"value\":\"1\"},{\"name\":\"mediacodec-auto-rotate\",\"category\":4,\"value\":\"1\"},{\"name\":\"mediacodec-handle-resolution-change\",\"category\":4,\"value\":\"1\"},{\"name\":\"mediacodec-hevc\",\"category\":4,\"value\":\"1\"},{\"name\":\"max-buffer-size\",\"category\":4,\"value\":\"15728640\"}],\"group\":\"硬解码\"}],\"ads\":[\"mimg.0c1q0l.cn\",\"www.googletagmanager.com\",\"www.google-analytics.com\",\"mc.usihnbcq.cn\",\"mg.g1mm3d.cn\",\"mscs.svaeuzh.cn\",\"cnzz.hhttm.top\",\"tp.vinuxhome.com\",\"cnzz.mmstat.com\",\"www.baihuillq.com\",\"s23.cnzz.com\",\"z3.cnzz.com\",\"c.cnzz.com\",\"stj.v1vo.top\",\"z12.cnzz.com\",\"img.mosflower.cn\",\"tips.gamevvip.com\",\"ehwe.yhdtns.com\",\"xdn.cqqc3.com\",\"www.jixunkyy.cn\",\"sp.chemacid.cn\",\"hm.baidu.com\",\"s9.cnzz.com\",\"z6.cnzz.com\",\"um.cavuc.com\",\"mav.mavuz.com\",\"wofwk.aoidf3.com\",\"z5.cnzz.com\",\"xc.hubeijieshikj.cn\",\"tj.tianwenhu.com\",\"xg.gars57.cn\",\"k.jinxiuzhilv.com\",\"cdn.bootcss.com\",\"ppl.xunzhuo123.com\",\"xomk.jiangjunmh.top\",\"img.xunzhuo123.com\",\"z1.cnzz.com\",\"s13.cnzz.com\",\"xg.huataisangao.cn\",\"z7.cnzz.com\",\"xg.huataisangao.cn\",\"z2.cnzz.com\",\"s96.cnzz.com\",\"q11.cnzz.com\",\"thy.dacedsfa.cn\",\"xg.whsbpw.cn\",\"s19.cnzz.com\",\"z8.cnzz.com\",\"s4.cnzz.com\",\"f5w.as12df.top\",\"ae01.alicdn.com\",\"www.92424.cn\",\"k.wudejia.com\",\"vivovip.mmszxc.top\",\"qiu.xixiqiu.com\",\"cdnjs.hnfenxun.com\",\"cms.qdwght.com\"]}";
+        JsonObject defaultJson=new Gson().fromJson(defaultIJKADS, JsonObject.class);
+        parseLiveChannels("", infoJson);
+        // 广告地址
+        if(AdBlocker.isEmpty()){
+            //默认广告拦截
+            for (JsonElement host : defaultJson.getAsJsonArray("ads")) {
+                AdBlocker.addAdHost(host.getAsString());
+            }
+            //追加的广告拦截
+            if(infoJson.has("ads")){
+                for (JsonElement host : infoJson.getAsJsonArray("ads")) {
+                    if(!AdBlocker.hasHost(host.getAsString())){
+                        AdBlocker.addAdHost(host.getAsString());
+                    }
+                }
+            }
+        }
+        // IJK解码配置
+        if(ijkCodes==null){
+            ijkCodes = new ArrayList<>();
+            boolean foundOldSelect = false;
+            String ijkCodec = Hawk.get(HawkConfig.IJK_CODEC, "");
+            JsonArray ijkJsonArray = infoJson.has("ijk")?infoJson.get("ijk").getAsJsonArray():defaultJson.get("ijk").getAsJsonArray();
+            for (JsonElement opt : ijkJsonArray) {
+                JsonObject obj = (JsonObject) opt;
+                String name = obj.get("group").getAsString();
+                LinkedHashMap<String, String> baseOpt = new LinkedHashMap<>();
+                for (JsonElement cfg : obj.get("options").getAsJsonArray()) {
+                    JsonObject cObj = (JsonObject) cfg;
+                    String key = cObj.get("category").getAsString() + "|" + cObj.get("name").getAsString();
+                    String val = cObj.get("value").getAsString();
+                    baseOpt.put(key, val);
+                }
+                IJKCode codec = new IJKCode();
+                codec.setName(name);
+                codec.setOption(baseOpt);
+                if (name.equals(ijkCodec) || TextUtils.isEmpty(ijkCodec)) {
+                    codec.selected(true);
+                    ijkCodec = name;
+                    foundOldSelect = true;
+                } else {
+                    codec.selected(false);
+                }
+                ijkCodes.add(codec);
+            }
+            if (!foundOldSelect && ijkCodes.size() > 0) {
+                ijkCodes.get(0).selected(true);
+            }
+        }
     }
 
     public void loadConfig(boolean useCache, LoadConfigCallback callback, Activity activity) {

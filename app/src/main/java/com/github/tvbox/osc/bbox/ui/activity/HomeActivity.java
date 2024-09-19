@@ -351,6 +351,9 @@ public class HomeActivity extends BaseActivity {
             } else {
                 LOG.e("无");
             }
+            // 默认进入直播
+            // Intent intent = new Intent(mContext, LivePlayActivity.class);
+            // HomeActivity.this.startActivity(intent);
             return;
         }
         showLoading();

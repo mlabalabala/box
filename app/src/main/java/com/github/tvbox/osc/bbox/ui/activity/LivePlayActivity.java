@@ -28,6 +28,7 @@ import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.base.BaseActivity;
 import com.github.tvbox.osc.bbox.bean.*;
 import com.github.tvbox.osc.bbox.player.controller.LiveController;
+import com.github.tvbox.osc.bbox.server.ControlManager;
 import com.github.tvbox.osc.bbox.ui.adapter.*;
 import com.github.tvbox.osc.bbox.ui.dialog.ApiDialog;
 import com.github.tvbox.osc.bbox.ui.dialog.ApiHistoryDialog;
@@ -323,8 +324,8 @@ public class LivePlayActivity extends BaseActivity {
             }
         });
         // 作为直播播放器需要使用
-        // ApiConfig.get().onlyLoadBaseConfig();
-        // ControlManager.get().startServer();
+        ApiConfig.get().onlyLoadBaseConfig();
+        ControlManager.get().startServer();
         initEpgDateView();
         initEpgListView();
         initDayList();
@@ -608,6 +609,9 @@ public class LivePlayActivity extends BaseActivity {
             mHandler.removeCallbacks(mConnectTimeoutChangeSourceRun);
             mHandler.removeCallbacks(mUpdateNetSpeedRun);
             super.onBackPressed();
+            // 返回主页
+            Intent intent = new Intent(mContext, HomeActivity.class);
+            LivePlayActivity.this.startActivity(intent);
         }
     }
 

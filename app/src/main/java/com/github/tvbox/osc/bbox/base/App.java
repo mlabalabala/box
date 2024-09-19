@@ -171,10 +171,8 @@ public class App extends MultiDexApplication {
         // 默认加速历史记录
         List<String> proxyUrlHistory = Hawk.get(HawkConfig.PROXY_URL_HISTORY, new ArrayList<>());
         proxyUrlHistory.add(url);
-        proxyUrlHistory.add("https://github.moeyy.xyz/");
-        proxyUrlHistory.add("https://gh.ddlc.top/");
-        proxyUrlHistory.add("https://ghps.cc/");
-        proxyUrlHistory.add("https://raw.bunnyxyz.eu.org/");
+        proxyUrlHistory.add("https://ghproxy.net/");
+        proxyUrlHistory.add("https://mirror.ghproxy.com/");
         // 默认仓库地址
         String defaultStoreApi = URL.DEFAULT_STORE_API_URL;
 
@@ -200,8 +198,8 @@ public class App extends MultiDexApplication {
         // putDefault(HawkConfig.API_NAME, defaultApiName);
         // putDefault(HawkConfig.API_NAME_HISTORY, defaultApiHistory);
         // putDefault(HawkConfig.API_MAP, defaultApiMap);
-        // 不添加默认直播源
-        // putDefault(HawkConfig.LIVE_URL, url + URL.DEFAULT_LIVE_URL);
+        // 添加默认直播源
+        putDefault(HawkConfig.LIVE_URL, URL.DEFAULT_LIVE_URL);
 
         putDefault(HawkConfig.DEFAULT_STORE_API, defaultStoreApi);
         putDefault(HawkConfig.PROXY_URL_HISTORY, proxyUrlHistory);
