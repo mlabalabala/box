@@ -207,6 +207,11 @@ public class App extends MultiDexApplication {
         putDefault(HawkConfig.EPG_HISTORY, epgHistory);
         putDefault(HawkConfig.LIVE_SHOW_NET_SPEED, true);
         putDefault(HawkConfig.IS_GLOBAL_SCALE, true);
+	// 添加自定义
+	putDefault(HawkConfig.API_URL, defaultApi);
+	putDefault(HawkConfig.API_NAME, defaultApiName);
+	putDefault(HawkConfig.API_NAME_HISTORY, defaultApiHistory);
+	putDefault(HawkConfig.API_MAP, defaultApiMap);
     }
 
     private void putDefault(String key, Object value) {
