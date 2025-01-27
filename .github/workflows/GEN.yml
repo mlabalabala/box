@@ -3,7 +3,7 @@ name: GENERATE APK
 on:
   #  push:
   #    branches:
-  #      - main
+  #      - myiptv
   #  pull_request:
   workflow_dispatch:
 
