@@ -335,7 +335,7 @@ public class LivePlayActivity extends BaseActivity {
         initSettingGroupView();
         initSettingItemView();
         initLiveChannelList();
-        initChannelEpgInfoList();
+        // initChannelEpgInfoList();
         initLiveSettingGroupList();
     }
     //获取EPG并存储 // 百川epg  DIYP epg   51zmt epg ------- 自建EPG格式输出格式请参考 51zmt
@@ -387,6 +387,7 @@ public class LivePlayActivity extends BaseActivity {
 
         LOG.d("Epg缓存中" + (liveChannelEpgInfoList.containsKey(channelName)?"包含":"不包含") + channelName);
         if (liveChannelEpgInfoList.isEmpty() || !liveChannelEpgInfoList.containsKey(channelName)) {
+            /*
             ApiConfig.get().getChannelEpgInfo(epgTagName, date, new ApiConfig.EpgInfoParseCallback() {
                 @Override
                 public void success(String paramString) {
@@ -421,6 +422,8 @@ public class LivePlayActivity extends BaseActivity {
                     // showBottomEpg();
                 }
             });
+            */
+            LOG.d("PASS");
         } else {
             List<Epginfo> arrayList = liveChannelEpgInfoList.get(channelName);
             LOG.i("liveChannelEpgInfoList: " + liveChannelEpgInfoList.size() + "\n" + liveChannelEpgInfoList);
@@ -806,7 +809,7 @@ public class LivePlayActivity extends BaseActivity {
             mChannelGroupView.scrollToPosition(currentChannelGroupIndex);
             mChannelGroupView.setSelection(currentChannelGroupIndex);
             mHandler.postDelayed(mFocusCurrentChannelAndShowChannelList, 200);
-            initChannelEpgInfoList();
+            // initChannelEpgInfoList();
         } else {
             mHandler.removeCallbacks(mHideChannelListRun);
             mHandler.post(mHideChannelListRun);
@@ -1796,13 +1799,14 @@ public class LivePlayActivity extends BaseActivity {
     private void initLiveChannelList() {
         List<LiveChannelGroup> list = ApiConfig.get().getChannelGroupList();
         if (list.isEmpty()) {
-            Toast.makeText(App.getInstance(), "频道列表为空，读取本地文件", Toast.LENGTH_SHORT).show();
-            loadLives();
+            Toast.makeText(App.getInstance(), "频道列表为空", Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
 
         if (list.size() == 1 && list.get(0).getGroupName().startsWith("http://127.0.0.1")) {
-            loadProxyLives(list.get(0).getGroupName());
+            finish();
+            // loadProxyLives(list.get(0).getGroupName());
         }
         else {
             liveChannelGroupList.clear();
@@ -1839,6 +1843,12 @@ public class LivePlayActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        jumpActivity(HomeActivity.class);
+    }
+
     public void loadProxyLives(String url) {
         try {
             Uri parsedUrl = Uri.parse(url);
@@ -1854,7 +1864,7 @@ public class LivePlayActivity extends BaseActivity {
             @Override
             public void onError(Response<String> response) {
                 super.onError(response);
-                loadLives();
+                finish();
             }
 
             @Override
