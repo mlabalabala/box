@@ -1805,8 +1805,9 @@ public class LivePlayActivity extends BaseActivity {
         }
 
         if (list.size() == 1 && list.get(0).getGroupName().startsWith("http://127.0.0.1")) {
-            finish();
-            // loadProxyLives(list.get(0).getGroupName());
+            // Toast.makeText(App.getInstance(), "代理频道列表为空", Toast.LENGTH_SHORT).show();
+            // finish();
+            loadProxyLives(list.get(0).getGroupName());
         }
         else {
             liveChannelGroupList.clear();
@@ -1864,6 +1865,7 @@ public class LivePlayActivity extends BaseActivity {
             @Override
             public void onError(Response<String> response) {
                 super.onError(response);
+                Toast.makeText(App.getInstance(), "直播源请求失败！", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
