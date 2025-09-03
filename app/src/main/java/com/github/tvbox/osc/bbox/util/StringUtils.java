@@ -8,11 +8,11 @@ import java.util.Map;
 
 public class StringUtils {
 
-    public static boolean isEmpty( CharSequence str) {
+    public static boolean isEmpty(CharSequence str) {
         return str == null || str.length() == 0;
     }
 
-    public static boolean isNotEmpty( CharSequence str) {
+    public static boolean isNotEmpty(CharSequence str) {
         return !isEmpty(str);
     }
 
@@ -38,22 +38,20 @@ public class StringUtils {
         return !isEmpty(obj);
     }
 
-    private static final String U2028 = new String(new byte[]{ (byte)0xE2, (byte)0x80, (byte)0xA8 });
-    private static final String U2029 = new String(new byte[]{ (byte)0xE2, (byte)0x80, (byte)0xA9 });
+    private static final String U2028 = new String(new byte[]{(byte) 0xE2, (byte) 0x80, (byte) 0xA8});
+    private static final String U2029 = new String(new byte[]{(byte) 0xE2, (byte) 0x80, (byte) 0xA9});
 
     /**
      * Escape JavaString string
+     *
      * @param line unescaped string
      * @return escaped string
      */
-    public static String escapeJavaScriptString(final String line)
-    {
+    public static String escapeJavaScriptString(final String line) {
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < line.length(); i++)
-        {
+        for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
-            switch (c)
-            {
+            switch (c) {
                 case '"':
                 case '\'':
                 case '\\':

@@ -12,10 +12,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -346,17 +343,62 @@ public class VideoView<P extends AbstractPlayer> extends FrameLayout
      * 继续播放
      */
     public void resume() {
-        if (isInPlaybackState()
-                && !mMediaPlayer.isPlaying()) {
-            mMediaPlayer.start();
-            setPlayState(STATE_PLAYING);
-            if (mAudioFocusHelper != null && !isMute()) {
-                mAudioFocusHelper.requestFocus();
+        if (isInPlaybackState() && !mMediaPlayer.isPlaying()) {
+            assert mRenderView != null;
+            View renderView = mRenderView.getView();
+            if (renderView instanceof SurfaceView) {
+                final SurfaceView surfaceView = (SurfaceView) renderView;
+                final SurfaceHolder holder = surfaceView.getHolder();
+                if (holder.getSurface() != null && holder.getSurface().isValid()) {
+                    mMediaPlayer.setDisplay(holder);
+                    resumePlay();
+                } else {
+                    holder.addCallback(new SurfaceHolder.Callback() {
+                        @Override
+                        public void surfaceCreated(SurfaceHolder holder) {
+                            addDisplay();
+                            if (mRenderView != null) {
+                                mRenderView.setScaleType(mCurrentScreenScaleType);
+                                mRenderView.setVideoSize(mVideoSize[0], mVideoSize[1]);
+                            }
+                            mMediaPlayer.setDisplay(holder);
+                            resumePlay();
+                            // 移除回调，避免重复调用
+                            holder.removeCallback(this);
+                        }
+
+                        @Override
+                        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                        }
+
+                        @Override
+                        public void surfaceDestroyed(SurfaceHolder holder) {
+                        }
+                    });
+                }
+            } else {
+                resumePlay();
             }
-            mPlayerContainer.setKeepScreenOn(true);
+            if (mRenderView != null) {
+                // 强制请求布局（解决部分设备渲染问题）
+                mRenderView.getView().requestLayout();
+                mRenderView.getView().invalidate();
+            }
+            if (mRenderView != null && mRenderView.getView() != null) {
+                // 统一设置视图可见性
+                mRenderView.getView().setVisibility(View.VISIBLE);
+            }
         }
     }
 
+    private void resumePlay(){
+        mMediaPlayer.start();
+        setPlayState(STATE_PLAYING);
+        if (mAudioFocusHelper != null && !isMute()) {
+            mAudioFocusHelper.requestFocus();
+        }
+        mPlayerContainer.setKeepScreenOn(true);
+    }
     /**
      * 释放播放器
      */

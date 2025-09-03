@@ -14,7 +14,9 @@ import com.github.tvbox.osc.bbox.cache.RoomDataManger;
 import com.github.tvbox.osc.bbox.cache.VodCollect;
 import com.github.tvbox.osc.bbox.event.RefreshEvent;
 import com.github.tvbox.osc.bbox.ui.adapter.CollectAdapter;
+import com.github.tvbox.osc.bbox.ui.dialog.ConfirmClearDialog;
 import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
+import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import org.greenrobot.eventbus.EventBus;
@@ -26,9 +28,10 @@ import java.util.List;
 
 public class CollectActivity extends BaseActivity {
     private ImageView tvDel;
+    private ImageView tvClear;
     private TextView tvDelTip;
     private TvRecyclerView mGridView;
-    private CollectAdapter collectAdapter;
+    public static CollectAdapter collectAdapter;
     private boolean delMode = false;
 
     @Override
@@ -43,6 +46,8 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void toggleDelMode() {
+        HawkConfig.hotVodDelete = !HawkConfig.hotVodDelete;
+        collectAdapter.notifyDataSetChanged();
         delMode = !delMode;
         tvDelTip.setVisibility(delMode ? View.VISIBLE : View.GONE);
         tvDel.setImageResource(delMode ? R.drawable.icon_delete_select:R.drawable.icon_delete);
@@ -51,6 +56,7 @@ public class CollectActivity extends BaseActivity {
     private void initView() {
         EventBus.getDefault().register(this);
         tvDel = findViewById(R.id.tvDel);
+        tvClear = findViewById(R.id.tvClear);
         tvDelTip = findViewById(R.id.tvDelTip);
         mGridView = findViewById(R.id.mGridView);
         mGridView.setHasFixedSize(true);
@@ -63,11 +69,19 @@ public class CollectActivity extends BaseActivity {
                 toggleDelMode();
             }
         });
+        tvClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConfirmClearDialog dialog = new ConfirmClearDialog(mContext, "Collect");
+                dialog.show();
+            }
+        });
         mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
             @Override
             public boolean onInBorderKeyEvent(int direction, View focused) {
                 if (direction == View.FOCUS_UP) {
                     tvDel.setFocusable(true);
+                    tvClear.setFocusable(true);
                     tvDel.requestFocus();
                 }
                 return false;
@@ -103,6 +117,7 @@ public class CollectActivity extends BaseActivity {
                             Bundle bundle = new Bundle();
                             bundle.putString("id", vodInfo.vodId);
                             bundle.putString("sourceKey", vodInfo.sourceKey);
+                            bundle.putString("picture", vodInfo.pic);
                             jumpActivity(DetailActivity.class, bundle);
                         } else {
                             Intent newIntent = new Intent(mContext, SearchActivity.class);
@@ -112,6 +127,18 @@ public class CollectActivity extends BaseActivity {
                         }
                     }
                 }
+            }
+        });
+        collectAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+//                FastClickCheckUtil.check(view);
+//                VodCollect vodInfo = collectAdapter.getData().get(position);
+//                collectAdapter.remove(position);
+//                RoomDataManger.deleteVodCollect(vodInfo.getId());
+                tvDel.setFocusable(true);
+                toggleDelMode();
+                return true;
             }
         });
     }

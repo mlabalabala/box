@@ -1,8 +1,10 @@
 package com.github.tvbox.osc.bbox.ui.adapter;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.bbox.R;
@@ -30,5 +32,17 @@ public class SeriesFlagAdapter extends BaseQuickAdapter<VodInfo.VodSeriesFlag, B
             select.setVisibility(View.GONE);
         }
         helper.setText(R.id.tvSeriesFlag, item.name);
+        View mSeriesGroupTv = ((Activity) helper.itemView.getContext()).findViewById(R.id.mSeriesGroupTv);
+        if (mSeriesGroupTv != null && mSeriesGroupTv.getVisibility() == View.VISIBLE) {
+            helper.itemView.setNextFocusDownId(R.id.mSeriesSortTv);
+        }else {
+            helper.itemView.setNextFocusDownId(R.id.mGridView);
+        }
+        if (helper.getLayoutPosition() == getData().size() - 1) {
+            helper.itemView.setId(ViewCompat.generateViewId());
+            helper.itemView.setNextFocusRightId(helper.itemView.getId());
+        }else {
+            helper.itemView.setNextFocusRightId(View.NO_ID);
+        }
     }
 }

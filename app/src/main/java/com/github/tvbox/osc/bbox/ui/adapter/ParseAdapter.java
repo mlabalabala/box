@@ -26,5 +26,8 @@ public class ParseAdapter extends BaseQuickAdapter<ParseBean, BaseViewHolder> {
             tvParse.setTextColor(Color.WHITE);
         }
         tvParse.setText(item.getName());
+        // if (helper.getLayoutPosition() == 0) {
+        //     helper.itemView.setNextFocusLeftId(R.id.screen_display);
+        // }
     }
 }

@@ -177,6 +177,26 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {
+            if(dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)){
+                AppManager.getInstance().finishAllActivity();
+                jumpActivity(HomeActivity.class);
+            }
+            else if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, "")))  || homeRec != Hawk.get(HawkConfig.HOME_REC, 0)) {
+                jumpActivity(HomeActivity.class, createBundle());
+            }else if(!currentLive.equals(Hawk.get(HawkConfig.LIVE_URL, ""))){
+                jumpActivity(HomeActivity.class);
+            }
+        } else {
+            AppManager.getInstance().finishAllActivity();
+            jumpActivity(HomeActivity.class);
+        }
+        super.onBackPressed();
+    }
+
+    /*
+    @Override
+    public void onBackPressed() {
         if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, ""))) ||
                 !currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))  ||
                 !currentLive.equals(Hawk.get(HawkConfig.LIVE_URL, "")) ||
@@ -194,5 +214,13 @@ public class SettingActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+     */
+
+    private Bundle createBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("useCache", true);
+        return bundle;
     }
 }

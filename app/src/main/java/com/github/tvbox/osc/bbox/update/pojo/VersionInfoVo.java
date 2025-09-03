@@ -4,6 +4,7 @@ public class VersionInfoVo {
     private String desc;
     private int versionCode;
     private String versionName;
+    private String downloadUrl;
     private boolean forceUpgrade;
 
     public String getDesc() {
@@ -16,6 +17,9 @@ public class VersionInfoVo {
 
     public String getVersionName() {
         return versionName;
+    }
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 
     public boolean isForceUpgrade() {

@@ -99,7 +99,6 @@ public class Thunder {
         torrentFileInfoArrayList=new ArrayList<>();
         playList=new ArrayList<>();
         ed2kList=new ArrayList<>();
-        ArrayList<String> jxUrls=new ArrayList<>();
         Map<Integer, String> urlMap = new HashMap<>();
         threadPool.execute(new Runnable() {
             @Override
@@ -109,10 +108,10 @@ public class Thunder {
                     if (urlInfo != null) {
                         String url="";
                         for (Movie.Video.UrlBean.UrlInfo.InfoBean infoBean : urlInfo.beanList) {
+                            boolean isParse=false;
                             url=infoBean.url;
-//                            if(jxUrls.contains(url))continue;
-                            if(isThunder(url) )url=XLDownloadManager.getInstance().parserThunderUrl(url);
                             if (isMagnet(url) || isThunder(url) || isTorrent(url)) {
+                                if(isThunder(url) )url=XLDownloadManager.getInstance().parserThunderUrl(url);
                                 String link = isThunder(url) ? XLDownloadManager.getInstance().parserThunderUrl(url) : url;
                                 Uri p = Uri.parse(link);
                                 if (p == null) {
@@ -135,7 +134,7 @@ public class Thunder {
                                 if (currentTask <= 0) {
                                     continue;
                                 }
-                                int count = 15;
+                                int count = 30;
                                 outerLoop:
                                 while (true) {
                                     count--;
@@ -154,13 +153,13 @@ public class Thunder {
                                                         TorrentFileInfo[] mSubFileInfo = torrentInfo.mSubFileInfo;
                                                         if (mSubFileInfo != null) {
                                                             for (TorrentFileInfo sub : mSubFileInfo) {
-                                                                if (isMedia(sub.mFileName)) {
+                                                                if (isMedia(sub.mFileName) && sub.mFileSize > 1048576L * 30) {
                                                                     sub.torrentPath = cache.getAbsolutePath();
                                                                     playList.add(sub.mFileName + "$tvbox-torrent:" + torrentFileInfoArrayList.size());
                                                                     torrentFileInfoArrayList.add(sub);
                                                                 }
                                                             }
-                                                            jxUrls.add(url);
+                                                            isParse=true;
                                                             break outerLoop;
                                                         }
                                                     }
@@ -176,7 +175,7 @@ public class Thunder {
                                         }
                                     }
                                     try {
-                                        Thread.sleep(200);
+                                        Thread.sleep(100);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -192,8 +191,10 @@ public class Thunder {
                                     name = XLTaskHelper.instance().getFileName(task_url);
                                     playList.add(name + "$tvbox-oth:" + ed2kList.size());
                                     ed2kList.add(task_url);
+                                    isParse=true;
                                 }
                             }
+                            if (!isParse)playList.add(infoBean.name + "$" + infoBean.url);
                         }
                         if (playList.size() > 0) {
                             urlMap.put(idx,TextUtils.join("#", playList));
@@ -205,7 +206,7 @@ public class Thunder {
                 if (urlMap.size() > 0) {
                     callback.list(urlMap);
                 } else {
-                    callback.status(-1, "文件列表为空!");
+                    callback.status(-1, "解析异常");
                 }
             }});
     }

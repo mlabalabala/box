@@ -63,37 +63,44 @@ public class RoundTransformation implements Transformation {
 
     @Override
     public Bitmap transform(Bitmap source) {
-        int width = source.getWidth();
-        int height = source.getHeight();
+        final int sourceWidth = source.getWidth();
+        final int sourceHeight = source.getHeight();
         if (viewWidth == 0 || viewHeight == 0) {
-            viewWidth = width;
-            viewHeight = height;
+            viewWidth = sourceWidth;
+            viewHeight = sourceHeight;
         }
-        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-        BitmapShader mBitmapShader = new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        if (viewWidth != width || viewHeight != height) {
-            //是否以宽计算
-            float scale;
-            if (width * 1f / viewWidth > height * 1f / viewHeight) {
-                scale = viewHeight * 1f / height;
-                width = (int) (width * scale);
-                height = viewHeight;
+        final float scale;
+        final int targetWidth;
+        final int targetHeight;
+        if (sourceWidth != viewWidth || sourceHeight != viewHeight) {
+            if (sourceWidth * 1f / viewWidth > sourceHeight * 1f / viewHeight) {
+                scale = (float) viewHeight / sourceHeight;
+                targetWidth = (int) (sourceWidth * scale);
+                targetHeight = viewHeight;
             } else {
-                scale = viewWidth * 1f / width;
-                height = (int) (height * scale);
-                width = viewWidth;
+                scale = (float) viewWidth / sourceWidth;
+                targetWidth = viewWidth;
+                targetHeight = (int) (sourceHeight * scale);
             }
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            mBitmapShader.setLocalMatrix(matrix);
+        } else {
+            scale = 1f;
+            targetWidth = sourceWidth;
+            targetHeight = sourceHeight;
         }
-        Bitmap bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+        BitmapShader shader = new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        if (scale != 1f) {
+            Matrix matrix = new Matrix();
+            matrix.setScale(scale, scale);
+            shader.setLocalMatrix(matrix);
+        }
+        Bitmap bitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888);
         bitmap.setHasAlpha(true);
-        Canvas mCanvas = new Canvas(bitmap);
-        mPaint.setShader(mBitmapShader);
-        // mPaint.setAntiAlias(true);
-        mCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-        drawRoundRect(mCanvas, mPaint, width, height);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setShader(shader);
+        Canvas canvas = new Canvas(bitmap);
+        RectF rect = new RectF(0, 0, targetWidth, targetHeight);
+        canvas.drawRoundRect(rect, radius, radius, paint);
+
         source.recycle();
         return bitmap;
     }

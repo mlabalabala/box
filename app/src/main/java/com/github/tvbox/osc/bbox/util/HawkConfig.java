@@ -17,9 +17,10 @@ public class HawkConfig {
     public static final String PARSE_WEBVIEW = "parse_webview"; // true 系统 false xwalk
     public static final String IJK_CODEC = "ijk_codec";
     public static final String PLAY_TYPE = "play_type";//0 系统 1 ijk 2 exo 10 MXPlayer
-    public static final String PLAY_RENDER = "play_render"; //0-texture 1-surface
-    public static final String PLAY_SCALE = "play_scale"; //参考VideoView
-    public static final String PLAY_TIME_STEP = "play_time_step"; //
+    public static final String LIVE_PLAY_TYPE = "live_play_type";//0 系统 1 ijk 2 exo 10 MXPlayer
+    public static final String PLAY_RENDER = "play_render"; //0 texture 2
+    public static final String PLAY_SCALE = "play_scale"; //0 texture 2
+    public static final String PLAY_TIME_STEP = "play_time_step"; //0 texture 2
     public static final String DOH_URL = "doh_url";
     public static final String HOME_REC = "home_rec"; // 0 豆瓣热播 1 数据源推荐 2 历史
     public static final String HISTORY_NUM = "history_num";
@@ -38,6 +39,17 @@ public class HawkConfig {
     public static final String NOW_DATE = "now_date"; //当前日期
     public static final String REMOTE_TVBOX = "remote_tvbox_host";
     public static final String IJK_CACHE_PLAY = "ijk_cache_play";
+    public static final String PLAYER_IS_LIVE = "player_is_live";
+    public static final String DOH_JSON = "doh_json";
+    public static final String LIVE_GROUP_INDEX = "live_group_index";
+    public static final String LIVE_GROUP_LIST = "live_group_list";
+    public static final String LIVE_API_URL = "live_api_url";
+    public static final String M3U8_PURIFY = "m3u8_purify";
+    public static final String SCREEN_DISPLAY = "screen_display";
+    public static final String LIVE_WEB_HEADER = "live_web_header";
+    public static final String DEFAULT_LOAD_LIVE = "DEFAULT_LOAD_LIVE";
+    public static final String SEARCH_HISTORY = "search_history";
+    public static final String LIVE_API_HISTORY = "live_api_history";
 
     public static final String API_MAP = "api_map";
     public static final String API_NAME_HISTORY = "api_name_history";

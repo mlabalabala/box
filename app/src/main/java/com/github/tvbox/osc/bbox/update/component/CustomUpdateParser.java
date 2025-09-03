@@ -12,11 +12,9 @@ import com.xuexiang.xupdate.utils.UpdateUtils;
 
 public class CustomUpdateParser implements IUpdateParser {
     private final Context mContext;
-    private final String mApkUrl;
 
-    public CustomUpdateParser(Context context, String apkUrl) {
+    public CustomUpdateParser(Context context) {
         mContext = context;
-        mApkUrl = apkUrl;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class CustomUpdateParser implements IUpdateParser {
             return new UpdateEntity()
                 .setApkCacheDir(String.valueOf(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)))
                 .setHasUpdate(versionInfo.getVersionCode() > UpdateUtils.getVersionCode(mContext))
-                .setDownloadUrl(mApkUrl)
+                .setDownloadUrl(versionInfo.getDownloadUrl())
                 .setForce(versionInfo.isForceUpgrade())
                 .setIsIgnorable(!versionInfo.isForceUpgrade())
                 .setVersionCode(versionInfo.getVersionCode())

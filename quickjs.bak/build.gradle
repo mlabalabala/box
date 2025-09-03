@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+//    ndkPath = "D:\\Android\\NDK\\android-ndk-r23b\\"
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        externalNativeBuild {
+            cmake {
+                abiFilters 'armeabi-v7a'
+            }
+        }
+    }
+
+    buildTypes {
+        all {
+            ndk {
+                abiFilters 'armeabi-v7a'
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    externalNativeBuild {
+        /*cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version "3.10.2"
+        }*/
+    }
+}
+
+dependencies {
+}

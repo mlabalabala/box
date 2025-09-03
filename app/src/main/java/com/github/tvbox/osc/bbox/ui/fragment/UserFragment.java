@@ -1,5 +1,6 @@
 package com.github.tvbox.osc.bbox.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
 import com.github.tvbox.osc.bbox.base.BaseLazyFragment;
 import com.github.tvbox.osc.bbox.bean.Movie;
+import com.github.tvbox.osc.bbox.bean.SourceBean;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.cache.RoomDataManger;
 import com.github.tvbox.osc.bbox.event.ServerEvent;
@@ -24,10 +26,7 @@ import com.github.tvbox.osc.bbox.ui.activity.PushActivity;
 import com.github.tvbox.osc.bbox.ui.activity.SearchActivity;
 import com.github.tvbox.osc.bbox.ui.activity.SettingActivity;
 import com.github.tvbox.osc.bbox.ui.adapter.HomeHotVodAdapter;
-import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
-import com.github.tvbox.osc.bbox.util.HawkConfig;
-import com.github.tvbox.osc.bbox.util.LOG;
-import com.github.tvbox.osc.bbox.util.UA;
+import com.github.tvbox.osc.bbox.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -39,6 +38,7 @@ import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 
+import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,10 +59,9 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
     private LinearLayout tvHistory;
     private LinearLayout tvCollect;
     private LinearLayout tvPush;
-    private HomeHotVodAdapter homeHotVodAdapter;
+    public static HomeHotVodAdapter homeHotVodAdapter;
     private List<Movie.Video> homeSourceRec;
-    TvRecyclerView tvHotList1;
-    TvRecyclerView tvHotList2;
+    public static TvRecyclerView tvHotList;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -79,18 +78,29 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
 
     @Override
     protected void onFragmentResume() {
-        if(Hawk.get(HawkConfig.HOME_REC_STYLE, false)){
-            tvHotList1.setVisibility(View.VISIBLE);
-            tvHotList2.setVisibility(View.GONE);
-            tvHotList1.setHasFixedSize(true);
-            tvHotList1.setLayoutManager(new V7GridLayoutManager(this.mContext, 5));
-        }else {
-            tvHotList1.setVisibility(View.GONE);
-            tvHotList2.setVisibility(View.VISIBLE);
-        }
         super.onFragmentResume();
+        if (Hawk.get(HawkConfig.HOME_REC_STYLE, false)) {
+            tvHotList.setVisibility(View.VISIBLE);
+            tvHotList.setHasFixedSize(true);
+            int spanCount = 5;
+            if(style!=null && Hawk.get(HawkConfig.HOME_REC, 0) == 1)spanCount= ImgUtil.spanCountByStyle(style,spanCount);
+            tvHotList.setLayoutManager(new V7GridLayoutManager(this.mContext, spanCount));
+            int paddingLeft = getResources().getDimensionPixelSize(R.dimen.vs_15);
+            int paddingTop = getResources().getDimensionPixelSize(R.dimen.vs_10);
+            int paddingRight = getResources().getDimensionPixelSize(R.dimen.vs_15);
+            int paddingBottom = getResources().getDimensionPixelSize(R.dimen.vs_10);
+            tvHotList.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+        } else {
+            tvHotList.setVisibility(View.VISIBLE);
+            tvHotList.setLayoutManager(new V7LinearLayoutManager(this.mContext, V7LinearLayoutManager.HORIZONTAL, false));
+            int paddingLeft = getResources().getDimensionPixelSize(R.dimen.vs_15);
+            int paddingTop = getResources().getDimensionPixelSize(R.dimen.vs_40);
+            int paddingRight = getResources().getDimensionPixelSize(R.dimen.vs_15);
+            int paddingBottom = getResources().getDimensionPixelSize(R.dimen.vs_40);
+            tvHotList.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+        }
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
-            List<VodInfo> allVodRecord = RoomDataManger.getAllVodRecord(30);
+            List<VodInfo> allVodRecord = RoomDataManger.getAllVodRecord(20);
             List<Movie.Video> vodList = new ArrayList<>();
             for (VodInfo vodInfo : allVodRecord) {
                 Movie.Video vod = new Movie.Video();
@@ -111,6 +121,18 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         return R.layout.fragment_user;
     }
 
+    private void jumpSearch(Movie.Video vod){
+        Intent newIntent;
+        if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+            newIntent = new Intent(mContext, FastSearchActivity.class);
+        }else {
+            newIntent = new Intent(mContext, SearchActivity.class);
+        }
+        newIntent.putExtra("title", vod.name);
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mActivity.startActivity(newIntent);
+    }
+    private ImgUtil.Style style;
     @Override
     protected void init() {
         EventBus.getDefault().register(this);
@@ -132,56 +154,70 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         tvHistory.setOnFocusChangeListener(focusChangeListener);
         tvPush.setOnFocusChangeListener(focusChangeListener);
         tvCollect.setOnFocusChangeListener(focusChangeListener);
-        tvHotList1 = findViewById(R.id.tvHotList1);
-        tvHotList2 = findViewById(R.id.tvHotList2);
-
+        tvHotList = findViewById(R.id.tvHotList);
+        if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && homeSourceRec!=null) {
+            style=ImgUtil.initStyle();
+        }
+        String tvRate="";
+        if(Hawk.get(HawkConfig.HOME_REC, 0) == 0){
+            tvRate="豆瓣热播";
+        }else if(Hawk.get(HawkConfig.HOME_REC, 0) == 1){
+            tvRate= homeSourceRec!=null?"站点推荐":"豆瓣热播";
+        }
         // 主页按钮循环，"历史"按左可以直接跳到"设置"
-        // tvHistory.setNextFocusLeftId(tvSetting.getId());
-
-        homeHotVodAdapter = new HomeHotVodAdapter();
+        tvHistory.setNextFocusLeftId(tvSetting.getId());
+        homeHotVodAdapter = new HomeHotVodAdapter(style,tvRate);
         homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (ApiConfig.get().getSourceBeanList().isEmpty())
                     return;
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                if (vod.id != null && !vod.id.isEmpty()) {
+
+                if ((vod.id != null && !vod.id.isEmpty()) && (Hawk.get(HawkConfig.HOME_REC, 0) == 2) && HawkConfig.hotVodDelete) {
+                    homeHotVodAdapter.remove(position);
+                    VodInfo vodInfo = RoomDataManger.getVodInfo(vod.sourceKey, vod.id);
+                    assert vodInfo != null;
+                    RoomDataManger.deleteVodRecord(vod.sourceKey, vodInfo);
+                    Toast.makeText(mContext, "已删除当前记录", Toast.LENGTH_SHORT).show();
+                } else if (vod.id != null && !vod.id.isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", vod.id);
                     bundle.putString("sourceKey", vod.sourceKey);
-                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        bundle.putString("title", vod.name);
-                        jumpActivity(FastSearchActivity.class, bundle);
-                    }else {
+                    SourceBean sourceBean = ApiConfig.get().getSource(vod.sourceKey);
+                    if(sourceBean!=null){
+                        bundle.putString("picture", vod.pic);
                         jumpActivity(DetailActivity.class, bundle);
+                    }else {
+                        jumpSearch(vod);
                     }
                 } else {
-                    Intent newIntent;
-                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        newIntent = new Intent(mContext, FastSearchActivity.class);
-                    }else {
-                        newIntent = new Intent(mContext, SearchActivity.class);
-                    }
-                    newIntent.putExtra("title", vod.name);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    mActivity.startActivity(newIntent);
+                    jumpSearch(vod);
                 }
             }
         });
 
         homeHotVodAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                if (ApiConfig.get().getSourceBeanList().isEmpty()) return true;
+                if (ApiConfig.get().getSourceBeanList().isEmpty()) return false;
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                Bundle bundle = new Bundle();
-                bundle.putString("title", vod.name);
-                jumpActivity(FastSearchActivity.class, bundle);
+                // Additional Check if : Home Rec 0=豆瓣, 1=推荐, 2=历史
+                assert vod != null;
+                if ((vod.id != null && !vod.id.isEmpty()) && (Hawk.get(HawkConfig.HOME_REC, 0) == 2)) {
+                    HawkConfig.hotVodDelete = !HawkConfig.hotVodDelete;
+                    homeHotVodAdapter.notifyDataSetChanged();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", vod.name);
+                    jumpActivity(FastSearchActivity.class, bundle);
+                }
                 return true;
             }
         });
 
-        tvHotList1.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        tvHotList.setOnItemListener(new TvRecyclerView.OnItemListener() {
             @Override
             public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
                 itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
@@ -197,24 +233,7 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
 
             }
         });
-        tvHotList1.setAdapter(homeHotVodAdapter);
-        tvHotList2.setOnItemListener(new TvRecyclerView.OnItemListener() {
-            @Override
-            public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.05f).scaleY(1.05f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemClick(TvRecyclerView parent, View itemView, int position) {
-
-            }
-        });
-        tvHotList2.setAdapter(homeHotVodAdapter);
+        tvHotList.setAdapter(homeHotVodAdapter);
 
         initHomeHotVod(homeHotVodAdapter);
     }
@@ -223,11 +242,15 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 1) {
             if (homeSourceRec != null) {
                 adapter.setNewData(homeSourceRec);
+                return;
             }
-            return;
         } else if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
             return;
         }
+        setDouBanData(adapter);
+    }
+
+    private void setDouBanData(HomeHotVodAdapter adapter) {
         try {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
@@ -249,24 +272,24 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
             OkGo.<String>get(doubanUrl)
                     .headers("User-Agent", UA.randomOne())
                     .execute(new AbsCallback<String>() {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    String netJson = response.body();
-                    Hawk.put("home_hot_day", today);
-                    Hawk.put("home_hot", netJson);
-                    mActivity.runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            adapter.setNewData(loadHots(netJson));
+                        public void onSuccess(Response<String> response) {
+                            String netJson = response.body();
+                            Hawk.put("home_hot_day", today);
+                            Hawk.put("home_hot", netJson);
+                            mActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setNewData(loadHots(netJson));
+                                }
+                            });
+                        }
+
+                        @Override
+                        public String convertResponse(okhttp3.Response response) throws Throwable {
+                            return response.body().string();
                         }
                     });
-                }
-
-                @Override
-                public String convertResponse(okhttp3.Response response) throws Throwable {
-                    return response.body().string();
-                }
-            });
         } catch (Throwable th) {
             th.printStackTrace();
         }
@@ -277,13 +300,18 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         try {
             JsonObject infoJson = new Gson().fromJson(json, JsonObject.class);
             JsonArray array = infoJson.getAsJsonArray("data");
-            for (JsonElement ele : array) {
-                JsonObject obj = (JsonObject) ele;
+            int limit = Math.min(array.size(), 25);
+            for (int i = 0; i < limit; i++) {  // 改用索引循环
+                JsonElement ele = array.get(i);
+                JsonObject obj = ele.getAsJsonObject();
                 Movie.Video vod = new Movie.Video();
                 vod.name = obj.get("title").getAsString();
                 vod.note = obj.get("rate").getAsString();
-                if(!vod.note.isEmpty())vod.note+=" 分";
-                vod.pic = obj.get("cover").getAsString()+"@User-Agent=com.douban.frodo";
+                if (!vod.note.isEmpty()) vod.note += " 分";
+                vod.pic = obj.get("cover").getAsString()
+                        + "@User-Agent=" + UA.randomOne()
+                        + "@Referer=https://www.douban.com/";
+
                 result.add(vod);
             }
         } catch (Throwable th) {
@@ -304,9 +332,17 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+
+        // takagen99: Remove Delete Mode
+        HawkConfig.hotVodDelete = false;
+
         FastClickCheckUtil.check(v);
         if (v.getId() == R.id.tvLive) {
-            jumpActivity(LivePlayActivity.class);
+            if(Hawk.get(HawkConfig.LIVE_GROUP_LIST,new JsonArray()).isEmpty()){
+                Toast.makeText(mContext, "直播源为空", Toast.LENGTH_SHORT).show();
+            }else {
+                jumpActivity(LivePlayActivity.class);
+            }
         } else if (v.getId() == R.id.tvSearch) {
             jumpActivity(SearchActivity.class);
         } else if (v.getId() == R.id.tvSetting) {

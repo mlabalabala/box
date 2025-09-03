@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.TrafficStats;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
@@ -34,7 +35,8 @@ import java.util.Locale;
  */
 
 public final class PlayerUtils {
-
+    private static long lastTotalRxBytes;
+    private static long lastTimeStamp;
     private PlayerUtils() {
     }
 
@@ -274,6 +276,17 @@ public final class PlayerUtils {
     }
 
     /**
+     * 格式化时间2
+     */
+    public static String seconds2Time(int timeMs) {
+        int totalSeconds = timeMs / 1000;
+
+        int seconds = totalSeconds % 60;
+        int minutes = (totalSeconds / 60);
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+    }
+
+    /**
      * 获取集合的快照
      */
     @NonNull
@@ -286,4 +299,30 @@ public final class PlayerUtils {
         }
         return result;
     }
+
+    public static long getNetSpeed(Context context) {
+        //这里的context是获取getApplicationContext的
+        if (context == null) {
+            return 0;
+        }
+        //先使用getUidRxBytes方法获取该进程总接收量，如果没获取到就把当前接收数据总量设置为0，否则就获取接收的总流量并转为kb
+        long nowTotalRxBytes = TrafficStats.getUidRxBytes(context.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes());//转为KB
+        //记录当前的时间
+        long nowTimeStamp = System.currentTimeMillis();
+        //上一次记录的时间-当前记录时间算出两次记录的时间差
+        long calculationTime = (nowTimeStamp - lastTimeStamp);
+        //如果时间差不变，直接返回0
+        if (calculationTime == 0) {
+            return calculationTime;
+        }
+
+        //两次的数据接收量的差除以两次数据接收的时间，就计算网速了。这边的时间差是毫秒，咱们需要转换成秒。
+        long speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / calculationTime);
+        //当前时间存到上次时间这个变量，供下次计算用
+        lastTimeStamp = nowTimeStamp;
+        //当前总接收量存到上次接收总量这个变量，供下次计算用
+        lastTotalRxBytes = nowTotalRxBytes;
+        return speed;
+    }
+
 }

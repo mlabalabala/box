@@ -1,7 +1,9 @@
 package com.github.tvbox.osc.bbox.ui.dialog;
 
+import android.os.Handler;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.view.View;
@@ -46,6 +48,10 @@ public class BackupDialog extends BaseDialog {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.tvName) {
                     restore((String) adapter.getItem(position));
+                }
+                else if (view.getId() == R.id.tvDel) {
+                    delete((String) adapter.getItem(position));
+                    adapter.setNewData(allBackup());
                 }
             }
         });
@@ -140,7 +146,13 @@ public class BackupDialog extends BaseDialog {
                                 sharedPreferences.edit().putString(key, value).commit();
                             }
                         }
-                        Toast.makeText(getContext(), "恢复成功,请重启应用!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "恢复成功,即将自动重启应用!", Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                restartApp();
+                            }
+                        }, 3000);
                     } else {
                         Toast.makeText(getContext(), "Hawk恢复失败!", Toast.LENGTH_SHORT).show();
                     }
@@ -152,7 +164,17 @@ public class BackupDialog extends BaseDialog {
             e.printStackTrace();
         }
     }
-
+    private void restartApp() {
+        Context context = getContext();
+        if (context != null) {
+            Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+            if (i != null) {
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(i);
+                System.exit(0);
+            }
+        }
+    }
     void backup() {
         try {
             String root = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -187,6 +209,17 @@ public class BackupDialog extends BaseDialog {
         } catch (Throwable e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "备份失败!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void delete(String dir) {
+        try {
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File backup = new File(root + "/tvbox_backup/" + dir);
+            FileUtils.recursiveDelete(backup);
+            Toast.makeText(getContext(), "删除成功!", Toast.LENGTH_SHORT).show();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }

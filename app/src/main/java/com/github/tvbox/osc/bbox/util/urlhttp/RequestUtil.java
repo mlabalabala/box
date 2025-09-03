@@ -13,20 +13,20 @@ import java.util.Map;
  * Created by fighting on 2017/4/24.
  */
 
-class RequestUtil{
+class RequestUtil {
     private Thread mThread;
 
     /**
      * 一般的get请求或post请求
      */
-    RequestUtil(String method,String url, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
-        switch (method){
+    RequestUtil(String method, String url, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
+        switch (method) {
             case "GET":
-            urlHttpGet(url,paramsMap,headerMap,callBack);
-            break;
+                urlHttpGet(url, paramsMap, headerMap, callBack);
+                break;
             case "POST":
-            urlHttpPost(url,paramsMap,null,headerMap,callBack);
-            break;
+                urlHttpPost(url, paramsMap, null, headerMap, callBack);
+                break;
         }
     }
 
@@ -34,14 +34,14 @@ class RequestUtil{
      * post请求，传递json格式数据。
      */
     RequestUtil(String url, String jsonStr, Map<String, String> headerMap, CallBackUtil callBack) {
-        urlHttpPost(url,null,jsonStr,headerMap,callBack);
+        urlHttpPost(url, null, jsonStr, headerMap, callBack);
     }
 
     /**
      * 上传文件
      */
-    RequestUtil(String url, File file ,List<File> fileList,Map<String,File> fileMap,String fileKey,String fileType, Map<String,String> paramsMap, Map<String, String> headerMap,CallBackUtil callBack) {
-        urlHttpUploadFile(url,file,fileList,fileMap,fileKey,fileType,paramsMap,headerMap,callBack);
+    RequestUtil(String url, File file, List<File> fileList, Map<String, File> fileMap, String fileKey, String fileType, Map<String, String> paramsMap, Map<String, String> headerMap, CallBackUtil callBack) {
+        urlHttpUploadFile(url, file, fileList, fileMap, fileKey, fileType, paramsMap, headerMap, callBack);
     }
 
     /**
@@ -51,10 +51,10 @@ class RequestUtil{
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                RealResponse response = new RealRequest().getData(getUrl(url,paramsMap),headerMap);
-                if(response.code == HttpURLConnection.HTTP_OK){
+                RealResponse response = new RealRequest().getData(getUrl(url, paramsMap), headerMap);
+                if (response.code == HttpURLConnection.HTTP_OK) {
                     callBack.onSeccess(response);
-                }else {
+                } else {
                     callBack.onError(response);
                 }
             }
@@ -69,10 +69,10 @@ class RequestUtil{
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                RealResponse response = new RealRequest().postData(url, getPostBody(paramsMap,jsonStr),getPostBodyType(paramsMap,jsonStr),headerMap);
-                if(response.code == HttpURLConnection.HTTP_OK){
+                RealResponse response = new RealRequest().postData(url, getPostBody(paramsMap, jsonStr), getPostBodyType(paramsMap, jsonStr), headerMap);
+                if (response.code == HttpURLConnection.HTTP_OK) {
                     callBack.onSeccess(response);
-                }else {
+                } else {
                     callBack.onError(response);
                 }
 
@@ -85,15 +85,15 @@ class RequestUtil{
     /**
      * 上传文件
      */
-    private void urlHttpUploadFile(final String url, final File file , final List<File> fileList, final Map<String,File> fileMap, final String fileKey, final String fileType, final Map<String,String> paramsMap, final Map<String, String> headerMap, final CallBackUtil callBack) {
+    private void urlHttpUploadFile(final String url, final File file, final List<File> fileList, final Map<String, File> fileMap, final String fileKey, final String fileType, final Map<String, String> paramsMap, final Map<String, String> headerMap, final CallBackUtil callBack) {
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 RealResponse response = null;
-                response = new RealRequest().uploadFile(url, file,fileList,fileMap,fileKey,fileType,paramsMap,headerMap,callBack);
-                if(response.code == HttpURLConnection.HTTP_OK){
+                response = new RealRequest().uploadFile(url, file, fileList, fileMap, fileKey, fileType, paramsMap, headerMap, callBack);
+                if (response.code == HttpURLConnection.HTTP_OK) {
                     callBack.onSeccess(response);
-                }else {
+                } else {
                     callBack.onError(response);
                 }
             }
@@ -102,17 +102,16 @@ class RequestUtil{
     }
 
 
-
     /**
      * get请求，将键值对凭接到url上
      */
-    private String getUrl(String path,Map<String, String> paramsMap) {
-        if(paramsMap != null){
-            path = path+"?";
-            for (String key: paramsMap.keySet()){
-                path = path + key+"="+paramsMap.get(key)+"&";
+    private String getUrl(String path, Map<String, String> paramsMap) {
+        if (paramsMap != null) {
+            path = path + "?";
+            for (String key : paramsMap.keySet()) {
+                path = path + key + "=" + paramsMap.get(key) + "&";
             }
-            path = path.substring(0,path.length()-1);
+            path = path.substring(0, path.length() - 1);
         }
         return path;
     }
@@ -120,10 +119,10 @@ class RequestUtil{
     /**
      * 得到post请求的body
      */
-    private  String getPostBody(Map<String, String> params,String jsonStr) {//throws UnsupportedEncodingException {
-        if(params != null){
+    private String getPostBody(Map<String, String> params, String jsonStr) {//throws UnsupportedEncodingException {
+        if (params != null) {
             return getPostBodyFormParameMap(params);
-        }else if(!TextUtils.isEmpty(jsonStr)){
+        } else if (!TextUtils.isEmpty(jsonStr)) {
             return jsonStr;
         }
         return null;
@@ -133,7 +132,7 @@ class RequestUtil{
     /**
      * 根据键值对参数得到body
      */
-    private  String getPostBodyFormParameMap(Map<String, String> params) {//throws UnsupportedEncodingException {
+    private String getPostBodyFormParameMap(Map<String, String> params) {//throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         try {
@@ -157,10 +156,10 @@ class RequestUtil{
      * 得到bodyType
      */
     private String getPostBodyType(Map<String, String> paramsMap, String jsonStr) {
-        if(paramsMap != null){
+        if (paramsMap != null) {
             //return "text/plain";不知为什么这儿总是报错。目前暂不设置(20170424)
             return null;
-        }else if(!TextUtils.isEmpty(jsonStr)){
+        } else if (!TextUtils.isEmpty(jsonStr)) {
             return "application/json;charset=utf-8";
         }
         return null;
@@ -170,8 +169,8 @@ class RequestUtil{
     /**
      * 开启子线程，调用run方法
      */
-    void execute(){
-        if(mThread != null){
+    void execute() {
+        if (mThread != null) {
             mThread.start();
         }
     }

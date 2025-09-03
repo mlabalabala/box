@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import xyz.doikki.videoplayer.util.PlayerUtils;
 
 import java.util.Map;
 
@@ -216,8 +217,7 @@ public class AndroidMediaPlayer extends AbstractPlayer implements MediaPlayer.On
 
     @Override
     public long getTcpSpeed() {
-        // no support
-        return 0;
+        return PlayerUtils.getNetSpeed(mAppContext);
     }
 
     @Override

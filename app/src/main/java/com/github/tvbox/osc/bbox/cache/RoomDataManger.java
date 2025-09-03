@@ -98,8 +98,8 @@ public class RoomDataManger {
                         info = getVodInfoGson().fromJson(record.dataJson, new TypeToken<VodInfo>() {
                         }.getType());
                         info.sourceKey = record.sourceKey;
-                        SourceBean sourceBean = ApiConfig.get().getSource(info.sourceKey);
-                        if (sourceBean == null || info.name == null)
+//                        SourceBean sourceBean = ApiConfig.get().getSource(info.sourceKey);
+                        if (info.name == null)
                             info = null;
                     }
                 } catch (Exception e) {
@@ -135,6 +135,14 @@ public class RoomDataManger {
         if (record != null) {
             AppDataManager.get().getVodCollectDao().delete(record);
         }
+    }
+
+    public static void deleteVodCollectAll() {
+        AppDataManager.get().getVodCollectDao().deleteAll();
+    }
+
+    public static void deleteVodRecordAll() {
+        AppDataManager.get().getVodRecordDao().deleteAll();
     }
 
     public static boolean isVodCollect(String sourceKey, String vodId) {

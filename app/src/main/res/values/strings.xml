@@ -6,4 +6,12 @@
     <string name="dia_history_live">直播历史列表</string>
     <string name="dia_history_epg">EPG历史列表</string>
     <string name="dia_proxy_epg">GITHUB代理历史列表</string>
+
+    <string name="_00_00_00_00">00:00 | 00:00</string>
+    <string name="_1024_x_768">[ 1024 x 768 ]</string>
+    <string name="http">http://</string>
+    <string name="_00_00_00">00:00:00</string>
+    <string name="_0kb_s">0Kb/s</string>
+    <string name="_more_">更 多</string>
+    <string name="_00_00">00:00</string>
 </resources>

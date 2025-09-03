@@ -35,15 +35,14 @@
 # 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
 # 因为这些子类都有可能被外部调用
 -keep public class * extends android.app.Activity
--keep public class * extends android.app.Appliction
+-keep public class * extends android.app.Application.**
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.view.View
--keep public class com.android.vending.licensing.ILicensingService
--keep class com.github.tvbox.osc.bbox.update.pojo.** { *; }
+-keep public class com.android.vending.licensing.ILicensingService.**
 
 # 保留support下的所有类及其内部类
 -keep class android.support.** {*;}
@@ -203,6 +202,25 @@
 # 迅雷下载模块
 -keep class com.xunlei.downloadlib.** {*;}
 # quickjs引擎
--keep class com.github.tvbox.quickjs.** {*;}
+#-keep class com.github.tvbox.quickjs.** {*;}
+-keep class com.whl.quickjs.** {*;}
 # 支持影视的ali相关的jar
 -keep class com.google.gson.**{*;}
+# Zxing
+-keep class com.google.zxing.**{*;}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+# Cronet支持http3
+-keep class com.google.net.cronet.**{*;}
+-keep class org.chromium.net.**{*;}
+
+# Nano
+-keep class fi.iki.elonen.** { *; }
+
+# Python支持
+#-keep public class com.undcover.freedom.pyramid.** { *; }
+#-dontwarn com.undcover.freedom.pyramid.**
+#-keep public class com.chaquo.python.** { *; }
+#-dontwarn com.chaquo.python.**

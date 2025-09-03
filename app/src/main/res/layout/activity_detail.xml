@@ -224,18 +224,17 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vs_20"/>
                 <TextView
-                        android:id="@+id/tvSort"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvDesc"
+                        android:layout_width="@dimen/vs_120"
                         android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:layout_marginRight="@dimen/vs_10"
                         android:layout_marginEnd="@dimen/vs_10"
+                        android:layout_marginRight="@dimen/vs_10"
                         android:background="@drawable/button_detail_sort"
                         android:focusable="true"
                         android:gravity="center"
-                        android:text="倒 序"
+                        android:text="简介"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20"/>
+                        android:textSize="@dimen/vs_20" />
 
                 <TextView
                         android:id="@+id/tvCollect"
@@ -273,15 +272,53 @@
                     app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
                     app:tv_selectedItemIsCentered="true" />
 
-            <com.owen.tvrecyclerview.widget.TvRecyclerView
-                    android:id="@+id/mSeriesGroupView"
+            <LinearLayout
+                    android:id="@+id/mSeriesGroupTv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/vs_45"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/vs_50"
                     android:layout_marginTop="@dimen/vs_10"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
-                    app:tv_selectedItemIsCentered="true" />
+                    android:layout_marginRight="@dimen/vs_50"
+                    android:gravity="center_vertical"
+                    android:focusable="false"
+                    android:visibility="gone">
+
+                <!-- 排序功能按钮 -->
+                <TextView
+                        android:id="@+id/mSeriesSortTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/vs_45"
+                        android:background="@drawable/shape_source_series_focus"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/vs_10"
+                        android:paddingRight="@dimen/vs_10"
+                        android:text="正序"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_20"
+                        android:ellipsize="marquee"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:nextFocusUp="@id/mGridViewFlag"
+                        android:nextFocusDown="@id/mGridView"
+                        android:nextFocusRight="@id/mSeriesGroupView"/>
+
+                <!-- 原来的 mSeriesGroupView -->
+                <com.owen.tvrecyclerview.widget.TvRecyclerView
+                        android:id="@+id/mSeriesGroupView"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/vs_45"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/vs_10"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
+                        app:tv_selectedItemIsCentered="true"
+                        android:focusable="true"
+                        android:nextFocusUp="@id/mGridViewFlag"
+                        android:nextFocusDown="@id/mGridView"
+                        android:nextFocusLeft="@id/mSeriesSortTv"/>
+            </LinearLayout>
 
             <com.owen.tvrecyclerview.widget.TvRecyclerView
                     android:id="@+id/mGridView"

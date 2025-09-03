@@ -62,8 +62,11 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvSearchView;
     private TextView tvShowPreviewText;
     private TextView tvFastSearchText;
+    private TextView tvm3u8AdText;
     private TextView tvRecStyleText;
     private TextView tvIjkCachePlay;
+    private TextView tvHomeDefaultShow;
+
     private View notificationPoint;
 
     public static ModelSettingFragment newInstance() {
@@ -84,6 +87,9 @@ public class ModelSettingFragment extends BaseLazyFragment {
         notificationPoint = findViewById(R.id.notification_point);
         tvFastSearchText = findViewById(R.id.showFastSearchText);
         tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "已开启" : "已关闭");
+        tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "开启" : "关闭");
+        tvm3u8AdText = findViewById(R.id.m3u8AdText);
+        tvm3u8AdText.setText(Hawk.get(HawkConfig.M3U8_PURIFY, false) ? "开启" : "关闭");
         tvRecStyleText = findViewById(R.id.showRecStyleText);
         tvRecStyleText.setText(Hawk.get(HawkConfig.HOME_REC_STYLE, false) ? "是" : "否");
         tvShowPreviewText = findViewById(R.id.showPreviewText);
@@ -101,7 +107,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvHistoryNum = findViewById(R.id.tvHistoryNum);
         tvSearchView = findViewById(R.id.tvSearchView);
         tvIjkCachePlay = findViewById(R.id.tvIjkCachePlay);
-        tvMediaCodec.setText(Hawk.get(HawkConfig.IJK_CODEC, ""));
+        tvMediaCodec.setText(Hawk.get(HawkConfig.IJK_CODEC, "硬解码"));
         tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
         tvParseWebView.setText(Hawk.get(HawkConfig.PARSE_WEBVIEW, true) ? "系统自带" : "XWalkView");
 //        tvApi.setText(Hawk.get(HawkConfig.API_URL, ""));
@@ -116,6 +122,8 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvPlay.setText(PlayerHelper.getPlayerName(Hawk.get(HawkConfig.PLAY_TYPE, 0)));
         tvRender.setText(PlayerHelper.getRenderName(Hawk.get(HawkConfig.PLAY_RENDER, 0)));
         tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
+        tvHomeDefaultShow = findViewById(R.id.tvHomeText);
+        tvHomeDefaultShow.setText(Hawk.get(HawkConfig.DEFAULT_LOAD_LIVE, false) ? "直播" : "点播");
         checkHasUpdate();
         findViewById(R.id.llCheckUpdate).setOnClickListener( v -> {
             Toast.makeText(mActivity, "检查更新中...", Toast.LENGTH_SHORT).show();
@@ -306,7 +314,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
             storeApiDialog.show();
         });
 
-         findViewById(R.id.llApiHistory).setOnClickListener( v -> {
+        findViewById(R.id.llApiHistory).setOnClickListener( v -> {
             // ArrayList<String> apiHistory = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<>());
             // ArrayList<String> nameHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
             ArrayList<String> history = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
@@ -401,7 +409,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 FastClickCheckUtil.check(v);
 
                 int defaultPos = 0;
-                String ijkSel = Hawk.get(HawkConfig.IJK_CODEC, "");
+                String ijkSel = Hawk.get(HawkConfig.IJK_CODEC, "硬解码");
                 for (int j = 0; j < ijkCodes.size(); j++) {
                     if (ijkSel.equals(ijkCodes.get(j).getName())) {
                         defaultPos = j;
@@ -682,7 +690,16 @@ public class ModelSettingFragment extends BaseLazyFragment {
             public void onClick(View v) {
                 FastClickCheckUtil.check(v);
                 Hawk.put(HawkConfig.FAST_SEARCH_MODE, !Hawk.get(HawkConfig.FAST_SEARCH_MODE, false));
-                tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "已开启" : "已关闭");
+                tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "开启" : "关闭");
+            }
+        });
+        findViewById(R.id.m3u8Ad).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FastClickCheckUtil.check(v);
+                boolean is_purify=Hawk.get(HawkConfig.M3U8_PURIFY, false);
+                Hawk.put(HawkConfig.M3U8_PURIFY, !is_purify);
+                tvm3u8AdText.setText(!is_purify ? "开启" : "关闭");
             }
         });
         findViewById(R.id.llHomeRecStyle).setOnClickListener(new View.OnClickListener() {
@@ -751,6 +768,16 @@ public class ModelSettingFragment extends BaseLazyFragment {
             }
         });
 
+        //下次进入
+        findViewById(R.id.tvHomeLive).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FastClickCheckUtil.check(v);
+                Hawk.put(HawkConfig.DEFAULT_LOAD_LIVE, !Hawk.get(HawkConfig.DEFAULT_LOAD_LIVE, false));
+                tvHomeDefaultShow.setText(Hawk.get(HawkConfig.DEFAULT_LOAD_LIVE, false) ? "直播" : "点播");
+            }
+        });
+
         findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
         findViewById(R.id.llClearCache).setOnClickListener((view -> onClickClearCache(view)));
     }
@@ -793,11 +820,10 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private void checkUpdate () {
         Hawk.put(HawkConfig.IS_IGNORE_VERSION, false);
         String checkUrl = URL.GITHUB_VERSION_PATH;
-        String apkUrl = URL.APK_PATH;
         XUpdate.newBuild(mContext)
                 .updateUrl(checkUrl)
                 .updateChecker(new CustomUpdateChecker(getActivity()))
-                .updateParser(new CustomUpdateParser(mContext, apkUrl))
+                .updateParser(new CustomUpdateParser(mContext))
                 .updatePrompter(new CustomUpdatePrompter())
                 // .updateDownLoader(new CustomUpdateDownloader())
                 .updateHttpService(new OkGoUpdateHttpService())
@@ -815,16 +841,20 @@ public class ModelSettingFragment extends BaseLazyFragment {
         String cachePath = FileUtils.getCachePath();
         LOG.i("cachePath: " + cachePath);
         File cacheDir = new File(cachePath);
-        if (!cacheDir.exists()) return;
+        String cspCachePath = FileUtils.getFilePath()+"/csp/";
+        File cspCacheDir = new File(cspCachePath);
+        if (!cacheDir.exists() && !cspCacheDir.exists()) return;
         new Thread(() -> {
             try {
-                FileUtils.cleanDirectory(cacheDir);
+                if(cacheDir.exists())FileUtils.cleanDirectory(cacheDir);
+                if(cspCacheDir.exists()){
+                    FileUtils.cleanDirectory(cspCacheDir);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
-        Toast.makeText(getContext(), "缓存已清空", Toast.LENGTH_LONG).show();
-        return;
+        Toast.makeText(getContext(), "播放&JAR缓存已清空", Toast.LENGTH_LONG).show();
     }
 
 

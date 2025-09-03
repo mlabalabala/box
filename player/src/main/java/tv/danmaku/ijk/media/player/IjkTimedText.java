@@ -33,21 +33,26 @@ public final class IjkTimedText {
      * Bitmap bitmap = Bitmap.createBitmap(bitmapData, 6, bitmapWidth, bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
      */
     private int[] mBitmapData = null;
+
     public IjkTimedText(Rect bounds, String text) {
         mTextBounds = bounds;
         mTextChars = text;
+    }
+
+
+    public IjkTimedText(int[] bitmap) {
+        this.mBitmapData = bitmap;
     }
 
     public Rect getBounds() {
         return mTextBounds;
     }
 
-    public IjkTimedText(int[] obj) {
-    }
 
     public int[] getBitmapData() {
         return mBitmapData;
     }
+
     public String getText() {
         return mTextChars;
     }

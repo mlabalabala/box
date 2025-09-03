@@ -1,8 +1,11 @@
 package com.github.catvod.crawler;
 
 import android.content.Context;
+import android.util.Log;
+
 
 import com.github.tvbox.osc.bbox.base.App;
+import com.github.tvbox.osc.bbox.util.FileUtils;
 import com.github.tvbox.osc.bbox.util.MD5;
 import com.lzy.okgo.OkGo;
 
@@ -22,9 +25,9 @@ import dalvik.system.DexClassLoader;
 import okhttp3.Response;
 
 public class JarLoader {
-    private ConcurrentHashMap<String, DexClassLoader> classLoaders = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Method> proxyMethods = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Spider> spiders = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, DexClassLoader> classLoaders = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Method> proxyMethods = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Spider> spiders = new ConcurrentHashMap<>();
     private volatile String recentJarKey = "";
 
     /**
@@ -33,36 +36,67 @@ public class JarLoader {
      * @param cache
      */
     public boolean load(String cache) {
-        spiders.clear();
         recentJarKey = "main";
+        return loadClassLoader(cache, recentJarKey);
+    }
+
+    public void setRecentJarKey(String key) {
+        recentJarKey = key;
+    }
+
+    public void loadLiveJar(String jarUrl) {
+        String[] urls = jarUrl.split(";md5;");
+        jarUrl = urls[0];
+        String jarKey = MD5.string2MD5(jarUrl);
+        String jarMd5 = urls.length > 1 ? urls[1].trim() : "";
+        loadJarInternal(jarUrl,jarMd5,jarKey);
+    }
+
+    public void clear() {
+        spiders.clear();
         proxyMethods.clear();
         classLoaders.clear();
-        return loadClassLoader(cache, "main");
     }
 
     private boolean loadClassLoader(String jar, String key) {
+        if (classLoaders.containsKey(key)){
+            Log.i("JarLoader", "echo-loadClassLoader jar缓存: " + key);
+            return true;
+        }
         boolean success = false;
         try {
             File cacheDir = new File(App.getInstance().getCacheDir().getAbsolutePath() + "/catvod_csp");
             if (!cacheDir.exists())
                 cacheDir.mkdirs();
-            DexClassLoader classLoader = new DexClassLoader(jar, cacheDir.getAbsolutePath(), null, App.getInstance().getClassLoader());
-            // make force wait here, some device async dex load
+            final DexClassLoader classLoader = new DexClassLoader(jar, cacheDir.getAbsolutePath(), null, App.getInstance().getClassLoader());
             int count = 0;
             do {
                 try {
-                    Class classInit = classLoader.loadClass("com.github.catvod.spider.Init");
+                    final Class<?> classInit = classLoader.loadClass("com.github.catvod.spider.Init");
                     if (classInit != null) {
-                        Method method = classInit.getMethod("init", Context.class);
-                        method.invoke(null, App.getInstance());
-                        System.out.println("自定义爬虫代码加载成功!");
+                        final Method initMethod = classInit.getMethod("init", Context.class);
+                        // 在子线程中调用 init 方法，避免网络请求在主线程中执行
+                        Thread initThread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    initMethod.invoke(null, App.getInstance());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        initThread.start();
+                        initThread.join();
+                        Log.i("JarLoader", "echo-自定义爬虫代码加载成功!");
                         success = true;
                         try {
-                            Class proxy = classLoader.loadClass("com.github.catvod.spider.Proxy");
-                            Method mth = proxy.getMethod("proxy", Map.class);
-                            proxyMethods.put(key, mth);
+                            Class<?> proxy = classLoader.loadClass("com.github.catvod.spider.Proxy");
+                            Method proxyMethod = proxy.getMethod("proxy", Map.class);
+                            proxyMethods.put(key, proxyMethod);
                         } catch (Throwable th) {
-
+                            // 可以记录错误日志
+                            th.printStackTrace();
                         }
                         break;
                     }
@@ -71,7 +105,7 @@ public class JarLoader {
                     th.printStackTrace();
                 }
                 count++;
-            } while (count < 5);
+            } while (count < 2);
 
             if (success) {
                 classLoaders.put(key, classLoader);
@@ -83,17 +117,29 @@ public class JarLoader {
     }
 
     private DexClassLoader loadJarInternal(String jar, String md5, String key) {
-        if (classLoaders.contains(key))
+        if (classLoaders.containsKey(key)){
+            Log.i("JarLoader", "echo-loadJarInternal jar缓存: " + key);
             return classLoaders.get(key);
-        File cache = new File(App.getInstance().getFilesDir().getAbsolutePath() + "/" + key + ".jar");
+        }
+        File cache = new File(App.getInstance().getFilesDir().getAbsolutePath() + "/csp/" + key + ".jar");
         if (!md5.isEmpty()) {
             if (cache.exists() && MD5.getFileMd5(cache).equalsIgnoreCase(md5)) {
-                loadClassLoader(cache.getAbsolutePath(), key);
-                return classLoaders.get(key);
+                if(loadClassLoader(cache.getAbsolutePath(), key)){
+                    return classLoaders.get(key);
+                }else {
+                    return null;
+                }
+            }
+        }else {
+            if (cache.exists() && !FileUtils.isWeekAgo(cache)) {
+                if(loadClassLoader(cache.getAbsolutePath(), key)){
+                    return classLoaders.get(key);
+                }
             }
         }
         try {
             Response response = OkGo.<File>get(jar).execute();
+            assert response.body() != null;
             InputStream is = response.body().byteStream();
             OutputStream os = new FileOutputStream(cache);
             try {
@@ -119,10 +165,14 @@ public class JarLoader {
     }
 
     public Spider getSpider(String key, String cls, String ext, String jar) {
+        if (spiders.containsKey(key)) {
+            Log.i("JarLoader", "echo-getSpider spider缓存: " + key);
+            return spiders.get(key);
+        }
         String clsKey = cls.replace("csp_", "");
         String jarUrl = "";
         String jarMd5 = "";
-        String jarKey = "";
+        String jarKey;
         if (jar.isEmpty()) {
             jarKey = "main";
         } else {
@@ -132,22 +182,16 @@ public class JarLoader {
             jarMd5 = urls.length > 1 ? urls[1].trim() : "";
         }
         recentJarKey = jarKey;
-        if (spiders.containsKey(key))
-            return spiders.get(key);
-        DexClassLoader classLoader = null;
-        if (jarKey.equals("main"))
-            classLoader = classLoaders.get("main");
-        else {
-            classLoader = loadJarInternal(jarUrl, jarMd5, jarKey);
-        }
-        if (classLoader == null)
-            return new SpiderNull();
+        assert jarKey != null;
+        DexClassLoader classLoader = jarKey.equals("main")? classLoaders.get("main"):loadJarInternal(jarUrl, jarMd5, jarKey);
+        if (classLoader == null) return new SpiderNull();
         try {
+            Log.i("JarLoader", "echo-getSpider 加载spider: " + key);
             Spider sp = (Spider) classLoader.loadClass("com.github.catvod.spider." + clsKey).newInstance();
             sp.init(App.getInstance(), ext);
-            // if (!jar.isEmpty()) {
-            //     sp.homeContent(false); // 增加此行 应该可以解决部分写的有问题源的历史记录问题 但会增加这个源的首次加载时间 不需要可以已删掉
-            // }
+//            if (!jar.isEmpty()) {
+//                sp.homeContent(false); // 增加此行 应该可以解决部分写的有问题源的历史记录问题 但会增加这个源的首次加载时间 不需要可以已删掉
+//            }
             spiders.put(key, sp);
             return sp;
         } catch (Throwable th) {
@@ -161,7 +205,8 @@ public class JarLoader {
             DexClassLoader classLoader = classLoaders.get("main");
             String clsKey = "Json" + key;
             String hotClass = "com.github.catvod.parser." + clsKey;
-            Class jsonParserCls = classLoader.loadClass(hotClass);
+            assert classLoader != null;
+            Class<?> jsonParserCls = classLoader.loadClass(hotClass);
             Method mth = jsonParserCls.getMethod("parse", LinkedHashMap.class, String.class);
             return (JSONObject) mth.invoke(null, jxs, url);
         } catch (Throwable th) {
@@ -175,7 +220,8 @@ public class JarLoader {
             DexClassLoader classLoader = classLoaders.get("main");
             String clsKey = "Mix" + key;
             String hotClass = "com.github.catvod.parser." + clsKey;
-            Class jsonParserCls = classLoader.loadClass(hotClass);
+            assert classLoader != null;
+            Class<?> jsonParserCls = classLoader.loadClass(hotClass);
             Method mth = jsonParserCls.getMethod("parse", LinkedHashMap.class, String.class, String.class, String.class);
             return (JSONObject) mth.invoke(null, jxs, name, flag, url);
         } catch (Throwable th) {
@@ -184,14 +230,14 @@ public class JarLoader {
         return null;
     }
 
-    public Object[] proxyInvoke(Map params) {
+    public Object[] proxyInvoke(Map<String,String> params) {
         try {
             Method proxyFun = proxyMethods.get(recentJarKey);
             if (proxyFun != null) {
                 return (Object[]) proxyFun.invoke(null, params);
             }
         } catch (Throwable th) {
-
+            th.printStackTrace();
         }
         return null;
     }

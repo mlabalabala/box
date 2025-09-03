@@ -5,38 +5,53 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
+import com.github.tvbox.osc.bbox.base.App;
 import com.github.tvbox.osc.bbox.bean.IJKCode;
 import com.github.tvbox.osc.bbox.bean.ParseBean;
+import com.github.tvbox.osc.bbox.bean.SourceBean;
+import com.github.tvbox.osc.bbox.server.ControlManager;
+import com.github.tvbox.osc.bbox.server.RemoteServer;
 import com.github.tvbox.osc.bbox.subtitle.widget.SimpleSubtitleView;
 import com.github.tvbox.osc.bbox.ui.activity.DetailActivity;
 import com.github.tvbox.osc.bbox.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.bbox.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.bbox.util.*;
+import com.github.tvbox.osc.bbox.util.thunder.Jianpian;
+import com.github.tvbox.osc.bbox.util.thunder.Thunder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xwalk.core.XWalkView;
 import xyz.doikki.videoplayer.player.VideoView;
 import xyz.doikki.videoplayer.util.PlayerUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static xyz.doikki.videoplayer.util.PlayerUtils.stringForTime;
 
@@ -131,13 +146,14 @@ public class VodController extends BaseController {
 
     int videoPlayState = 0;
 
-    private Runnable myRunnable2 = new Runnable() {
+    private final Runnable myRunnable2 = new Runnable() {
+        @SuppressLint("SetTextI18n")
         @Override
         public void run() {
             Date date = new Date();
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
             mPlayPauseTime.setText(timeFormat.format(date));
-            String speed = PlayerHelper.getDisplaySpeed(mControlWrapper.getTcpSpeed());
+            String speed = PlayerHelper.getDisplaySpeed(mControlWrapper.getTcpSpeed(),false);
             mPlayLoadNetSpeedRightTop.setText(speed);
             mPlayLoadNetSpeed.setText(speed);
             String width = Integer.toString(mControlWrapper.getVideoSize()[0]);
@@ -722,6 +738,10 @@ public class VodController extends BaseController {
         void selectSubtitle();
 
         void selectAudioTrack();
+
+        void startPlayUrl(String url, HashMap<String, String> headers);
+
+        void setAllowSwitchPlayer(boolean isAllow);
     }
 
     public void setListener(VodControlListener listener) {
@@ -984,4 +1004,217 @@ public class VodController extends BaseController {
         super.onDetachedFromWindow();
         mHandler.removeCallbacks(myRunnable2);
     }
+
+    private boolean isValidM3u8Line(String line) {
+        return !line.startsWith("#") && (line.endsWith(".m3u8") || line.contains(".m3u8?"));
+    }
+
+    private String resolveForwardUrl(String baseUrl, String line) {
+        try {
+            // 使用 URL 构造器自动解析相对路径
+            URL base = new URL(baseUrl);
+            URL resolved = new URL(base, line);
+            return resolved.toString();
+        } catch (MalformedURLException e) {
+            // 出现异常时可以记录日志，并返回原始 line
+            LOG.e("echo-resolveForwardUrl异常: " + e.getMessage());
+            return line;
+        }
+    }
+
+    private String extractForwardUrl(String baseUrl, String content) {
+        String[] lines = content.split("\\r?\\n",50);
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i].trim();
+            if (line.startsWith("#EXT-X-STREAM-INF")) {
+                // 只需要找接下来的几行
+                for (int j = i + 1; j < lines.length; j++) {
+                    String targetLine = lines[j].trim();
+                    if (targetLine.isEmpty()) continue;
+                    if (isValidM3u8Line(targetLine)) {
+                        return resolveForwardUrl(baseUrl, targetLine);
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    private String getBasePath(String url) {
+        int ilast = url.lastIndexOf('/');
+        return url.substring(0, ilast + 1);
+    }
+
+    private void processM3u8Content(String url, String content, HashMap<String, String> headers) {
+        String basePath = getBasePath(url);
+        RemoteServer.m3u8Content = M3u8.purify(basePath, content);
+        if (RemoteServer.m3u8Content == null || M3u8.currentAdCount==0) {
+            LOG.i("echo-m3u8内容解析：未检测到广告");
+            listener.startPlayUrl(url, headers);
+        } else {
+            listener.startPlayUrl(ControlManager.get().getAddress(true) + "proxyM3u8", headers);
+            Toast.makeText(getContext(), "已移除视频广告 "+M3u8.currentAdCount+" 条", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fetchAndProcessForwardUrl(final String forwardUrl, final HashMap<String, String> headers,
+                                           HttpHeaders okGoHeaders, final String fallbackUrl) {
+        OkGo.<String>get(forwardUrl)
+                .tag("m3u8-2")
+                .headers(okGoHeaders)
+                .execute(new AbsCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String content = response.body();
+                        LOG.i("echo-m3u82-to-play");
+                        processM3u8Content(forwardUrl, content, headers);
+                    }
+                    @Override
+                    public String convertResponse(okhttp3.Response response) throws Throwable {
+                        return response.body().string();
+                    }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LOG.e("echo-重定向 m3u8 请求错误: " + response.getException());
+                        listener.startPlayUrl(fallbackUrl, headers);
+                    }
+                });
+    }
+
+    public void playM3u8(final String url, final HashMap<String, String> headers) {
+        if(url.contains("url=")){
+            listener.startPlayUrl(url, headers);
+            return;
+        }
+        OkGo.getInstance().cancelTag("m3u8-1");
+        OkGo.getInstance().cancelTag("m3u8-2");
+        final HttpHeaders okGoHeaders = new HttpHeaders();
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                okGoHeaders.put(entry.getKey(), entry.getValue());
+            }
+        }
+        OkGo.<String>get(url)
+                .tag("m3u8-1")
+                .headers(okGoHeaders)
+                .execute(new AbsCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        String content = response.body();
+                        if (!content.startsWith("#EXTM3U")) {
+                            listener.startPlayUrl(url, headers);
+                            return;
+                        }
+                        String forwardUrl = extractForwardUrl(url, content);
+                        if (forwardUrl.isEmpty()) {
+                            LOG.i("echo-m3u81-to-play");
+                            processM3u8Content(url, content, headers);
+                        } else {
+                            fetchAndProcessForwardUrl(forwardUrl, headers, okGoHeaders, url);
+                        }
+                    }
+
+                    @Override
+                    public String convertResponse(okhttp3.Response response) throws Throwable {
+                        return response.body().string();
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LOG.e("echo-m3u8请求错误1: " + response.getException());
+                        listener.startPlayUrl(url, headers);
+                    }
+                });
+    }
+
+    public void evaluateScript(SourceBean sourceBean, String url, WebView web_view, XWalkView xWalk_view){
+        String clickSelector = sourceBean.getClickSelector().trim();
+        clickSelector=clickSelector.isEmpty()?VideoParseRuler.getHostScript(url):clickSelector;
+        if (!clickSelector.isEmpty()) {
+            String selector;
+            if (clickSelector.contains(";") && !clickSelector.endsWith(";")) {
+                String[] parts = clickSelector.split(";", 2);
+                if (!url.contains(parts[0])) {
+                    return;
+                }
+                selector = parts[1].trim();
+            } else {
+                selector = clickSelector.trim();
+            }
+            // 构造点击的 JS 代码
+            String js = selector;
+//            if(!selector.contains("click()"))js+=".click();";
+            LOG.i("echo-javascript:" + js);
+            if(web_view!=null){
+                //4.4以上才支持这种写法
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    web_view.evaluateJavascript(js, null);
+                } else {
+                    web_view.loadUrl("javascript:" + js);
+                }
+            }
+            if(xWalk_view!=null){
+                //4.0+开始全部支持这种写法
+                xWalk_view.evaluateJavascript(js, null);
+            }
+        }
+    }
+
+    private static int switchPlayerCount=0;
+    public boolean switchPlayer(){
+        try {
+            int playerType= mPlayerConfig.getInt("pl");
+            int p_type = (playerType == 1) ? playerType + 1 : (playerType == 2) ? playerType - 1 : playerType;
+            if (p_type != playerType) {
+                Toast.makeText(getContext(), "切换到"+(p_type==1?"IJK":"EXO")+"播放器重试", Toast.LENGTH_SHORT).show();
+                mPlayerConfig.put("pl", p_type);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            }else {
+                return true;
+            }
+        }catch (Exception e){
+            return true;
+        }
+        if(switchPlayerCount==1) {
+            switchPlayerCount=0;
+            return true;
+        }
+        switchPlayerCount++;
+        return false;
+    }
+
+    public void stopOther()
+    {
+        Thunder.stop(false);//停止磁力下载
+        Jianpian.finish();//停止p2p下载
+        App.getInstance().setDashData(null);
+    }
+
+    public String firstUrlByArray(String url)
+    {
+        try {
+            JSONArray urlArray = new JSONArray(url);
+            for (int i = 0; i < urlArray.length(); i++) {
+                String item = urlArray.getString(i);
+                if (item.contains("http")) {
+                    url = item;
+                    break; // 找到第一个立即终止循环
+                }
+            }
+        } catch (JSONException e) {
+        }
+        return url;
+    }
+
+    public String encodeUrl(String url) {
+        try {
+            return URLEncoder.encode(url, "UTF-8");
+        } catch (Exception e) {
+            return url;
+        }
+    }
+
 }

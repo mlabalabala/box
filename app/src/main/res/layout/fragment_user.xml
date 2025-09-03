@@ -284,6 +284,16 @@
             app:tv_selectedItemIsCentered="true"
             app:tv_verticalSpacingWithMargins="@dimen/vs_10"
             android:visibility="gone" />
+        <com.owen.tvrecyclerview.widget.TvRecyclerView
+                android:id="@+id/tvHotList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="true"
+                android:clipToPadding="false"
+                android:layout_below="@+id/tvUserHome"
+                app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
+                app:tv_selectedItemIsCentered="true"
+                app:tv_verticalSpacingWithMargins="@dimen/vs_10"
+                android:visibility="gone" />
     </RelativeLayout>
-
 </RelativeLayout>

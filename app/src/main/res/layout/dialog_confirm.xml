@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_480"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vs_30"
+        android:paddingTop="@dimen/vs_20"
+        android:paddingRight="@dimen/vs_30"
+        android:paddingBottom="@dimen/vs_20">
+
+        <TextView
+            android:id="@+id/confirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_10"
+            android:gravity="center"
+            android:lineSpacingMultiplier="0"            
+            android:singleLine="true"
+            android:textColor="@color/color_CC000000"
+            android:textSize="@dimen/ts_26"
+            android:textStyle="bold"
+            android:text="确定全部删除 ?" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/btnConfirm"
+            android:layout_width="@dimen/vs_50"
+            android:layout_height="@dimen/vs_50"
+            android:layout_margin="@dimen/vs_10"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/button_dialog_main"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:maxLines="1"
+            android:shadowColor="@color/color_000000_60"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="是"
+            android:textColor="@color/color_FFFFFF"
+            android:textColorHint="@color/color_FFFFFF_50"
+            android:textSize="@dimen/ts_20" />
+
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="@dimen/vs_50"
+            android:layout_height="@dimen/vs_50"
+            android:layout_margin="@dimen/vs_10"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/button_dialog_main"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:maxLines="1"
+            android:shadowColor="@color/color_000000_60"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:text="否"
+            android:textColor="@color/color_FFFFFF"
+            android:textColorHint="@color/color_FFFFFF_50"
+            android:textSize="@dimen/ts_20" />
+
+        </TableRow>
+    </LinearLayout>
+</FrameLayout>

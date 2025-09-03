@@ -61,6 +61,9 @@
     <color name="color_000000_30">#48000000</color>
     <color name="color_000000_20">#32000000</color>
     <color name="color_000000_15">#26000000</color>
+    <color name="color_dialog_bg">#88000000</color>
+    <color name="color_scrollview_bg">#44000000</color>
+    <color name="color_text_primary">#FFFFFAE0</color>
 
     <color name="color_DEF">#803D3D3D</color>
 

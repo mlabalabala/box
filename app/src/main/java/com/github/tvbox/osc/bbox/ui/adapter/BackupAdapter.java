@@ -15,5 +15,6 @@ public class BackupAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, String item) {
         helper.setText(R.id.tvName, item);
         helper.addOnClickListener(R.id.tvName);
+        helper.addOnClickListener(R.id.tvDel);
     }
 }

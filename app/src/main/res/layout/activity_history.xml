@@ -66,6 +66,19 @@
                 android:gravity="center"
                 android:src="@drawable/icon_delete"
                 android:padding="@dimen/vs_10" />
+
+        <ImageView
+                android:id="@+id/tvClear"
+                android:layout_width="@dimen/vs_50"
+                android:layout_height="@dimen/vs_50"
+                android:layout_marginStart="@dimen/vs_10"
+                android:layout_marginEnd="@dimen/vs_10"
+                android:gravity="center"
+                android:background="@drawable/button_dialog_vod"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:padding="@dimen/vs_5"
+                android:src="@drawable/icon_clear" />
     </LinearLayout>
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView

@@ -102,6 +102,14 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
 
     protected abstract int getLayoutResID();
 
+
+    protected boolean isLoading() {
+        if (mLoadService != null && mLoadService.getCurrentCallback() != null) {
+            return mLoadService.getCurrentCallback().equals(LoadingCallback.class);
+        }
+        return false;
+    }
+
     protected abstract void init();
 
     protected void setLoadSir(View view) {

@@ -26,7 +26,7 @@ public class EpgNameFuzzyMatch {
     public static void init() {
         if(epgNameDoc != null)
             return;
-
+        Gson gson = new Gson();
         try {
             AssetManager assetManager = App.getInstance().getAssets(); //获得assets资源管理器（assets中的文件无法直接访问，可以使用AssetManager访问）
             InputStreamReader inputStreamReader = new InputStreamReader(assetManager.open("Roinlong_Epg.json"),"UTF-8"); //使用IO流读取json文件内容
@@ -39,7 +39,7 @@ public class EpgNameFuzzyMatch {
             br.close();
             inputStreamReader.close();
             if(!builder.toString().isEmpty()){
-                JsonObject  jsonObj =  new Gson().fromJson(builder.toString(), (Type)JsonObject.class);// 从builder中读取了json中的数据。
+                JsonObject  jsonObj =  gson.fromJson(builder.toString(), (Type)JsonObject.class);// 从builder中读取了json中的数据。
                 //  JSONObject testJson = new JSONObject(builder.toString()); // 从builder中读取了json中的数据。
                 epgNameDoc = jsonObj;
                 hasAddData(epgNameDoc);
@@ -59,7 +59,7 @@ public class EpgNameFuzzyMatch {
                 JSONObject returnedData = new JSONObject();
                 try {
                     String pageStr = response.body();
-                    JsonObject infoJson = new Gson().fromJson(pageStr, (Type)JsonObject.class);
+                    JsonObject infoJson = gson.fromJson(pageStr, (Type)JsonObject.class);
                     epgNameDoc = infoJson;
                     hasAddData(epgNameDoc);
                     return;
@@ -99,11 +99,11 @@ public class EpgNameFuzzyMatch {
 
     public static JsonObject getEpgNameInfo(String channelName) {
 
-       if(hsEpgName.containsKey(channelName)){
-           JsonObject obj = (JsonObject)hsEpgName.get(channelName);
-           return  obj;
-       }
-       return null;
+        if(hsEpgName.containsKey(channelName)){
+            JsonObject obj = (JsonObject)hsEpgName.get(channelName);
+            return  obj;
+        }
+        return null;
     }
 
 
