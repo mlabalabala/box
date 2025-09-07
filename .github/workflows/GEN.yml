@@ -1,10 +1,6 @@
 name: GENERATE APK
 
 on:
-  #  push:
-  #    branches:
-  #      - main
-  #  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -14,18 +10,25 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
       - name: Build With Gradle
         run: |
           chmod +x gradlew
-          ./gradlew assemblerelease --build-cache --parallel --daemon --warning-mode all
-      - name: Prepare App
+          ./gradlew assembleRelease --build-cache --parallel --daemon --warning-mode all
+
+      - name: Prepare APK
         run: |
           mkdir -p ${{ github.workspace }}/apk/
-          for file in `find ~ -name "*.apk" -print`; do
-            mv "$file" ${{ github.workspace }}/apk/
-          done
-      - name: Upload App To Artifact
-        uses: actions/upload-artifact@master
+          find . -name "*.apk" -exec cp {} ${{ github.workspace }}/apk/ \;
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
         with:
           name: box
           path: ${{ github.workspace }}/apk/*

@@ -1903,7 +1903,6 @@ public class LivePlayActivity extends BaseActivity {
                 break;
                 */
             case 5://多源切换
-                //TODO
                 if (mVideoView != null) {
                     mVideoView.release();
                     mVideoView=null;

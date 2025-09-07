@@ -98,6 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/vs_2"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                 <EditText
@@ -143,7 +144,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/vs_2"
+                    android:layout_marginBottom="@dimen/vs_20"
                     android:orientation="horizontal">
 
                 <EditText

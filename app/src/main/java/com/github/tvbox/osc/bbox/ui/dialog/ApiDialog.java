@@ -16,6 +16,7 @@ import com.github.tvbox.osc.bbox.server.ControlManager;
 import com.github.tvbox.osc.bbox.ui.adapter.ApiHistoryDialogAdapter;
 import com.github.tvbox.osc.bbox.ui.tv.QRCodeGen;
 import com.github.tvbox.osc.bbox.util.HawkConfig;
+import com.github.tvbox.osc.bbox.util.LOG;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * 描述
@@ -114,6 +116,7 @@ public class ApiDialog extends BaseDialog {
 
 
                 String newLive = liveApi.getText().toString().trim();
+                LOG.d("newLive: " + newLive);
                 // Capture Live input into Settings & Live History (max 20)
                 Hawk.put(HawkConfig.LIVE_URL, newLive);
                 if (!newLive.isEmpty()) {
@@ -252,6 +255,7 @@ public class ApiDialog extends BaseDialog {
 
                 @Override
                 public void del(String value, ArrayList<String> data) {
+                    LOG.d("del: " + value);
                     Hawk.put(HawkConfig.LIVE_HISTORY, data);
                 }
             }, liveHistory, idx);

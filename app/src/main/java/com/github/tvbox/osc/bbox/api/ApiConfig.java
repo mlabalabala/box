@@ -73,7 +73,7 @@ public class ApiConfig {
         parseBeanList = new ArrayList<>();
         searchSourceBeanList = new ArrayList<>();
         gson = new Gson();
-        Hawk.put(HawkConfig.LIVE_GROUP_LIST,new JsonArray());
+        Hawk.put(HawkConfig.LIVE_GROUP_LIST,Hawk.get(HawkConfig.LIVE_GROUP_LIST, new JsonArray()));
         loadDefaultConfig();
     }
 
@@ -548,8 +548,9 @@ public class ApiConfig {
                 Hawk.put(HawkConfig.LIVE_GROUP_LIST,lives_groups);
                 //加载多源配置
                 try {
+                    int liveCount = lives_groups.size();
                     ArrayList<LiveSettingItem> liveSettingItemList = new ArrayList<>();
-                    for (int i=0; i< lives_groups.size();i++) {
+                    for (int i=0; i< liveCount;i++) {
                         JsonObject jsonObject = lives_groups.get(i).getAsJsonObject();
                         String name = jsonObject.has("name")?jsonObject.get("name").getAsString():"线路"+(i+1);
                         LiveSettingItem liveSettingItem = new LiveSettingItem();
@@ -852,7 +853,7 @@ public class ApiConfig {
 
     private void putLiveHistory(String url) {
         if (!url.isEmpty()) {
-            ArrayList<String> liveHistory = Hawk.get(HawkConfig.LIVE_HISTORY, new ArrayList<String>());
+            ArrayList<String> liveHistory =  Hawk.get(HawkConfig.LIVE_HISTORY, new ArrayList<String>());
             if (!liveHistory.contains(url))
                 liveHistory.add(0, url);
             if (liveHistory.size() > 20)
@@ -881,14 +882,15 @@ public class ApiConfig {
         initLiveSettings();
         if(infoJson.has("lives")){
             JsonArray lives_groups=infoJson.get("lives").getAsJsonArray();
+            int liveCount = lives_groups.size();
 
             int live_group_index=Hawk.get(HawkConfig.LIVE_GROUP_INDEX,0);
-            if(live_group_index>lives_groups.size()-1)Hawk.put(HawkConfig.LIVE_GROUP_INDEX,0);
+            if(live_group_index>liveCount-1)Hawk.put(HawkConfig.LIVE_GROUP_INDEX,0);
             Hawk.put(HawkConfig.LIVE_GROUP_LIST,lives_groups);
             //加载多源配置
             try {
                 ArrayList<LiveSettingItem> liveSettingItemList = new ArrayList<>();
-                for (int i=0; i< lives_groups.size();i++) {
+                for (int i=0; i< liveCount;i++) {
                     JsonObject jsonObject = lives_groups.get(i).getAsJsonObject();
                     String name = jsonObject.has("name")?jsonObject.get("name").getAsString():"线路"+(i+1);
                     LiveSettingItem liveSettingItem = new LiveSettingItem();

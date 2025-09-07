@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
  * </pre>
  */
 public final class JsonUtil {
+    private static final Gson gson = new Gson();
 
     /**
      * Don't let anyone instantiate this class.
@@ -36,7 +37,7 @@ public final class JsonUtil {
      */
     public static <T> T fromJson(String json, Class<T> classOfT) {
         try {
-            return new Gson().fromJson(json, classOfT);
+            return gson.fromJson(json, classOfT);
         } catch (JsonParseException e) {
             e.printStackTrace();
         }
@@ -52,7 +53,7 @@ public final class JsonUtil {
      */
     public static <T> T fromJson(String json, Type typeOfT) {
         try {
-            return new Gson().fromJson(json, typeOfT);
+            return gson.fromJson(json, typeOfT);
         } catch (JsonParseException e) {
             e.printStackTrace();
         }
@@ -65,7 +66,7 @@ public final class JsonUtil {
      * @return
      */
     public static String toJson(Object src) {
-        return new Gson().toJson(src);
+        return gson.toJson(src);
     }
 
     /**
