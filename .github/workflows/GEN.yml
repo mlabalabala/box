@@ -25,7 +25,7 @@ jobs:
             mv "$file" ${{ github.workspace }}/apk/
           done
       - name: Upload App To Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@master
         with:
           name: box
           path: ${{ github.workspace }}/apk/*
