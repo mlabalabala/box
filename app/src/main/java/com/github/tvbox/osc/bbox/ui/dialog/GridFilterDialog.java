@@ -123,6 +123,10 @@ public class GridFilterDialog extends BaseDialog {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
             return false;
         }
+        // SDK <= Android 9 直接认为是 TV / 机顶盒
+        // if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        //     return true;
+        // }
 
         PackageManager pm = context.getPackageManager();
         UiModeManager uiMode = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);

@@ -178,7 +178,7 @@ public class OkGoHelper {
 //        if (!dohUrl.isEmpty()) is_doh = true;
 //        LOG.i("echo-initDnsOverHttps dohUrl:"+dohUrl);
 //        LOG.i("echo-initDnsOverHttps ips:"+ips);
-        dnsOverHttps = new DnsOverHttps.Builder().client(dohClient).url(dohUrl.isEmpty() ? null : HttpUrl.get(dohUrl)).bootstrapDnsHosts(ips!=null?DohIps(ips):null).build();
+        dnsOverHttps = new DnsOverHttps.Builder().client(dohClient).url(dohUrl.isEmpty() ? null : HttpUrl.get(dohUrl)).bootstrapDnsHosts((ips!=null && !dohUrl.equals("https://doh.pub/dns-query"))?DohIps(ips):null).build();
     }
 
     // 自定义 DNS 解析器

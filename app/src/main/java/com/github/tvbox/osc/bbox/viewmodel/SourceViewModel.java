@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.GetRequest;
 import com.orhanobut.hawk.Hawk;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -217,11 +218,14 @@ public class SourceViewModel extends ViewModel {
             String extend=sourceBean.getExt();
             extend=getFixUrl(extend);
             if(URLEncoder.encode(extend).length()<1000){
-                OkGo.<String>get(sourceBean.getApi())
+                GetRequest<String> request = OkGo.<String>get(sourceBean.getApi())
                         .tag(sourceBean.getKey() + "_sort")
-                        .params("filter", "true")
-                        .params("extend", extend)
-                        .execute(new AbsCallback<String>() {
+                        .params("filter", "true");
+                        // 当 extend 不为空且非空字符串时添加参数
+                        if (extend != null && !extend.isEmpty()) {
+                            request.params("extend", extend);
+                        }
+                        request.execute(new AbsCallback<String>() {
                             @Override
                             public String convertResponse(okhttp3.Response response) throws Throwable {
                                 if (response.body() != null) {

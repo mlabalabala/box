@@ -1206,7 +1206,7 @@ public class ApiConfig {
         }
         String apiString;
         if (Hawk.get(HawkConfig.PLAYER_IS_LIVE, false)) {
-            apiString = currentLiveSpider;
+            apiString = currentLiveSpider!=null?currentLiveSpider:"";
         } else {
             SourceBean sourceBean = ApiConfig.get().getHomeSourceBean();
             apiString = sourceBean.getApi();

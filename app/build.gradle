@@ -38,7 +38,7 @@ android {
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
-        versionCode 19
+        versionCode 20
         versionName '0.0.0'
         multiDexEnabled true
         //设置room的Schema的位置
@@ -70,6 +70,13 @@ android {
             ndk {
                 abiFilters 'armeabi-v7a'
             }
+        }
+    }
+
+    // 禁用 ABI 分割
+    splits {
+        abi {
+            enable false // 禁用 ABI 分割
         }
     }
 

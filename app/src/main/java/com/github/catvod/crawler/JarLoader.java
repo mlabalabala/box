@@ -41,7 +41,9 @@ public class JarLoader {
     }
 
     public void setRecentJarKey(String key) {
-        recentJarKey = key;
+        if (key != null && !key.isEmpty()) {
+            recentJarKey = key;
+        }
     }
 
     public void loadLiveJar(String jarUrl) {
