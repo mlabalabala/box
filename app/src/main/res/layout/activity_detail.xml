@@ -247,7 +247,7 @@
                         android:background="@drawable/button_detail_collect"
                         android:focusable="true"
                         android:gravity="center"
-                        android:text="★收 藏"
+                        android:text="☆收 藏"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vs_20"/>
                 <TextView

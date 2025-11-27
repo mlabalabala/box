@@ -300,14 +300,14 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String text = tvCollect.getText().toString();
-                if ("★收 藏".equals(text)) {
+                if ("☆收 藏".equals(text)) {
                     RoomDataManger.insertVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已加入收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("☆收 藏");
+                    tvCollect.setText("★收 藏");
                 } else {
                     RoomDataManger.deleteVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已移除收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("★收 藏");
+                    tvCollect.setText("☆收 藏");
                 }
             }
         });

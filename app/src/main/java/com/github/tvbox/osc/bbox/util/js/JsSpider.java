@@ -86,27 +86,32 @@ public class JsSpider extends Spider {
     @Override
     public void init(Context context, String extend) {
         try {
+            LOG.d("init");
             if (cat) call("init", submit(() -> cfg(extend)).get());
             else call("init", Json.valid(extend) ? ctx.parse(extend) : extend);
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
     @Override
     public String homeContent(boolean filter) {
         try {
+            LOG.d("home");
             return (String) call("home", filter);
         }catch (Exception e){
-           return null;
+            e.printStackTrace();
+            return null;
         }
     }
 
     @Override
     public String homeVideoContent() {
         try {
+            LOG.d("homeVod");
             return (String) call("homeVod");
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -117,6 +122,7 @@ public class JsSpider extends Spider {
             JSObject obj = submit(() -> new JSUtils<String>().toObj(ctx, extend)).get();
             return (String) call("category", tid, pg, filter, obj);
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -126,6 +132,7 @@ public class JsSpider extends Spider {
         try {
             return (String) call("detail", ids.get(0));
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -146,6 +153,7 @@ public class JsSpider extends Spider {
             JSArray array = submit(() -> new JSUtils<String>().toArray(ctx, vipFlags)).get();
             return (String) call("play", flag, id, array);
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -155,6 +163,7 @@ public class JsSpider extends Spider {
         try {
             return (Boolean) call("sniffer");
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -164,6 +173,7 @@ public class JsSpider extends Spider {
         try {
             return (Boolean) call("isVideo", url);
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -174,7 +184,8 @@ public class JsSpider extends Spider {
             if ("catvod".equals(params.get("from"))) return proxy2(params);
             else return submit(() -> proxy1(params)).get();
 
-        }catch (Exception E){
+        }catch (Exception e){
+            e.printStackTrace();
             return new Object[0];
         }
     }

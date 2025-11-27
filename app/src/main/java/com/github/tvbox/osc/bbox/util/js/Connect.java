@@ -39,6 +39,7 @@ public class Connect {
             JSObject jsObject = ctx.createJSObject();
             JSObject jsHeader = ctx.createJSObject();
             setHeader(ctx, res, jsHeader);
+            jsObject.set("code", res.code());
             jsObject.set("headers", jsHeader);
             if (req.getBuffer() == 0) jsObject.set("content", new String(res.body().bytes(), req.getCharset()));
             if (req.getBuffer() == 1) {
@@ -58,6 +59,7 @@ public class Connect {
         JSObject jsHeader = ctx.createJSObject();
         jsObject.set("headers", jsHeader);
         jsObject.set("content", "");
+        jsObject.set("code", "");
         return jsObject;
     }
 
