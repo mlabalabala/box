@@ -38,7 +38,7 @@ android {
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 26
-        versionCode 21
+        versionCode 22
         versionName '0.0.0'
         multiDexEnabled true
         //设置room的Schema的位置
@@ -100,6 +100,12 @@ android {
 
 def releaseTime() {
     return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+task DEBUG_APP(type: Exec) {
+    dependsOn 'installDebug' // 先安装 debug 包
+    commandLine 'd:/Knowledge/module/adb/adb.exe', 'shell', 'am', 'start', '-n',
+            'tv.org.eu.bunnyabc/com.github.tvbox.osc.bbox.ui.activity.HomeActivity'
 }
 
 dependencies {

@@ -26,6 +26,7 @@ import com.github.tvbox.osc.bbox.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.bbox.ui.adapter.FastSearchAdapter;
 import com.github.tvbox.osc.bbox.ui.adapter.SearchWordAdapter;
 import com.github.tvbox.osc.bbox.util.FastClickCheckUtil;
+import com.github.tvbox.osc.bbox.util.HawkConfig;
 import com.github.tvbox.osc.bbox.util.HistoryHelper;
 import com.github.tvbox.osc.bbox.util.SearchHelper;
 import com.github.tvbox.osc.bbox.viewmodel.SourceViewModel;
@@ -35,6 +36,7 @@ import com.google.gson.JsonElement;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
@@ -513,5 +515,11 @@ public class FastSearchActivity extends BaseActivity {
             th.printStackTrace();
         }
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Hawk.put(HawkConfig.ACTIVITY_ID, 1);
     }
 }

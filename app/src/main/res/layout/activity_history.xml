@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -57,15 +58,16 @@
 
         <ImageView
                 android:id="@+id/tvDel"
-                android:layout_width="@dimen/vs_60"
+                android:layout_width="@dimen/vs_50"
                 android:layout_height="@dimen/vs_50"
                 android:layout_gravity="center"
                 android:background="@drawable/button_dialog_vod"
+                android:nextFocusRight="@id/tvClear"
                 android:focusable="true"
                 android:focusableInTouchMode="false"
                 android:gravity="center"
                 android:src="@drawable/icon_delete"
-                android:padding="@dimen/vs_10" />
+                android:padding="@dimen/vs_5" />
 
         <ImageView
                 android:id="@+id/tvClear"
@@ -75,7 +77,8 @@
                 android:layout_marginEnd="@dimen/vs_10"
                 android:gravity="center"
                 android:background="@drawable/button_dialog_vod"
-                android:focusable="false"
+                android:nextFocusLeft="@id/tvDel"
+                android:focusable="true"
                 android:focusableInTouchMode="false"
                 android:padding="@dimen/vs_5"
                 android:src="@drawable/icon_clear" />
@@ -85,6 +88,8 @@
         android:id="@+id/mGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingLeft="@dimen/vs_60"
@@ -93,5 +98,7 @@
         android:paddingBottom="@dimen/vs_10"
         app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
         app:tv_selectedItemIsCentered="true"
-        app:tv_verticalSpacingWithMargins="@dimen/vs_10" />
+        app:tv_verticalSpacingWithMargins="@dimen/vs_10"
+        tools:listitem="@layout/item_grid"
+        tools:itemCount="2"/>
 </LinearLayout>

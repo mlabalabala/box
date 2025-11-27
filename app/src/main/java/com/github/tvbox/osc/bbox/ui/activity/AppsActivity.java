@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.base.App;
@@ -90,6 +91,13 @@ public class AppsActivity extends BaseActivity {
         mGridViewApps.setLayoutManager(new V7GridLayoutManager(this.mContext, isBaseOnWidth() ? 6 : 7));
         appsAdapter = new AppsAdapter();
         mGridViewApps.setAdapter(appsAdapter);
+        mGridViewApps.post(()-> {
+            mGridViewApps.scrollToPosition(0);
+            RecyclerView.ViewHolder viewHolder = mGridViewApps.findViewHolderForAdapterPosition(0);
+            if (viewHolder != null) {
+                viewHolder.itemView.requestFocus();
+            }
+        });
         tvDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

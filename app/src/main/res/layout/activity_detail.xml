@@ -225,14 +225,15 @@
                         android:textSize="@dimen/vs_20"/>
                 <TextView
                         android:id="@+id/tvDesc"
-                        android:layout_width="@dimen/vs_120"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/vs_40"
+                        android:paddingHorizontal="@dimen/vs_20"
                         android:layout_marginEnd="@dimen/vs_10"
                         android:layout_marginRight="@dimen/vs_10"
                         android:background="@drawable/button_detail_sort"
                         android:focusable="true"
                         android:gravity="center"
-                        android:text="简介"
+                        android:text="简 介"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vs_20" />
 
@@ -246,7 +247,7 @@
                         android:background="@drawable/button_detail_collect"
                         android:focusable="true"
                         android:gravity="center"
-                        android:text="＋收藏"
+                        android:text="★收 藏"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/vs_20"/>
                 <TextView
@@ -270,19 +271,17 @@
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
-                    app:tv_selectedItemIsCentered="true" />
+                    app:tv_selectedItemIsCentered="false" />
 
             <LinearLayout
                     android:id="@+id/mSeriesGroupTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="@dimen/vs_50"
                     android:layout_marginTop="@dimen/vs_10"
-                    android:layout_marginRight="@dimen/vs_50"
                     android:gravity="center_vertical"
                     android:focusable="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                 <!-- 排序功能按钮 -->
                 <TextView

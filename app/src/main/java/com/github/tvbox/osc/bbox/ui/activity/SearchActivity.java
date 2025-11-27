@@ -597,4 +597,10 @@ public class SearchActivity extends BaseActivity {
             imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Hawk.put(HawkConfig.ACTIVITY_ID, 2);
+    }
 }

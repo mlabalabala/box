@@ -1,6 +1,8 @@
 package com.github.tvbox.osc.bbox.ui.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -8,9 +10,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
+import com.github.tvbox.osc.bbox.bean.SourceBean;
 import com.github.tvbox.osc.bbox.bean.VodInfo;
 import com.github.tvbox.osc.bbox.picasso.RoundTransformation;
 import com.github.tvbox.osc.bbox.util.DefaultConfig;
+import com.github.tvbox.osc.bbox.util.HawkConfig;
+import com.github.tvbox.osc.bbox.util.ImgUtil;
 import com.github.tvbox.osc.bbox.util.MD5;
 import com.squareup.picasso.Picasso;
 
@@ -30,36 +35,21 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, VodInfo item) {
-        TextView tvYear = helper.getView(R.id.tvYear);
-        /*if (item.year <= 0) {
-            tvYear.setVisibility(View.GONE);
+        FrameLayout tvDel = helper.getView(R.id.delFrameLayout);
+        if (HawkConfig.hotVodDelete) {
+            tvDel.setVisibility(View.VISIBLE);
         } else {
-            tvYear.setText(String.valueOf(item.year));
-            tvYear.setVisibility(View.VISIBLE);
-        }*/
-        tvYear.setText(ApiConfig.get().getSource(item.sourceKey).getName());
-        /*TextView tvLang = helper.getView(R.id.tvLang);
-        if (TextUtils.isEmpty(item.lang)) {
-            tvLang.setVisibility(View.GONE);
-        } else {
-            tvLang.setText(item.lang);
-            tvLang.setVisibility(View.VISIBLE);
-        }
-        TextView tvArea = helper.getView(R.id.tvArea);
-        if (TextUtils.isEmpty(item.area)) {
-            tvArea.setVisibility(View.GONE);
-        } else {
-            tvArea.setText(item.area);
-            tvArea.setVisibility(View.VISIBLE);
+            tvDel.setVisibility(View.GONE);
         }
 
-        TextView tvNote = helper.getView(R.id.tvNote);
-        if (TextUtils.isEmpty(item.note)) {
-            tvNote.setVisibility(View.GONE);
-        } else {
-            tvNote.setText(item.note);
-            tvNote.setVisibility(View.VISIBLE);
-        }*/
+        TextView tvYear = helper.getView(R.id.tvYear);
+        SourceBean bean =  ApiConfig.get().getSource(item.sourceKey);
+        if(bean!=null){
+            tvYear.setText(bean.getName());
+        }else {
+            tvYear.setText("搜");
+//            tvYear.setVisibility(View.GONE);
+        }
         helper.setVisible(R.id.tvLang, false);
         helper.setVisible(R.id.tvArea, false);
         if (item.note == null || item.note.isEmpty()) {
@@ -74,15 +64,16 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
         if (!TextUtils.isEmpty(item.pic)) {
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
-                    .transform(new RoundTransformation(MD5.string2MD5(item.pic + item.name))
+                    .transform(new RoundTransformation(MD5.string2MD5(item.pic))
                             .centerCorp(true)
-                            .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
+                            .override(AutoSizeUtils.mm2px(mContext, ImgUtil.defaultWidth), AutoSizeUtils.mm2px(mContext, ImgUtil.defaultHeight))
                             .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
                     .placeholder(R.drawable.img_loading_placeholder)
-                    .error(R.drawable.img_loading_placeholder)
+                    .noFade()
+                    .error(ImgUtil.createTextDrawable(item.name))
                     .into(ivThumb);
         } else {
-            ivThumb.setImageResource(R.drawable.img_loading_placeholder);
+            ivThumb.setImageDrawable(ImgUtil.createTextDrawable(item.name));
         }
     }
 }

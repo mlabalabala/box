@@ -57,7 +57,7 @@
 
         <ImageView
                 android:id="@+id/tvDel"
-                android:layout_width="@dimen/vs_60"
+                android:layout_width="@dimen/vs_50"
                 android:layout_height="@dimen/vs_50"
                 android:layout_gravity="center"
                 android:background="@drawable/button_dialog_vod"
@@ -65,7 +65,7 @@
                 android:focusableInTouchMode="false"
                 android:gravity="center"
                 android:src="@drawable/icon_delete"
-                android:padding="@dimen/vs_10" />
+                android:padding="@dimen/vs_5" />
     </LinearLayout>
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView

@@ -22,7 +22,7 @@
             <TextView
                     android:id="@+id/tvSearchCheckboxBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="28mm"
+                    android:layout_height="@dimen/vs_48"
                     android:background="@drawable/shape_user_focus"
                     android:focusable="true"
                     android:gravity="center"
@@ -132,7 +132,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/ts_20"
                 android:layout_marginBottom="@dimen/ts_10"
-                android:layout_height="28mm"/>
+                android:layout_height="@dimen/vs_48"/>
 
         <com.owen.tvrecyclerview.widget.TvRecyclerView
                 android:id="@+id/mGridViewWord"

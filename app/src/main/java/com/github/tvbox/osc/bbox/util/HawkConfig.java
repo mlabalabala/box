@@ -70,6 +70,9 @@ public class HawkConfig {
     public static final String IS_GLOBAL_SCALE = "is_global_scale";
     public static final String GLOBAL_PLAY_SCALE = "global_play_scale";
 
+    public static final String ACTIVITY_ID = "activity_id"; // 0-home 1-fastsearch 2-search 3-detail
+    public static final String HOME_HISTORY_LIST_POS = "home_history_list_postion"; // 0-home 1-setting 2-living 3-detail
+
     public static boolean hotVodDelete;
 
 }

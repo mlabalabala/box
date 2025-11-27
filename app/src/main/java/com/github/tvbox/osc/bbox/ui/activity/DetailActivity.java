@@ -300,14 +300,14 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String text = tvCollect.getText().toString();
-                if ("＋收藏".equals(text)) {
+                if ("★收 藏".equals(text)) {
                     RoomDataManger.insertVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已加入收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("﹣收藏");
+                    tvCollect.setText("☆收 藏");
                 } else {
                     RoomDataManger.deleteVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已移除收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("＋收藏");
+                    tvCollect.setText("★收 藏");
                 }
             }
         });
@@ -827,9 +827,9 @@ public class DetailActivity extends BaseActivity {
             sourceViewModel.getDetail(sourceKey, vodId);
             boolean isVodCollect = RoomDataManger.isVodCollect(sourceKey, vodId);
             if (isVodCollect) {
-                tvCollect.setText("﹣收藏");
+                tvCollect.setText("★收 藏");
             } else {
-                tvCollect.setText("＋收藏");
+                tvCollect.setText("☆收 藏");
             }
         }
     }
@@ -1139,5 +1139,13 @@ public class DetailActivity extends BaseActivity {
         } else {
             Toast.makeText(mContext, "资源异常,请稍后重试", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        int aid = Hawk.get(HawkConfig.ACTIVITY_ID, -1);
+        LOG.d("DetailActivity onPause, aid: " + aid);
+        if (aid == 0) Hawk.put(HawkConfig.ACTIVITY_ID, 3);
     }
 }

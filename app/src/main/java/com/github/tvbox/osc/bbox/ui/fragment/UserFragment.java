@@ -8,6 +8,7 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 
 import android.widget.Toast;
+import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
@@ -113,6 +114,24 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
                 vodList.add(vod);
             }
             homeHotVodAdapter.setNewData(vodList);
+            // 从detail返回的
+            int aid = Hawk.get(HawkConfig.ACTIVITY_ID, -1);
+            Hawk.put(HawkConfig.ACTIVITY_ID, 0);
+            LOG.d("UserFragment resume, aid: " + aid);
+            if (aid == 3) {
+                tvHotList.post(() -> {
+                    Hawk.put(HawkConfig.HOME_HISTORY_LIST_POS, 0);
+                    int viewPos = Hawk.get(HawkConfig.HOME_HISTORY_LIST_POS, 0);
+                    tvHotList.scrollToPosition(viewPos);
+                    RecyclerView.ViewHolder viewHolder = tvHotList.findViewHolderForAdapterPosition(viewPos);
+                    if (viewHolder != null) {
+                        viewHolder.itemView.requestFocus();
+                    }
+                });
+            }
+            else {
+                tvSetting.clearFocus();
+            }
         }
     }
 
@@ -166,6 +185,7 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         }
         // 主页按钮循环，"历史"按左可以直接跳到"设置"
         tvHistory.setNextFocusLeftId(tvSetting.getId());
+        tvSetting.clearFocus();
         homeHotVodAdapter = new HomeHotVodAdapter(style,tvRate);
         homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -186,6 +206,7 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
                     bundle.putString("sourceKey", vod.sourceKey);
                     SourceBean sourceBean = ApiConfig.get().getSource(vod.sourceKey);
                     if(sourceBean!=null){
+                        // Hawk.put(HawkConfig.HOME_HISTORY_LIST_POS, position);
                         bundle.putString("picture", vod.pic);
                         jumpActivity(DetailActivity.class, bundle);
                     }else {
@@ -234,7 +255,6 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
             }
         });
         tvHotList.setAdapter(homeHotVodAdapter);
-
         initHomeHotVod(homeHotVodAdapter);
     }
 
@@ -245,6 +265,7 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
                 return;
             }
         } else if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
+            LOG.d("首页类型-历史记录");
             return;
         }
         setDouBanData(adapter);
