@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.tvbox.osc.bbox.R;
 
+import com.github.tvbox.osc.bbox.util.HawkConfig;
+import com.github.tvbox.osc.bbox.util.LOG;
+import com.orhanobut.hawk.Hawk;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class ApiHistoryDialogAdapter extends ListAdapter<String, ApiHistoryDialo
 
 
     private ArrayList<String> data = new ArrayList<>();
+    private HashMap<String, String> apiMap = new HashMap<>();
 
     private String select = "";
 
@@ -57,6 +61,7 @@ public class ApiHistoryDialogAdapter extends ListAdapter<String, ApiHistoryDialo
     }
 
     public void setData(List<String> newData, int defaultSelect) {
+        apiMap = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
         data.clear();
         data.addAll(newData);
         select = data.get(defaultSelect);
@@ -96,6 +101,7 @@ public class ApiHistoryDialogAdapter extends ListAdapter<String, ApiHistoryDialo
                 return;
             notifyItemRemoved(data.indexOf(value));
             data.remove(value);
+            apiMap.remove(value);
             dialogInterface.del(value, data);
         });
     }

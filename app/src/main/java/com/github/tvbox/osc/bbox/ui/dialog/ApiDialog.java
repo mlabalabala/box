@@ -26,10 +26,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -82,6 +79,7 @@ public class ApiDialog extends BaseDialog {
             @Override
             public void onClick(View v) {
                 String newApi = inputApi.getText().toString().trim();
+                LOG.d("newApi: " + newApi);
                 if (!newApi.isEmpty()) {
                     // ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
                     // if (!history.contains(newApi))
@@ -97,6 +95,9 @@ public class ApiDialog extends BaseDialog {
 
                     ArrayList<String> nameHistory = Hawk.get(HawkConfig.API_NAME_HISTORY, new ArrayList<>());
                     HashMap<String, String> map = Hawk.get(HawkConfig.API_MAP, new HashMap<>());
+                    filterHistoryMap(nameHistory, map);
+                    LOG.d("api history list: " + nameHistory);
+                    LOG.d("apiMap history list: " + map);
                     if(!map.containsValue(newApi)){
                         Hawk.put(HawkConfig.API_URL, newApi);
                         Hawk.put(HawkConfig.API_NAME, newApi);
@@ -342,6 +343,12 @@ public class ApiDialog extends BaseDialog {
             }
         });
         refreshQRCode();
+    }
+
+    private void filterHistoryMap(ArrayList<String> nameHistory, HashMap<String, String> map) {
+        HashSet<String> nameHistorySet = new HashSet<>(nameHistory);
+        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) if (!nameHistorySet.contains(iterator.next().getKey())) iterator.remove();
     }
 
     private void putDefaultApis(String url) {
