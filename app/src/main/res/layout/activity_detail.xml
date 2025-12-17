@@ -57,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/vs_5"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                     <TextView
                             android:id="@+id/tvSite"
@@ -155,6 +155,78 @@
                         android:textColor="@color/color_CCFFFFFF"
                         android:textSize="@dimen/ts_20"/>
 
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/tvPlay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/vs_40"
+                            android:paddingHorizontal="@dimen/vs_20"
+                            android:layout_marginRight="@dimen/vs_10"
+                            android:layout_marginEnd="@dimen/vs_10"
+                            android:background="@drawable/button_detail_play"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="播 放"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/vs_20"/>
+                    <TextView
+                            android:id="@+id/tvQuickSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/vs_40"
+                            android:paddingHorizontal="@dimen/vs_20"
+                            android:layout_marginRight="@dimen/vs_10"
+                            android:layout_marginEnd="@dimen/vs_10"
+                            android:background="@drawable/button_detail_quick_search"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="搜 索"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/vs_20"/>
+                    <TextView
+                            android:id="@+id/tvDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/vs_40"
+                            android:paddingHorizontal="@dimen/vs_20"
+                            android:layout_marginEnd="@dimen/vs_10"
+                            android:layout_marginRight="@dimen/vs_10"
+                            android:background="@drawable/button_detail_sort"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="简 介"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/vs_20" />
+
+                    <TextView
+                            android:id="@+id/tvCollect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/vs_40"
+                            android:paddingHorizontal="@dimen/vs_20"
+                            android:layout_marginRight="@dimen/vs_10"
+                            android:layout_marginEnd="@dimen/vs_10"
+                            android:background="@drawable/button_detail_collect"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="☆收 藏"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/vs_20"/>
+                    <TextView
+                            android:id="@+id/tvDownload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/vs_40"
+                            android:paddingHorizontal="@dimen/vs_20"
+                            android:background="@drawable/button_detail_download"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="下 载"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/vs_20"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -192,77 +264,6 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/vs_20"
                 >
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/vs_30"
-                    android:orientation="horizontal">
-
-                <TextView
-                        android:id="@+id/tvPlay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:layout_marginRight="@dimen/vs_10"
-                        android:layout_marginEnd="@dimen/vs_10"
-                        android:background="@drawable/button_detail_play"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:text="播 放"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20"/>
-                <TextView
-                        android:id="@+id/tvQuickSearch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:layout_marginRight="@dimen/vs_10"
-                        android:layout_marginEnd="@dimen/vs_10"
-                        android:background="@drawable/button_detail_quick_search"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:text="搜 索"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20"/>
-                <TextView
-                        android:id="@+id/tvDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:layout_marginEnd="@dimen/vs_10"
-                        android:layout_marginRight="@dimen/vs_10"
-                        android:background="@drawable/button_detail_sort"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:text="简 介"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20" />
-
-                <TextView
-                        android:id="@+id/tvCollect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:layout_marginRight="@dimen/vs_10"
-                        android:layout_marginEnd="@dimen/vs_10"
-                        android:background="@drawable/button_detail_collect"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:text="☆收 藏"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20"/>
-                <TextView
-                        android:id="@+id/tvDownload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/vs_40"
-                        android:paddingHorizontal="@dimen/vs_20"
-                        android:background="@drawable/button_detail_download"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:text="下 载"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/vs_20"/>
-            </LinearLayout>
 
             <com.owen.tvrecyclerview.widget.TvRecyclerView
                     android:id="@+id/mGridViewFlag"
