@@ -86,7 +86,7 @@ public class JsSpider extends Spider {
     @Override
     public void init(Context context, String extend) {
         try {
-            LOG.d("init");
+            LOG.d("init" + " " + cat);
             if (cat) call("init", submit(() -> cfg(extend)).get());
             else call("init", Json.valid(extend) ? ctx.parse(extend) : extend);
         }catch (Exception e){
@@ -223,7 +223,8 @@ public class JsSpider extends Spider {
                 ctx.evaluateModule(String.format(SPIDER_STRING_CODE, key + ".js") + "globalThis." + key + " = __JS_SPIDER__;", "tv_box_root.js");
                 //ctx.execute(byteFF(b), key + ".js","__jsEvalReturn");
                 //ctx.evaluate("globalThis." + key + " = __JS_SPIDER__;");
-            } else {
+            }
+            else {
                 if (content.contains("__JS_SPIDER__")) {
                     content = content.replaceAll("__JS_SPIDER__\\s*=", "export default ");
                 }
@@ -279,18 +280,13 @@ public class JsSpider extends Spider {
                 return UriUtil.resolve(moduleBaseName, moduleName);
             }
         });
-        ctx.setConsole(new QuickJSContext.Console() {
-            @Override
-            public void log(String s) {
-                LOG.i("QuJs"+s);
-            }
-        });
+        ctx.setConsole(new Console());
 
         ctx.getGlobalObject().bind(new Global(executor));
 
         JSObject local = ctx.createJSObject();
         ctx.getGlobalObject().set("local", local);
-        local.bind(new local());
+        local.bind(new Local());
 
         ctx.getGlobalObject().getContext().evaluate(FileUtils.loadModule("net.js"));
     }

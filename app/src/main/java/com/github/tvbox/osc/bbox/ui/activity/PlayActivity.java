@@ -487,11 +487,11 @@ public class PlayActivity extends BaseActivity {
             goPlayUrl(url,headers);
             return;
         }
-        LOG.i("echo-playM3u8:" + url);
+        LOG.i("echo-playM3u8: " + url);
         mController.playM3u8(url,headers);
     }
     void goPlayUrl(String url, HashMap<String, String> headers) {
-        LOG.i("echo-goPlayUrl:" + url);
+        LOG.i("echo-goPlayUrl: " + url);
         if(autoRetryCount==0)webPlayUrl=url;
         final String finalUrl = url;
         runOnUiThread(new Runnable() {

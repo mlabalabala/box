@@ -25,7 +25,7 @@
             android:lineSpacingMultiplier="0"            
             android:singleLine="true"
             android:textColor="@color/color_CC000000"
-            android:textSize="@dimen/ts_26"
+            android:textSize="@dimen/ts_30"
             android:textStyle="bold"
             android:text="确定全部删除 ?" />
 

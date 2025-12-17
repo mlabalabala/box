@@ -9,14 +9,14 @@
         android:id="@+id/llLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
                 android:id="@+id/topLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="left"
                 tools:ignore="RtlSymmetry"
                 android:paddingTop="@dimen/vs_10">
 
@@ -37,8 +37,9 @@
 
 
             <LinearLayout
-                    android:layout_width="@dimen/vs_480"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/ts_30"
                     android:orientation="vertical">
 
                 <TextView
@@ -184,7 +185,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/ts_24" />
         </LinearLayout>
-        
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -306,7 +307,7 @@
                 <com.owen.tvrecyclerview.widget.TvRecyclerView
                         android:id="@+id/mSeriesGroupView"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/vs_45"
+                        android:layout_height="25dp"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/vs_10"
                         android:clipChildren="false"

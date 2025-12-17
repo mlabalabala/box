@@ -1,11 +1,10 @@
 package com.github.tvbox.osc.bbox.util.js;
 
 import androidx.annotation.Keep;
-import com.github.tvbox.osc.bbox.util.LOG;
 import com.orhanobut.hawk.Hawk;
 import com.whl.quickjs.wrapper.Function;
 
-public class local {@Keep@Function
+public class Local {@Keep@Function
     public void delete(String str, String str2) {
         try {
             Hawk.delete("jsRuntime_" + str + "_" + str2);
@@ -23,7 +22,6 @@ public class local {@Keep@Function
     }@Keep@Function
     public void set(String str, String str2, String str3) {
         try {
-            LOG.d("jsRuntime: " + str3);
             Hawk.put("jsRuntime_" + str + "_" + str2, str3);
         } catch (Exception e) {
             e.printStackTrace();

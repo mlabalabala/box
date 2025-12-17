@@ -76,20 +76,37 @@ public class QuickJSContext {
         }
         JSObject consoleObject = createJSObject();
         getGlobalObject().set("console", consoleObject);
-        consoleObject.set("log", new JSCallFunction() {
-            @Override
-            public Object call(Object... args) {
-                StringBuilder value = new StringBuilder();
-                for (int i = 0; i < args.length; i++) {
-                    value.append(args[i]);
-                    if (i < args.length - 1) {
-                        value.append(" ");
-                    }
-                }
-                console.log(value.toString());
-                return null;
-            }
+        consoleObject.set("log", (JSCallFunction) args -> {
+            console.log(getString(args));
+            return null;
         });
+        consoleObject.set("debug", (JSCallFunction) args -> {
+            console.log(getString(args));
+            return null;
+        });
+        consoleObject.set("info", (JSCallFunction) args -> {
+            console.info(getString(args));
+            return null;
+        });
+        consoleObject.set("warn", (JSCallFunction) args -> {
+            console.warn(getString(args));
+            return null;
+        });
+        consoleObject.set("error", (JSCallFunction) args -> {
+            console.error(getString(args));
+            return null;
+        });
+    }
+
+    private String getString(Object[] args) {
+        StringBuilder value = new StringBuilder();
+        for (int i = 0; i < args.length; i++) {
+            value.append(args[i]);
+            if (i < args.length - 1) {
+                value.append(" ");
+            }
+        }
+        return value.toString();
     }
 
     public void setMaxStackSize(int maxStackSize) {
@@ -488,6 +505,12 @@ public class QuickJSContext {
 
     public interface Console {
         void log(String info);
+
+        void info(String info);
+
+        void warn(String info);
+
+        void error(String info);
     }
 
     public static abstract class DefaultModuleLoader extends ModuleLoader {
