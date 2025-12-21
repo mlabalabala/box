@@ -33,7 +33,7 @@
                     android:paddingRight="@dimen/vs_10"
                     android:textColor="@android:color/white"
                     android:textColorHint="#99FFFFFF"
-                    android:textSize="@dimen/ts_20" />
+                    android:textSize="@dimen/ts_20"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -51,10 +51,10 @@
                         android:gravity="center"
                         android:text="指定站源"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
                 <Space
                         android:layout_width="@dimen/vs_10"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/tvRemoteSearch"
                         android:layout_width="0mm"
@@ -65,10 +65,10 @@
                         android:gravity="center"
                         android:text="远程搜索"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
                 <Space
                         android:layout_width="@dimen/vs_10"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/tvClearSearchHistory"
                         android:layout_width="0mm"
@@ -79,7 +79,7 @@
                         android:gravity="center"
                         android:text="清空历史"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
             </LinearLayout>
 
             <LinearLayout
@@ -98,11 +98,11 @@
                         android:gravity="center"
                         android:text="搜  索"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
 
                 <Space
                         android:layout_width="@dimen/vs_10"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 <TextView
                         android:id="@+id/tvClear"
@@ -114,11 +114,11 @@
                         android:gravity="center"
                         android:text="清  空"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
 
                 <Space
                         android:layout_width="@dimen/vs_10"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 <TextView
                         android:id="@+id/tvBackSpace"
@@ -130,14 +130,14 @@
                         android:gravity="center"
                         android:text="删  除"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_20" />
+                        android:textSize="@dimen/ts_20"/>
             </LinearLayout>
         </LinearLayout>
 
         <com.github.tvbox.osc.bbox.ui.tv.widget.SearchKeyboard
                 android:id="@+id/keyBoardRoot"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
         <LinearLayout
                 android:id="@+id/remoteRoot"
@@ -154,7 +154,7 @@
                     android:gravity="center_horizontal"
                     android:lineSpacingMultiplier="1.4"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/ts_20" />
+                    android:textSize="@dimen/ts_20"/>
 
             <ImageView
                     android:id="@+id/ivQRCode"
@@ -162,7 +162,7 @@
                     android:layout_height="300mm"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20mm"
-                    tools:ignore="InOrMmUsage" />
+                    tools:ignore="InOrMmUsage"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -191,9 +191,9 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
+                app:tv_horizontalSpacingWithMargins="@dimen/vs_10"
                 app:tv_selectedItemIsCentered="true"
-                app:tv_verticalSpacingWithMargins="@dimen/vs_5" />
+                app:tv_verticalSpacingWithMargins="@dimen/vs_10"/>
     </LinearLayout>
 
 
@@ -206,10 +206,10 @@
             android:padding="@dimen/vs_20">
 
         <LinearLayout android:id="@+id/llHotWord"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:visibility="visible">
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:visibility="visible">
             <TextView
                     android:layout_width="match_parent"
                     android:focusable="false"
@@ -227,108 +227,108 @@
                     android:layout_gravity="top|center_horizontal"
                     android:scrollbars="none">
                 <LinearLayout
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical">
-                <TextView
                         android:layout_width="match_parent"
-                        android:focusable="false"
-                        android:gravity="center_vertical"
-                        android:text="热搜"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_24"
-                        android:layout_marginTop="@dimen/ts_10"
-                        android:layout_height="@dimen/vs_50"/>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:text="热搜"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/ts_24"
+                            android:layout_marginTop="@dimen/ts_10"
+                            android:layout_height="@dimen/vs_50"/>
 
-                <com.yang.flowlayoutlibrary.FlowLayout
-                        android:id="@+id/mGridViewHotWord"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        app:backgroundResource="@drawable/shape_user_focus"
-                        app:itemColor="@android:color/white"
-                        app:itemSize="@dimen/vs_20"
-                        app:textPaddingH="@dimen/vs_15"
-                        app:textPaddingV="@dimen/vs_10"
-                        app:horizontalSpacing="@dimen/vs_10"
-                        app:verticalSpacing="@dimen/vs_10"/>
+                    <com.yang.flowlayoutlibrary.FlowLayout
+                            android:id="@+id/mGridViewHotWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            app:backgroundResource="@drawable/shape_user_focus"
+                            app:itemColor="@android:color/white"
+                            app:itemSize="@dimen/vs_20"
+                            app:textPaddingH="@dimen/vs_15"
+                            app:textPaddingV="@dimen/vs_10"
+                            app:horizontalSpacing="@dimen/vs_10"
+                            app:verticalSpacing="@dimen/vs_10"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:focusable="false"
-                        android:gravity="center_vertical"
-                        android:text="电影"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_24"
-                        android:layout_marginTop="@dimen/ts_10"
-                        android:layout_height="@dimen/vs_50"/>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:text="电影"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/ts_24"
+                            android:layout_marginTop="@dimen/ts_10"
+                            android:layout_height="@dimen/vs_50"/>
 
-                <com.yang.flowlayoutlibrary.FlowLayout
-                        android:id="@+id/mGridViewMovieHotWord"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        app:backgroundResource="@drawable/shape_user_focus"
-                        app:itemColor="@android:color/white"
-                        app:itemSize="@dimen/vs_20"
-                        app:textPaddingH="@dimen/vs_15"
-                        app:textPaddingV="@dimen/vs_10"
-                        app:horizontalSpacing="@dimen/vs_10"
-                        app:verticalSpacing="@dimen/vs_10"/>
+                    <com.yang.flowlayoutlibrary.FlowLayout
+                            android:id="@+id/mGridViewMovieHotWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            app:backgroundResource="@drawable/shape_user_focus"
+                            app:itemColor="@android:color/white"
+                            app:itemSize="@dimen/vs_20"
+                            app:textPaddingH="@dimen/vs_15"
+                            app:textPaddingV="@dimen/vs_10"
+                            app:horizontalSpacing="@dimen/vs_10"
+                            app:verticalSpacing="@dimen/vs_10"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:focusable="false"
-                        android:gravity="center_vertical"
-                        android:text="电视剧"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_24"
-                        android:layout_marginTop="@dimen/ts_10"
-                        android:layout_height="@dimen/vs_50"/>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:text="电视剧"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/ts_24"
+                            android:layout_marginTop="@dimen/ts_10"
+                            android:layout_height="@dimen/vs_50"/>
 
-                <com.yang.flowlayoutlibrary.FlowLayout
-                        android:id="@+id/mGridViewTvHotWord"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        app:backgroundResource="@drawable/shape_user_focus"
-                        app:itemColor="@android:color/white"
-                        app:itemSize="@dimen/vs_20"
-                        app:textPaddingH="@dimen/vs_15"
-                        app:textPaddingV="@dimen/vs_10"
-                        app:horizontalSpacing="@dimen/vs_10"
-                        app:verticalSpacing="@dimen/vs_10"/>
+                    <com.yang.flowlayoutlibrary.FlowLayout
+                            android:id="@+id/mGridViewTvHotWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            app:backgroundResource="@drawable/shape_user_focus"
+                            app:itemColor="@android:color/white"
+                            app:itemSize="@dimen/vs_20"
+                            app:textPaddingH="@dimen/vs_15"
+                            app:textPaddingV="@dimen/vs_10"
+                            app:horizontalSpacing="@dimen/vs_10"
+                            app:verticalSpacing="@dimen/vs_10"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:focusable="false"
-                        android:gravity="center_vertical"
-                        android:text="动漫"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/ts_24"
-                        android:layout_marginTop="@dimen/ts_10"
-                        android:layout_height="@dimen/vs_50"/>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:text="动漫"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/ts_24"
+                            android:layout_marginTop="@dimen/ts_10"
+                            android:layout_height="@dimen/vs_50"/>
 
-                <com.yang.flowlayoutlibrary.FlowLayout
-                        android:id="@+id/mGridViewCiliHotWord"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        app:backgroundResource="@drawable/shape_user_focus"
-                        app:itemColor="@android:color/white"
-                        app:itemSize="@dimen/vs_20"
-                        app:textPaddingH="@dimen/vs_15"
-                        app:textPaddingV="@dimen/vs_10"
-                        app:horizontalSpacing="@dimen/vs_10"
-                        app:verticalSpacing="@dimen/vs_10"/>
+                    <com.yang.flowlayoutlibrary.FlowLayout
+                            android:id="@+id/mGridViewCiliHotWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            app:backgroundResource="@drawable/shape_user_focus"
+                            app:itemColor="@android:color/white"
+                            app:itemSize="@dimen/vs_20"
+                            app:textPaddingH="@dimen/vs_15"
+                            app:textPaddingV="@dimen/vs_10"
+                            app:horizontalSpacing="@dimen/vs_10"
+                            app:verticalSpacing="@dimen/vs_10"/>
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
@@ -342,6 +342,6 @@
                 android:visibility="gone"
                 app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
                 app:tv_selectedItemIsCentered="true"
-                app:tv_verticalSpacingWithMargins="@dimen/vs_5" />
+                app:tv_verticalSpacingWithMargins="@dimen/vs_5"/>
     </LinearLayout>
 </LinearLayout>

@@ -156,4 +156,25 @@ public class VodInfo implements Serializable {
             this.url = url;
         }
     }
+
+    @Override
+    public String toString() {
+        return "VodInfo{" +
+                "last='" + last + '\'' +
+                ", id='" + id + '\'' +
+                ", tid=" + tid +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", dt='" + dt + '\'' +
+                ", pic='" + pic + '\'' +
+                ", lang='" + lang + '\'' +
+                ", area='" + area + '\'' +
+                ", year=" + year +
+                ", state='" + state + '\'' +
+                ", note='" + note + '\'' +
+                ", actor='" + actor + '\'' +
+                ", director='" + director + '\'' +
+                ", sourceKey='" + sourceKey + '\'' +
+                '}';
+    }
 }

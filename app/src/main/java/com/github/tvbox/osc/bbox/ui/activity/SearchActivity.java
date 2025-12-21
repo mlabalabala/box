@@ -108,6 +108,7 @@ public class SearchActivity extends BaseActivity {
     private static Boolean isSearchBack;
     @Override
     protected void init() {
+        cancel();
         initView();
         initViewModel();
         initData();
@@ -256,6 +257,7 @@ public class SearchActivity extends BaseActivity {
         tvClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cancel();
                 FastClickCheckUtil.check(v);
                 initData();
                 etSearch.setText("");
@@ -505,10 +507,42 @@ public class SearchActivity extends BaseActivity {
         for (JsonElement ele : tvItemList) tvHots.add(getTitle(((JsonObject) ele).get("title").getAsString()));
         for (JsonElement ele : ciliItemList) ciliHots.add(getTitle(((JsonObject) ele).get("title").getAsString()));
 
-        mGridViewHotWord.setViews(hots, st -> search(st));
-        mGridViewMovieHotWord.setViews(movieHots, st -> search(st));
-        mGridViewTvHotWord.setViews(tvHots, st -> search(st));
-        mGridViewCiliHotWord.setViews(ciliHots, st -> search(st));
+        mGridViewHotWord.setViews(hots, st -> {
+            if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                Bundle bundle = new Bundle();
+                bundle.putString("title", st);
+                jumpActivity(FastSearchActivity.class, bundle);
+            }else {
+                search(st);
+            }
+        });
+        mGridViewMovieHotWord.setViews(movieHots, st -> {
+            if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                Bundle bundle = new Bundle();
+                bundle.putString("title", st);
+                jumpActivity(FastSearchActivity.class, bundle);
+            }else {
+                search(st);
+            }
+        });
+        mGridViewTvHotWord.setViews(tvHots, st -> {
+            if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                Bundle bundle = new Bundle();
+                bundle.putString("title", st);
+                jumpActivity(FastSearchActivity.class, bundle);
+            }else {
+                search(st);
+            }
+        });
+        mGridViewCiliHotWord.setViews(ciliHots, st -> {
+            if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+                Bundle bundle = new Bundle();
+                bundle.putString("title", st);
+                jumpActivity(FastSearchActivity.class, bundle);
+            }else {
+                search(st);
+            }
+        });
     }
     private static String getTitle(String st) {
         return st.trim().replaceAll("<|>|《|》|-", "").split(" ")[0];
@@ -566,7 +600,7 @@ public class SearchActivity extends BaseActivity {
         this.searchTitle = title;
         // llLayout.setVisibility(View.VISIBLE);
         // llHotWord.setVisibility(View.VISIBLE);
-        mGridView.setVisibility(View.GONE);
+        mGridView.setVisibility(View.INVISIBLE);
         searchAdapter.setNewData(new ArrayList<>());
         searchResult();
     }
@@ -609,6 +643,9 @@ public class SearchActivity extends BaseActivity {
             Toast.makeText(mContext, "没有指定搜索源", Toast.LENGTH_SHORT).show();
             // showEmpty();
             showSuccess();
+            llLayout.setVisibility(View.VISIBLE);
+            llHotWord.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
             return;
         }
         for (String key : siteKey) {
@@ -629,42 +666,50 @@ public class SearchActivity extends BaseActivity {
         for(String one : arr) {
             if (name.contains(one)) matchNum++;
         }
-        return matchNum == arr.length ? true : false;
+        return matchNum == arr.length;
     }
 
     private void searchData(AbsXml absXml) {
-        if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && absXml.movie.videoList.size() > 0) {
-            List<Movie.Video> data = new ArrayList<>();
-            for (Movie.Video video : absXml.movie.videoList) {
-                if (matchSearchResult(video.name, searchTitle)) data.add(video);
-            }
-            if (searchAdapter.getData().size() > 0) {
-                searchAdapter.addData(data);
-            } else {
-                showSuccess();
-                llLayout.setVisibility(View.VISIBLE);
-                llHotWord.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
-                searchAdapter.setNewData(data);
-            }
+        Boolean isFastSearch = Hawk.get(HawkConfig.FAST_SEARCH_MODE, false);
+        if (isFastSearch) {
+            showSuccess();
+            llLayout.setVisibility(View.VISIBLE);
+            llHotWord.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
         }
-
-        int count = allRunCount.decrementAndGet();
-        if (count <= 0) {
-            if (searchAdapter.getData().size() <= 0) {
-                // showEmpty();
-                showSuccess();
-                llLayout.setVisibility(View.VISIBLE);
-                llHotWord.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
-                Toast.makeText(mContext, "搜索结果为空", Toast.LENGTH_SHORT).show();
+        else {
+            if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && !absXml.movie.videoList.isEmpty()) {
+                List<Movie.Video> data = new ArrayList<>();
+                for (Movie.Video video : absXml.movie.videoList) {
+                    if (matchSearchResult(video.name, searchTitle)) data.add(video);
+                }
+                // LOG.d("searchAdapter.getData().size()" + searchAdapter.getData().size());
+                if (!searchAdapter.getData().isEmpty()) {
+                    searchAdapter.addData(data);
+                } else {
+                    showSuccess();
+                    llLayout.setVisibility(View.VISIBLE);
+                    llHotWord.setVisibility(View.GONE);
+                    mGridView.setVisibility(View.VISIBLE);
+                    searchAdapter.setNewData(data);
+                }
             }
-            cancel();
+            int count = allRunCount.decrementAndGet();
+            // LOG.d("count: " + count);
+            if (count <= 0) {
+                // LOG.d("searchAdapter.getData().size()" + searchAdapter.getData().size());
+                if (searchAdapter.getData().isEmpty()) {
+                    LOG.d("searchAdapter data is empty!");
+                    // showEmpty();
+                }
+                cancel();
+            }
         }
     }
 
 
     private void cancel() {
+        // LOG.d("cancel");
         OkGo.getInstance().cancelTag("search");
     }
 

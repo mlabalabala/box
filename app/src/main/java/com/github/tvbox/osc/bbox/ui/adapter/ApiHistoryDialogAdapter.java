@@ -89,8 +89,8 @@ public class ApiHistoryDialogAdapter extends ListAdapter<String, ApiHistoryDialo
         TextView tvName = holder.itemView.findViewById(R.id.tvName);
         ImageView tvDel = holder.itemView.findViewById(R.id.tvDel);
         tvName.setOnClickListener(v -> {
-            if (select.equals(value))
-                return;
+            // if (select.equals(value))
+            //     return;
             notifyItemChanged(data.indexOf(select));
             select = value;
             notifyItemChanged(data.indexOf(value));

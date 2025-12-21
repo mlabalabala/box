@@ -185,7 +185,7 @@ public class StoreApiConfig {
 //        Hawk.put(HawkConfig.API_URL, map.get(history.get(0)));
         Hawk.put(HawkConfig.API_NAME_HISTORY, history);
         Hawk.put(HawkConfig.API_MAP, map);
-        return "订阅结束，点击线路可切换";
+        return "订阅结束，共 " + history.size() + " 条线路";
     }
 
     public interface StoreApiConfigCallback {

@@ -46,13 +46,13 @@ public class SeriesAdapter extends BaseQuickAdapter<VodInfo.VodSeries, BaseViewH
             if (position < spanCount) {
                 helper.itemView.setNextFocusUpId(R.id.mSeriesSortTv);
             }
-//            int totalCount = getData().size();
-//            int remainder = totalCount % spanCount;
-//            int lastRowStart = remainder == 0 ? totalCount - spanCount : totalCount - remainder;
-//
-//            if (position >= lastRowStart) {
-//                helper.itemView.setNextFocusDownId(R.id.tvPlay);
-//            }
+           // int totalCount = getData().size();
+           // int remainder = totalCount % spanCount;
+           // int lastRowStart = remainder == 0 ? totalCount - spanCount : totalCount - remainder;
+           //
+           // if (position >= lastRowStart) {
+           //     helper.itemView.setNextFocusDownId(R.id.tvPlay);
+           // }
         }
     }
 }

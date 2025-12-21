@@ -1,6 +1,5 @@
 /.idea/
 /.gradle/
-/Release/
 local.properties
 */build/
 handleRelease.bat

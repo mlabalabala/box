@@ -7,14 +7,14 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.webkit.WebView;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.api.ApiConfig;
@@ -140,11 +140,14 @@ public class VodController extends BaseController {
     LinearLayout mAudioTrackBtn;
     public LinearLayout mLandscapePortraitBtn;
 
-    Handler myHandle;
-    Runnable myRunnable;
+    // Handler myHandle;
+    private final Runnable myRunnable = this::hideBottom;
     int myHandleSeconds = 10000;//闲置多少毫秒秒关闭底栏  默认6秒
 
     int videoPlayState = 0;
+
+    private ViewTreeObserver.OnGlobalFocusChangeListener focusListener;
+
 
     private final Runnable myRunnable2 = new Runnable() {
         @SuppressLint("SetTextI18n")
@@ -163,10 +166,6 @@ public class VodController extends BaseController {
             mHandler.postDelayed(this, 1000);
         }
     };
-
-
-
-
 
     @Override
     protected void initView() {
@@ -226,20 +225,9 @@ public class VodController extends BaseController {
             }
         });
 
-        myHandle = new Handler();
-        myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                hideBottom();
-            }
-        };
-
-        mPlayPauseTime.post(new Runnable() {
-            @Override
-            public void run() {
-                mHandler.post(myRunnable2);
-            }
-        });
+        // mHandler = new Handler();
+        // myRunnable = () -> hideBottom();
+        mPlayPauseTime.post(() -> mHandler.post(myRunnable2));
 
         mGridView.setLayoutManager(new V7LinearLayoutManager(getContext(), 0, false));
         ParseAdapter parseAdapter = new ParseAdapter();
@@ -284,8 +272,8 @@ public class VodController extends BaseController {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 long duration = mControlWrapper.getDuration();
                 long newPosition = (duration * seekBar.getProgress()) / seekBar.getMax();
                 mControlWrapper.seekTo((int) newPosition);
@@ -325,8 +313,8 @@ public class VodController extends BaseController {
         mPlayerScaleBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     int scaleType = mPlayerConfig.getInt("sc");
                     scaleType++;
@@ -344,8 +332,8 @@ public class VodController extends BaseController {
         mPlayerSpeedBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     float speed = (float) mPlayerConfig.getDouble("sp");
                     speed += 0.25f;
@@ -380,8 +368,8 @@ public class VodController extends BaseController {
         /* mPlayerBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     int playerType = mPlayerConfig.getInt("pl");
                     ArrayList<Integer> exsitPlayerTypes = PlayerHelper.getExistPlayerTypes();
@@ -426,8 +414,8 @@ public class VodController extends BaseController {
         mPlayerIJKBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     String ijk = mPlayerConfig.getString("ijk");
                     List<IJKCode> codecs = ApiConfig.get().getIjkCodes();
@@ -457,8 +445,8 @@ public class VodController extends BaseController {
         mPlayerTimeResetBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     mPlayerConfig.put("et", 0);
                     mPlayerConfig.put("st", 0);
@@ -472,8 +460,8 @@ public class VodController extends BaseController {
         mPlayerTimeStartBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     int current = (int) mControlWrapper.getCurrentPosition();
                     int duration = (int) mControlWrapper.getDuration();
@@ -502,8 +490,8 @@ public class VodController extends BaseController {
         mPlayerTimeSkipBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, myHandleSeconds);
+                mHandler.removeCallbacks(myRunnable);
+                mHandler.postDelayed(myRunnable, myHandleSeconds);
                 try {
                     int current = (int) mControlWrapper.getCurrentPosition();
                     int duration = (int) mControlWrapper.getDuration();
@@ -569,8 +557,8 @@ public class VodController extends BaseController {
     }
 
     private void switchPlayer(View view) {
-        myHandle.removeCallbacks(myRunnable);
-        myHandle.postDelayed(myRunnable, myHandleSeconds);
+        mHandler.removeCallbacks(myRunnable);
+        mHandler.postDelayed(myRunnable, myHandleSeconds);
         FastClickCheckUtil.check(view);
         try {
             int playerType = mPlayerConfig.getInt("pl");
@@ -878,7 +866,7 @@ public class VodController extends BaseController {
     void showBottom() {
         mHandler.removeMessages(1003);
         mHandler.sendEmptyMessage(1002);
-        mHandler.postDelayed(myRunnable, 8000);
+        mHandler.postDelayed(myRunnable, 5000);
     }
 
     void hideBottom() {
@@ -889,15 +877,15 @@ public class VodController extends BaseController {
 
     @Override
     public boolean onKeyEvent(KeyEvent event) {
-        myHandle.removeCallbacks(myRunnable);
+        mHandler.removeCallbacks(myRunnable);
         if (super.onKeyEvent(event)) {
             return true;
         }
         int keyCode = event.getKeyCode();
         int action = event.getAction();
         if (isBottomVisible()) {
-            myHandle.removeCallbacks(myRunnable);
-            myHandle.postDelayed(myRunnable, myHandleSeconds);
+            mHandler.removeCallbacks(myRunnable);
+            mHandler.postDelayed(myRunnable, myHandleSeconds);
             return super.dispatchKeyEvent(event);
         }
         boolean isInPlayback = isInPlaybackState();
@@ -916,7 +904,7 @@ public class VodController extends BaseController {
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode== KeyEvent.KEYCODE_MENU) {
                 if (!isBottomVisible()) {
                     showBottom();
-                    myHandle.postDelayed(myRunnable, myHandleSeconds);
+                    // mHandler.postDelayed(myRunnable, myHandleSeconds);
                     return true;
                 }
             }
@@ -976,11 +964,12 @@ public class VodController extends BaseController {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        myHandle.removeCallbacks(myRunnable);
+        LOG.d("onSingleTapConfirmed");
+        mHandler.removeCallbacksAndMessages(null);
         if (!isBottomVisible()) {
             showBottom();
             // 闲置计时关闭
-            myHandle.postDelayed(myRunnable, myHandleSeconds);
+            mHandler.postDelayed(myRunnable, myHandleSeconds);
         } else {
             hideBottom();
         }
@@ -1003,6 +992,10 @@ public class VodController extends BaseController {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mHandler.removeCallbacks(myRunnable2);
+        // ViewTreeObserver vto = mBottomRoot.getViewTreeObserver();
+        // if (vto.isAlive() && focusListener != null ) {
+        //     vto.removeOnGlobalFocusChangeListener(focusListener);
+        // }
     }
 
     private boolean isValidM3u8Line(String line) {
@@ -1215,6 +1208,15 @@ public class VodController extends BaseController {
         } catch (Exception e) {
             return url;
         }
+    }
+
+    private boolean isDescendant(View child, ViewGroup parent) {
+        View cur = child;
+        while (cur != null && cur.getParent() instanceof View) {
+            if (cur.getParent() == parent) return true;
+            cur = (View) cur.getParent();
+        }
+        return false;
     }
 
 }

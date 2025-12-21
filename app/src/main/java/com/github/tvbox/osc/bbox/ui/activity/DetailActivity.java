@@ -449,7 +449,7 @@ public class DetailActivity extends BaseActivity {
                     seriesAdapter.getData().get(vodInfo.playIndex).selected = true;
                     seriesAdapter.notifyItemChanged(vodInfo.playIndex);
                     //选集全屏 想选集不全屏的注释下面一行
-                    //if (showPreview && !fullWindows && !isAllowFull && playFragment.getPlayer().isPlaying())toggleFullPreview();
+                    if (showPreview && !fullWindows && !isAllowFull && playFragment.getPlayer().isPlaying())toggleFullPreview();
                     if (!showPreview || reload) {
                         jumpToPlay();
                         firstReverse=false;
@@ -542,7 +542,7 @@ public class DetailActivity extends BaseActivity {
     private List<Runnable> pauseRunnable = null;
 
     private void jumpToPlay() {
-        if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
+        if (vodInfo != null && !vodInfo.seriesMap.get(vodInfo.playFlag).isEmpty()) {
             preFlag = vodInfo.playFlag;
             //更新播放地址
             setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).url);
@@ -615,8 +615,11 @@ public class DetailActivity extends BaseActivity {
         }
         w += 32;
         int screenWidth = getWindowManager().getDefaultDisplay().getWidth()/3;
-        int playViewWidth = llPlayerPlace.getWidth();
-        int offset = (screenWidth-playViewWidth)/w;
+        // 左右布局计算偏移
+        // int playViewWidth = llPlayerPlace.getWidth();
+        // int offset = (screenWidth-playViewWidth)/w;
+        // 上下布局计算偏移
+        int offset = screenWidth/w;
         if(offset <=2) offset =2;
         if(offset > 6) offset =6;
         mGridViewLayoutMgr.setSpanCount(offset);
@@ -992,6 +995,7 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void insertVod(String sourceKey, VodInfo vodInfo) {
+        LOG.d(sourceKey + ":" + vodInfo.toString());
         try {
             vodInfo.playNote = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).name;
         } catch (Throwable th) {

@@ -18,7 +18,7 @@ public class LOG {
         Log.i(TAG, "" + msg);
     }
 
-    public static void d(String s)  {
-        Log.i(TAG, "" + s);
+    public static void d(String msg)  {
+        Log.d(TAG, "" + msg);
     }
 }

@@ -35,6 +35,9 @@
         android:paddingRight="@dimen/vs_20"
         android:paddingBottom="@dimen/vs_10"
         android:visibility="gone"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:descendantFocusability="afterDescendants"
         tools:visibility="visible">
 
         <LinearLayout
@@ -472,6 +475,7 @@
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
                     android:clipToPadding="false"
+                    tools:itemCount="1"
                     app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
                     app:tv_selectedItemIsCentered="true"
                     app:tv_verticalSpacingWithMargins="@dimen/vs_5" />

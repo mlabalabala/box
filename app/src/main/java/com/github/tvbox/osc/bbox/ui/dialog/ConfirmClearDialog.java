@@ -22,6 +22,7 @@ import java.util.List;
 public class ConfirmClearDialog extends BaseDialog {
     private final TextView tvYes;
     private final TextView tvNo;
+    private final TextView tvConfirmTxt;
 
     public ConfirmClearDialog(@NonNull @NotNull Context context, String type) {
         super(context);
@@ -29,6 +30,9 @@ public class ConfirmClearDialog extends BaseDialog {
         setCanceledOnTouchOutside(true);
         tvYes = findViewById(R.id.btnConfirm);
         tvNo = findViewById(R.id.btnCancel);
+        tvConfirmTxt = findViewById(R.id.confirmation);
+
+        tvConfirmTxt.setText("确定删除全部");
 
         tvYes.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")

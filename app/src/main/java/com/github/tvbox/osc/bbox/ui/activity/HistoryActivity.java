@@ -151,6 +151,13 @@ public class HistoryActivity extends BaseActivity {
         for (VodInfo vodInfo : allVodRecord) {
             if (vodInfo.playNote != null && !vodInfo.playNote.isEmpty())vodInfo.note = "上次看到" + vodInfo.playNote;
             vodInfoList.add(vodInfo);
+
+            // 不保留当前线路源不存在的记录
+            // SourceBean sourceBean = ApiConfig.get().getSource(vodInfo.sourceKey);
+            // if (sourceBean != null) {
+            //     if (vodInfo.playNote != null && !vodInfo.playNote.isEmpty())vodInfo.note = "上次看到" + vodInfo.playNote;
+            //     vodInfoList.add(vodInfo);
+            // }
         }
         historyAdapter.setNewData(vodInfoList);
     }

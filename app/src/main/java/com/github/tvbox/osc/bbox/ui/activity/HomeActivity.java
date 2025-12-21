@@ -370,9 +370,9 @@ public class HomeActivity extends BaseActivity {
             showLoading();
             sourceViewModel.getSort(ApiConfig.get().getHomeSourceBean().getKey());
             if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                LOG.e("有");
+                LOG.i("有");
             } else {
-                LOG.e("无");
+                LOG.i("无");
             }
             if (!useCacheConfig && Hawk.get(HawkConfig.DEFAULT_LOAD_LIVE, false)) {
                 jumpActivity(LivePlayActivity.class);
