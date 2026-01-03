@@ -594,9 +594,9 @@
                 android:ellipsize="end"
                 android:paddingTop="@dimen/vs_20"
                 android:paddingLeft="@dimen/vs_20"
-                android:text=""
+                android:text="http://"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_20" />
+                android:textSize="@dimen/ts_30" />
         </LinearLayout>
 
         <LinearLayout
@@ -794,6 +794,7 @@
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 tools:text="http://"
+                android:textSize="@dimen/ts_30"
                 android:textColor="@color/color_FFFFFF"
                 android:drawablePadding="20dp"
                 android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
@@ -842,7 +843,7 @@
                 android:tag="play_load_net_speed_right_top"
                 android:text="0Kb/s"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_20" />
+                android:textSize="@dimen/ts_30" />
 
         <Space
                 android:layout_width="@dimen/vs_10"
@@ -860,7 +861,7 @@
                 android:text="00:00:00"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_20" />
+                android:textSize="@dimen/ts_30" />
     </LinearLayout>
 
 </FrameLayout>
