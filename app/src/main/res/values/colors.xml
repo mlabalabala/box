@@ -40,12 +40,14 @@
     <color name="color_theme_60">#99D81F26</color>
     <color name="color_theme_50">#80D81F26</color>
     <color name="color_theme_40">#66D81F26</color>
+    <color name="color_theme_20">#33D81F26</color>
     <!-- Main Dialog Button BG -->
     <color name="color_theme_dark_70">#B3D81F26</color>
 
     <color name="color_FFFFFF_90">#E6FFFFFF</color>
     <color name="color_FFFFFF_80">#CCFFFFFF</color>
     <color name="color_FFFFFF_70">#B3FFFFFF</color>
+    <color name="color_FFFFFF_60">#9AFFFFFF</color>
     <color name="color_FFFFFF_50">#80FFFFFF</color>
     <color name="color_FFFFFF_40">#66FFFFFF</color>
     <color name="color_FFFFFF_20">#32FFFFFF</color>

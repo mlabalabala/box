@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.github.tvbox.osc.bbox.R;
 import com.github.tvbox.osc.bbox.util.LOG;
+import com.github.tvbox.osc.bbox.util.PlayerHelper;
 import xyz.doikki.videoplayer.controller.BaseVideoController;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.controller.IGestureComponent;
@@ -235,7 +236,7 @@ public abstract class BaseController extends BaseVideoController implements Gest
         //     mBrightness = activity.getWindow().getAttributes().screenBrightness;
         // }
         mBrightness = null == activity? 0:activity.getWindow().getAttributes().screenBrightness;
-        LOG.i("当前亮度: " + mBrightness);
+        // LOG.i("当前亮度: " + mBrightness);
         mFirstTouch = true;
         mChangePosition = false;
         mChangeBrightness = false;
@@ -357,7 +358,7 @@ public abstract class BaseController extends BaseVideoController implements Gest
             }
         }
         assert mActivity != null;
-        LOG.i("亮度: "+percent);
+        // LOG.i("亮度: "+percent);
         mProgressBarImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.play_brightness));
         mProgressBar.setProgress(percent);
         Message msg = Message.obtain();
@@ -386,7 +387,7 @@ public abstract class BaseController extends BaseVideoController implements Gest
             }
         }
         assert mActivity != null;
-        LOG.i("音量: "+percent);
+        // LOG.i("音量: "+percent);
         mProgressBarImg.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.play_volume));
         mProgressBar.setProgress(percent);
         Message msg = Message.obtain();

@@ -72,6 +72,7 @@ public class HawkConfig {
 
     public static final String ACTIVITY_ID = "activity_id"; // 0-home 1-fastsearch 2-search 3-detail
     public static final String HOME_HISTORY_LIST_POS = "home_history_list_postion"; // 0-home 1-setting 2-living 3-detail
+    public static final String SEEKBAR_SLIDE_TIMES = "seekbar_slide_times"; // 进度条时移倍数
 
     public static boolean hotVodDelete;
 

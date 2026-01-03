@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/vs_50"
-        android:text="1111111111111"
+        android:text=""
         android:textColor="@color/color_CCFFFFFF"
         android:textSize="@dimen/ts_24" />
 </FrameLayout>

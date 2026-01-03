@@ -44,6 +44,7 @@
                 android:id="@+id/landscape_portrait"
                 android:layout_width="@dimen/vs_60"
                 android:layout_height="@dimen/vs_60"
+                android:descendantFocusability="blocksDescendants"
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/vs_20"
                 android:layout_marginEnd="@dimen/vs_20"
@@ -73,6 +74,7 @@
                     android:id="@+id/curr_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:paddingEnd="@dimen/vs_30"
                     android:paddingRight="@dimen/vs_30"
                     android:text="00:00"
@@ -83,15 +85,20 @@
                     android:id="@+id/seekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:nextFocusLeft="@+id/seekBar"
+                    android:nextFocusRight="@+id/seekBar"
+                    android:nextFocusForward="@+id/seekBar"
+                    android:nextFocusUp="@+id/seekBar"
+                    android:nextFocusDown="@id/play_next"
+                    android:paddingHorizontal="@dimen/vs_2"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@null"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:max="1000"
-                    android:maxHeight="@dimen/vs_3"
-                    android:minHeight="@dimen/vs_3"
-                    android:padding="@dimen/vs_2"
+                    android:maxHeight="@dimen/vs_4"
+                    android:minHeight="@dimen/vs_4"
                     android:paddingStart="@dimen/vs_0"
                     android:paddingEnd="@dimen/vs_0"
                     android:progressDrawable="@drawable/shape_player_control_vod_seek"
@@ -102,6 +109,7 @@
                     android:id="@+id/total_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:paddingStart="@dimen/vs_30"
                     android:paddingLeft="@dimen/vs_30"
                     android:text="00:00"
@@ -124,6 +132,8 @@
                     android:id="@+id/play_pre"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_pre"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/vs_6"
                     android:layout_marginRight="@dimen/vs_6"
@@ -144,6 +154,8 @@
                     android:id="@+id/play_next"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_next"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -165,6 +177,8 @@
                     android:id="@+id/play_retry"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_retry"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -187,6 +201,8 @@
                     android:id="@+id/play_refresh"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_refresh"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -209,6 +225,8 @@
                     android:id="@+id/zimu_select"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/zimu_select"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -231,6 +249,8 @@
                     android:id="@+id/audio_track_select"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/audio_track_select"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -250,9 +270,36 @@
             </LinearLayout>
 
             <LinearLayout
+                    android:id="@+id/screen_display"
+                    android:layout_width="@dimen/vs_60"
+                    android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/screen_display"
+                    android:nextFocusDown="@id/parse_root"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/vs_6"
+                    android:layout_marginLeft="@dimen/vs_6"
+                    android:layout_marginEnd="@dimen/vs_6"
+                    android:layout_marginRight="@dimen/vs_6"
+                    android:background="@drawable/shape_btn_focus"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:id="@+id/screen_display_img"
+                        android:layout_width="@dimen/vs_50"
+                        android:layout_height="@dimen/vs_50"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:src="@drawable/v_info_display" />
+            </LinearLayout>
+
+            <LinearLayout
                     android:id="@+id/play_scale"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_scale"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -295,7 +342,7 @@
                     android:focusable="true"
                     android:gravity="center"
                     android:nextFocusUp="@id/play_speed"
-                    android:nextFocusDown="@id/play_speed"
+                    android:nextFocusDown="@id/parse_root"
                     android:orientation="horizontal"
                     android:visibility="visible">
 
@@ -327,6 +374,8 @@
                     android:id="@+id/play_player"
                     android:layout_width="@dimen/vs_60"
                     android:layout_height="@dimen/vs_60"
+                    android:nextFocusUp="@id/play_player"
+                    android:nextFocusDown="@id/parse_root"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/vs_6"
                     android:layout_marginLeft="@dimen/vs_6"
@@ -399,6 +448,7 @@
                     android:layout_marginRight="@dimen/vs_4"
                     android:background="@drawable/shape_btn_focus"
                     android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:nextFocusUp="@id/play_time_start"
                     android:nextFocusDown="@id/play_time_start"
@@ -434,7 +484,7 @@
                     android:layout_marginEnd="@dimen/vs_5"
                     android:layout_marginRight="@dimen/vs_5"
                     android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:padding="@dimen/vs_10"
                     android:text="重置"
                     android:visibility="gone"
@@ -453,6 +503,7 @@
                 android:id="@+id/parse_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:layout_marginBottom="@dimen/vs_10"
                 android:orientation="horizontal"
                 android:visibility="gone"
@@ -461,6 +512,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/vs_5"
                     android:layout_marginRight="@dimen/vs_5"
@@ -473,6 +525,7 @@
                     android:id="@+id/mGridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     tools:itemCount="1"
@@ -484,12 +537,43 @@
 
     </LinearLayout>
 
+
+    <FrameLayout
+            android:id="@+id/fl_bottom_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:layout_gravity="bottom"
+            android:visibility="visible"
+            tools:visibility="visible">
+        <SeekBar
+                android:id="@+id/b_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:max="1000"
+                android:maxHeight="@dimen/vs_2"
+                android:minHeight="@dimen/vs_2"
+                android:progressDrawable="@drawable/shape_player_control_vod_bottom_seek"
+                android:thumb="@null"/>
+    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/tv_pause_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:tag="vod_control_pause"
         android:visibility="gone"
+        android:descendantFocusability="blocksDescendants"
         tools:visibility="visible">
 
         <LinearLayout
@@ -510,7 +594,7 @@
                 android:ellipsize="end"
                 android:paddingTop="@dimen/vs_20"
                 android:paddingLeft="@dimen/vs_20"
-                android:text="http://"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/ts_20" />
         </LinearLayout>
@@ -519,7 +603,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/vs_70"
             android:layout_gravity="right|top"
-            android:layout_marginTop="@dimen/vs_90"
+            android:layout_marginTop="@dimen/vs_120"
             android:background="@drawable/shape_user_pause_r"
             android:focusable="false"
             android:padding="@dimen/vs_10"
@@ -559,6 +643,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:descendantFocusability="blocksDescendants"
             android:background="@drawable/shape_progressbar_bg"
             android:orientation="horizontal"
             android:tag="dialog_slide_progress"
@@ -606,10 +691,11 @@
 
     <LinearLayout
         android:id="@+id/tv_progress_container"
+        android:descendantFocusability="blocksDescendants"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/vs_70"
         android:layout_gravity="right"
-        android:layout_marginTop="@dimen/vs_90"
+        android:layout_marginTop="@dimen/vs_120"
         android:background="@drawable/shape_user_pause_r"
         android:focusable="false"
         android:padding="@dimen/vs_10"
@@ -662,7 +748,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:tag="play_load_net_speed"
-        android:text="0"
+        android:text="0Kb/s"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/ts_20" />
 
@@ -670,6 +756,8 @@
             android:id="@+id/ll_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:layout_gravity="center|top"
             android:layout_marginTop="@dimen/vs_90"
             android:gravity="center_vertical"
@@ -682,14 +770,17 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/vs_30"
-            android:text="2.0"/>
+            android:text="3.0"/>
     </LinearLayout>
 
     <LinearLayout
             android:id="@+id/tv_top_l_container"
             android:layout_width="720dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:tag="tv_top_container"
+            android:descendantFocusability="blocksDescendants"
             android:visibility="gone"
             tools:visibility="visible"
             android:layout_marginStart="@dimen/vs_20"
@@ -707,8 +798,8 @@
                 android:drawablePadding="20dp"
                 android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
         />
 
         <TextView
@@ -728,15 +819,35 @@
 
     <LinearLayout
             android:id="@+id/tv_top_r_container"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:descendantFocusability="blocksDescendants"
             android:tag="tv_top_container"
             android:visibility="gone"
             tools:visibility="visible"
             android:layout_gravity="right"
-            android:layout_marginRight="@dimen/vs_20"
-            android:layout_marginTop="@dimen/vs_10"
-            android:orientation="vertical">
+            android:layout_marginRight="@dimen/vs_10"
+            android:layout_marginTop="@dimen/vs_5"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/tv_play_load_net_speed_right_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:tag="play_load_net_speed_right_top"
+                android:text="0Kb/s"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/ts_20" />
+
+        <Space
+                android:layout_width="@dimen/vs_10"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
 
         <TextView
                 android:id="@+id/tv_sys_time"
@@ -745,23 +856,9 @@
                 android:layout_gravity="right"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingTop="@dimen/vs_20"
-                android:paddingRight="@dimen/vs_20"
                 android:tag="vod_control_pause_time"
                 android:text="00:00:00"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/ts_20" />
-
-        <TextView
-                android:id="@+id/tv_play_load_net_speed_right_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingRight="@dimen/vs_20"
-                android:tag="vod_control_pause_time"
-                android:text="0Kb/s"
+                android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/ts_20" />
     </LinearLayout>

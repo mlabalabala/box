@@ -341,21 +341,18 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/previewPlayer"
         android:layout_width="@dimen/vs_480"
-        android:layout_height="@dimen/vs_300"
+        android:layout_height="@dimen/vs_320"
+        android:layout_marginTop="@dimen/vs_10"
         android:layout_marginHorizontal="@dimen/ts_30"
-        android:layout_marginTop="@dimen/vs_20"
-        android:layout_marginBottom="@dimen/vs_10"
         android:visibility="gone" />
 
     <View
         android:id="@+id/previewPlayerBlock"
-        android:layout_width="@dimen/vs_470"
-        android:layout_height="@dimen/vs_300"
+        android:layout_width="@dimen/vs_480"
+        android:layout_height="@dimen/vs_320"
         android:focusable="true"
         android:background="@drawable/preview_player_block"
-        android:layout_marginStart="@dimen/vs_50"
-        android:layout_marginLeft="@dimen/vs_50"
-        android:layout_marginTop="@dimen/vs_20"
-        android:layout_marginBottom="@dimen/vs_10"
+        android:layout_marginTop="@dimen/vs_10"
+        android:layout_marginHorizontal="@dimen/ts_30"
         android:visibility="gone" />
 </FrameLayout>
