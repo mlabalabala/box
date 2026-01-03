@@ -585,7 +585,7 @@
                 android:textSize="@dimen/ts_20" />
 
         <TextView
-                android:id="@+id/tv_play_load_net_speed_right_top"
+                android:id="@+id/tv_play_load_net_speed_right_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

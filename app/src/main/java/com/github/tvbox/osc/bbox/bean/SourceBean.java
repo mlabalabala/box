@@ -118,4 +118,24 @@ public class SourceBean {
     public String getStyle() { return style; }
 
     public void setStyle(String style) { this.style = style; }
+
+    @Override
+    public String toString() {
+        return "SourceBean{" +
+                "key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", api='" + api + '\'' +
+                ", type=" + type +
+                ", searchable=" + searchable +
+                ", quickSearch=" + quickSearch +
+                ", filterable=" + filterable +
+                ", playerUrl='" + playerUrl + '\'' +
+                ", ext='" + ext + '\'' +
+                ", jar='" + jar + '\'' +
+                ", categories=" + categories +
+                ", playerType=" + playerType +
+                ", clickSelector='" + clickSelector + '\'' +
+                ", style='" + style + '\'' +
+                '}';
+    }
 }

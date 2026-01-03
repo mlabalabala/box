@@ -87,7 +87,10 @@ public class VodController extends BaseController {
                         // mTopRoot2.setVisibility(GONE);
                         disPlay = Hawk.get(HawkConfig.SCREEN_DISPLAY, false);
                         // LOG.d("1003 disPlay = " + disPlay);
-                        mTopRoot2.setVisibility(disPlay ? VISIBLE : GONE);
+                        int visible = disPlay ? VISIBLE : GONE;
+                        mTopRoot2.setVisibility(visible);
+                        mSeekTime.setVisibility(visible);
+                        mPlayLoadNetSpeedRightBottom.setVisibility(visible);
                         mBottomSeekBar.setVisibility(VISIBLE);
                         break;
                     }
@@ -126,7 +129,7 @@ public class VodController extends BaseController {
     TextView mPlayerSpeedText;
     TextView mPlayerScaleText;
     TextView mPlayTitle1;
-    TextView mPlayLoadNetSpeedRightTop;
+    public TextView mPlayLoadNetSpeedRightBottom;
     LinearLayout mNextBtn;
     LinearLayout mPreBtn;
     LinearLayout mPlayerScaleBtn;
@@ -139,7 +142,7 @@ public class VodController extends BaseController {
     public TextView mPlayerTimeStartBtn;
     public TextView mPlayerTimeSkipBtn;
     public TextView mPlayerTimeResetBtn;
-    TextView mPlayPauseTime;
+    public TextView mPlayPauseTime;
     TextView mPlayLoadNetSpeed;
     TextView mVideoSize;
     public SimpleSubtitleView mSubtitleView;
@@ -151,6 +154,7 @@ public class VodController extends BaseController {
     TextView seekTime; //右上角进度时间显示
     LinearLayout mScreenDisplay; //增加屏显开关
     ImageView mScreenDisplayImg;
+    public TextView mSeekTime;
 
     FrameLayout mBottomSeekBar;
     SeekBar mBSeekBar;
@@ -180,7 +184,7 @@ public class VodController extends BaseController {
             mPlayPauseTime.setText(timeFormat.format(date));
 
             String speed = PlayerHelper.getDisplaySpeed(mControlWrapper.getTcpSpeed(),true);
-            mPlayLoadNetSpeedRightTop.setText(speed);
+            mPlayLoadNetSpeedRightBottom.setText(speed);
             mPlayLoadNetSpeed.setText(speed);
 
             // String width = Integer.toString(mControlWrapper.getVideoSize()[0]);
@@ -202,7 +206,7 @@ public class VodController extends BaseController {
         mTotalTime = findViewById(R.id.total_time);
         mPlayTitle = findViewById(R.id.tv_info_name);
         mPlayTitle1 = findViewById(R.id.tv_info_name1);
-        mPlayLoadNetSpeedRightTop = findViewById(R.id.tv_play_load_net_speed_right_top);
+        mPlayLoadNetSpeedRightBottom = findViewById(R.id.tv_play_load_net_speed_right_bottom);
         mSeekBar = findViewById(R.id.seekBar);
         mProgressRoot = findViewById(R.id.tv_progress_container);
         mProgressIcon = findViewById(R.id.tv_progress_icon);
@@ -225,6 +229,7 @@ public class VodController extends BaseController {
         mPlayerTimeSkipBtn = findViewById(R.id.play_time_end);
         mPlayerTimeResetBtn = findViewById(R.id.play_time_reset);
         mPlayPauseTime = findViewById(R.id.tv_sys_time);
+        mSeekTime = findViewById(R.id.tv_seek_time);
         mPlayLoadNetSpeed = findViewById(R.id.tv_play_load_net_speed);
         mVideoSize = findViewById(R.id.tv_videosize);
         mSubtitleView = findViewById(R.id.subtitle_view);
@@ -245,7 +250,10 @@ public class VodController extends BaseController {
                 mTopRoot1.setVisibility(GONE);
                 // mTopRoot2.setVisibility(GONE);
                 disPlay = Hawk.get(HawkConfig.SCREEN_DISPLAY, false);
-                mTopRoot2.setVisibility(!disPlay ? GONE : VISIBLE);
+                int visible = !disPlay ? GONE : VISIBLE;
+                mTopRoot2.setVisibility(visible);
+                mSeekTime.setVisibility(visible);
+                mPlayLoadNetSpeedRightBottom.setVisibility(visible);
                 mBottomRoot.setVisibility(GONE);
                 mBottomSeekBar.setVisibility(VISIBLE);
                 mHandler.removeCallbacks(myRunnable);
@@ -610,7 +618,10 @@ public class VodController extends BaseController {
 
         //屏显
         disPlay = Hawk.get(HawkConfig.SCREEN_DISPLAY, false);
-        mTopRoot2.setVisibility(!disPlay ? GONE : VISIBLE);
+        int visible = !disPlay ? GONE : VISIBLE;
+        mTopRoot2.setVisibility(visible);
+        mSeekTime.setVisibility(visible);
+        mPlayLoadNetSpeedRightBottom.setVisibility(visible);
         mScreenDisplayImg.setImageResource(disPlay ? R.drawable.v_info_display_select : R.drawable.v_info_display);
         mScreenDisplay.setOnClickListener(view -> {
             disPlay = !Hawk.get(HawkConfig.SCREEN_DISPLAY, false);
@@ -831,6 +842,7 @@ public class VodController extends BaseController {
         }
         mCurrentTime.setText(PlayerUtils.stringForTime(position));
         mTotalTime.setText(PlayerUtils.stringForTime(duration));
+        mSeekTime.setText((PlayerUtils.seconds2Time(position)) + " / " + (PlayerUtils.seconds2Time(duration))); //右上角进度条时间显示
         if (duration > 0) {
             mSeekBar.setEnabled(true);
             int pos = (int) (position * 1.0 / duration * mSeekBar.getMax());
@@ -916,7 +928,10 @@ public class VodController extends BaseController {
             case VideoView.STATE_PAUSED:
                 mTopRoot1.setVisibility(GONE);
                 disPlay = Hawk.get(HawkConfig.SCREEN_DISPLAY, false);
-                mTopRoot2.setVisibility(disPlay ? VISIBLE : GONE);
+                int visible = disPlay ? VISIBLE : GONE;
+                mTopRoot2.setVisibility(visible);
+                mSeekTime.setVisibility(visible);
+                mPlayLoadNetSpeedRightBottom.setVisibility(visible);
                 // mTopRoot2.setVisibility(GONE);
                 mPlayTitle.setVisibility(VISIBLE);
                 break;

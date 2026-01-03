@@ -546,6 +546,38 @@
             android:layout_gravity="bottom"
             android:visibility="visible"
             tools:visibility="visible">
+
+
+        <TextView
+                android:id="@+id/tv_play_load_net_speed_right_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:tag="tv_play_load_net_speed_right_bottom"
+                android:paddingBottom="@dimen/vs_3"
+                android:paddingRight="@dimen/vs_5"
+                android:paddingEnd="@dimen/vs_5"
+                android:text="0Kb/s"
+                android:textStyle="italic"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/ts_24" />
+
+        <TextView
+                android:id="@+id/tv_seek_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingBottom="@dimen/vs_3"
+                android:paddingLeft="@dimen/vs_5"
+                android:paddingStart="@dimen/vs_5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:tag="tv_process_txt"
+                android:text="00:00 / 00:00"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/ts_24" />
         <SeekBar
                 android:id="@+id/b_seekBar"
                 android:layout_width="match_parent"
@@ -554,15 +586,16 @@
                 android:paddingEnd="0dp"
                 android:paddingBottom="0dp"
                 android:paddingTop="0dp"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
                 android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:max="1000"
-                android:maxHeight="@dimen/vs_2"
-                android:minHeight="@dimen/vs_2"
+                android:maxHeight="@dimen/vs_3"
+                android:minHeight="@dimen/vs_3"
                 android:progressDrawable="@drawable/shape_player_control_vod_bottom_seek"
                 android:thumb="@null"/>
+
     </FrameLayout>
 
     <FrameLayout
@@ -830,18 +863,19 @@
             tools:visibility="visible"
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/vs_10"
-            android:layout_marginTop="@dimen/vs_5"
+            android:layout_marginTop="@dimen/vs_10"
             android:orientation="horizontal">
 
-        <TextView
-                android:id="@+id/tv_play_load_net_speed_right_top"
+       <!-- <TextView
+                android:id="@+id/tv_play_load_net_speed_right_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:tag="play_load_net_speed_right_top"
+                android:tag="tv_play_load_net_speed_right_bottom"
                 android:text="0Kb/s"
+                android:textStyle="italic"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/ts_30" />
 
@@ -849,6 +883,23 @@
                 android:layout_width="@dimen/vs_10"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tv_seek_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:tag="tv_process_txt"
+                android:text="00:00 / 00:00"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/ts_30" />
+
+        <Space
+                android:layout_width="@dimen/vs_10"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>-->
 
         <TextView
                 android:id="@+id/tv_sys_time"

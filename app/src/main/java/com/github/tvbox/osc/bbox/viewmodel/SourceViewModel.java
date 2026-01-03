@@ -521,6 +521,7 @@ public class SourceViewModel extends ViewModel {
         String id = urlid;
 
         SourceBean sourceBean = ApiConfig.get().getSource(sourceKey);
+        // LOG.d("sourceBean = " + sourceBean);
         int type = sourceBean.getType();
         if (type == 3) {
             spThreadPool.execute(new Runnable() {
