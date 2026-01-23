@@ -516,6 +516,12 @@ public class SearchActivity extends BaseActivity {
                 search(st);
             }
         });
+        for (int i = 0; i < mGridViewHotWord.getChildCount(); i++) {
+            View child = mGridViewHotWord.getChildAt(i);
+            child.setFocusable(true);
+            child.setFocusableInTouchMode(true);
+            child.setClickable(true);
+        }
         mGridViewMovieHotWord.setViews(movieHots, st -> {
             if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
                 Bundle bundle = new Bundle();
@@ -525,6 +531,12 @@ public class SearchActivity extends BaseActivity {
                 search(st);
             }
         });
+        for (int i = 0; i < mGridViewMovieHotWord.getChildCount(); i++) {
+            View child = mGridViewMovieHotWord.getChildAt(i);
+            child.setFocusable(true);
+            child.setFocusableInTouchMode(true);
+            child.setClickable(true);
+        }
         mGridViewTvHotWord.setViews(tvHots, st -> {
             if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
                 Bundle bundle = new Bundle();
@@ -534,6 +546,12 @@ public class SearchActivity extends BaseActivity {
                 search(st);
             }
         });
+        for (int i = 0; i < mGridViewTvHotWord.getChildCount(); i++) {
+            View child = mGridViewTvHotWord.getChildAt(i);
+            child.setFocusable(true);
+            child.setFocusableInTouchMode(true);
+            child.setClickable(true);
+        }
         mGridViewCiliHotWord.setViews(ciliHots, st -> {
             if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
                 Bundle bundle = new Bundle();
@@ -543,6 +561,12 @@ public class SearchActivity extends BaseActivity {
                 search(st);
             }
         });
+        for (int i = 0; i < mGridViewCiliHotWord.getChildCount(); i++) {
+            View child = mGridViewCiliHotWord.getChildAt(i);
+            child.setFocusable(true);
+            child.setFocusableInTouchMode(true);
+            child.setClickable(true);
+        }
     }
     private static String getTitle(String st) {
         return st.trim().replaceAll("<|>|《|》|-", "").split(" ")[0];

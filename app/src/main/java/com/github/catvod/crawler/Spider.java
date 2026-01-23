@@ -80,6 +80,18 @@ public class Spider {
     }
 
     /**
+     * 搜索数据内容带页码
+     *
+     * @param key
+     * @param quick
+     * @param pg
+     * @return
+     */
+    public String searchContent(String key, boolean quick, int pg) {
+        return "";
+    }
+
+    /**
      * 播放信息
      *
      * @param flag
