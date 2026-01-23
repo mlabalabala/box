@@ -311,6 +311,7 @@ public class DetailActivity extends BaseActivity {
                 }
             }
         });
+        tvDownload.setVisibility(Hawk.get(HawkConfig.SHOW_PREVIEW, true) ? View.VISIBLE : View.GONE);
         tvDownload.setOnClickListener(v -> {
             use1DMDownload();
         });
